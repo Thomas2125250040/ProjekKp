@@ -12,7 +12,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('kategori_bonus', function (Blueprint $table) {
-            $table->mediumIncrements('id_kategori_bonus')->primary();
+            $table->mediumIncrements('id_kategori_bonus');
             $table->string('nama');
         });
     }
