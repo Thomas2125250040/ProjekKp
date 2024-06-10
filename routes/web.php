@@ -17,3 +17,7 @@ Route::get('/register', function () {
 Route::get('/dashboard', function () {
     return view('index');
 });
+
+Route::get('/pegawai', function () {
+    return view('pegawai');
+});

@@ -10,8 +10,9 @@
         @include('layouts.sidebar')
         <!--  Main wrapper -->
         <div class="body-wrapper">
-            @include('layouts.header')
-            @yield('content')
+            <div class="container-fluid" style="padding-top: 24px;">
+                @yield('content')
+            </div>
         </div>
     </div>
     @include('layouts.scripts')
