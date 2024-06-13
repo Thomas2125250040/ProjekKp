@@ -21,3 +21,7 @@ Route::get('/dashboard', function () {
 Route::get('/pegawai', function () {
     return view('pegawai');
 });
+
+Route::get('/create-pegawai', function () {
+    return view('createPegawai');
+});
