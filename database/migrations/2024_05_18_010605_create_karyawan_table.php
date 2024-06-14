@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('karyawan', function (Blueprint $table) {
             $table->uuid('id_karyawan')->primary();
             $table->string('nama')->unique();
-            $table->foreignUuid('id_jabatan')->constrained('jabatan', 'id_jabatan');
+            $table->foreignUuid('id_jabatan')->constrained('jabatan', 'id');
             $table->date('tanggal_lahir');
         });
     }

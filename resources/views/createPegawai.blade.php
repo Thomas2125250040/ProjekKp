@@ -10,7 +10,7 @@
                         <div class="mb-3">
                             <label for="namaPegawai" class="form-label">Nama Lengkap</label>
                             <input type="text" class="form-control" id="namaPegawai" pattern="[A-Za-z]+"
-                                title="Nama Anda tidak valid."">
+                                title="Nama Anda tidak valid">
                         </div>
                         <div class="mb-3">
                             <label class="form-label">Jenis kelamin</label>

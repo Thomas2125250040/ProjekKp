@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\jabatanController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -24,4 +25,11 @@ Route::get('/pegawai', function () {
 
 Route::get('/create-pegawai', function () {
     return view('createPegawai');
+});
+
+Route::group(['prefix'=>'jabatan'], function() {
+    Route::get('',[jabatanController::class, 'index'])->name('jabatan.index');
+    Route::get('create',[jabatanController::class, 'create'])->name('jabatan.create');
+    Route::get('edit',[jabatanController::class, 'edit'])->name('jabatan.edit');
+    Route::post('store',[jabatanController::class, 'store'])->name('jabatan.store');
 });
