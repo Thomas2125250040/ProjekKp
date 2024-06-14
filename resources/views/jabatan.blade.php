@@ -9,7 +9,7 @@
                 </div>
                 <input type="search" class="form-control rounded ms-3" placeholder="Search" aria-label="Search" aria-describedby="search-addon" />
                 <span class="input-group-text border-0" id="search-addon">
-                    <i class="fas fa-search"></i>
+                    <i class="ti ti-search"></i>
                 </span>
             </div>
             <button type="button" class="btn btn-primary">Add</button>
@@ -22,17 +22,22 @@
                     <th scope="col">Gaji Pokok</th>
                     <th scope="col">Uang Makan</th>
                     <th scope="col">Uang Lembur</th>
+                    <th scope="col">Aksi</th>
                 </tr>
             </thead>
             <tbody>
                 <?php $no=1 ?>
                 @forelse ($jabatan as $item => $row)
                 <tr>
-                    <td>{{ $no++ }}</td>
-                    <td>{{ $row->nama }}</td>
-                    <td>{{ $row->gaji_pokok }}</td>
-                    <td>{{ $row->uang_makan }}</td>
-                    <td>{{ $row->uang_lembur }}</td>
+                    <td class="align-middle">{{ $no++ }}</td>
+                    <td class="align-middle">{{ $row->nama }}</td>
+                    <td class="align-middle">{{ $row->gaji_pokok }}</td>
+                    <td class="align-middle">{{ $row->uang_makan }}</td>
+                    <td class="align-middle">{{ $row->uang_lembur }}</td>
+                    <td>
+                        <a class="btn btn-primary fs-1">Edit</a>
+                        <a class="btn btn-danger fs-1">Hapus</a>
+                    </td>
                 </tr>
                 @empty
                 <tr>
