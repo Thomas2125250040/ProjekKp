@@ -29,14 +29,18 @@
                 <?php $no=1 ?>
                 @forelse ($jabatan as $item => $row)
                 <tr>
-                    <td class="align-middle">{{ $no++ }}</td>
+                    <td class="align-middle">{{ $row->id }}</td>
                     <td class="align-middle">{{ $row->nama }}</td>
                     <td class="align-middle">{{ $row->gaji_pokok }}</td>
                     <td class="align-middle">{{ $row->uang_makan }}</td>
                     <td class="align-middle">{{ $row->uang_lembur }}</td>
-                    <td>
-                        <a class="btn btn-primary fs-1">Edit</a>
-                        <a class="btn btn-danger fs-1">Hapus</a>
+                    <td class="d-flex">
+                        <a class="btn btn-primary fs-1 me-1">Edit</a>
+                        <form action="{{ route('jabatan.destroy', $row->id) }}" method="post">
+                            @csrf
+                            @method('DELETE')
+                            <button type="submit" class="btn btn-danger btn-sm">Hapus</button>
+                        </form>
                     </td>
                 </tr>
                 @empty
