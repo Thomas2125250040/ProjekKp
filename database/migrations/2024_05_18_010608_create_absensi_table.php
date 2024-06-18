@@ -11,15 +11,15 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('absensi', function (Blueprint $table) {
-            $table->uuid('id_absensi')->primary();
-            $table->foreignUuid('id_karyawan')->constrained('karyawan', 'id_karyawan');
-            $table->time('waktu_masuk');
-            $table->time('waktu_pulang');
-            $table->date('tanggal');
-            $table->char('status');
-            $table->text('keterangan')->nullable();
-        });
+        // Schema::create('absensi', function (Blueprint $table) {
+        //     $table->uuid('id_absensi')->primary();
+        //     $table->foreignUuid('id_karyawan')->constrained('karyawan', 'id_karyawan');
+        //     $table->time('waktu_masuk');
+        //     $table->time('waktu_pulang');
+        //     $table->date('tanggal');
+        //     $table->char('status');
+        //     $table->text('keterangan')->nullable();
+        // });
     }
 
     /**

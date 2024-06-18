@@ -11,14 +11,14 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('gaji', function (Blueprint $table) {
-            $table->uuid('id_gaji')->primary();
-            $table->foreignUuid('id_karyawan')->constrained('karyawan', 'id_karyawan')->unique();
-            $table->date('periode_awal');
-            $table->date('periode_akhir');
-            $table->boolean('status');
-            $table->binary('bukti_bayar');
-        });
+        // Schema::create('gaji', function (Blueprint $table) {
+           // $table->uuid('id_gaji')->primary();
+          //  $table->foreignUuid('id_karyawan')->constrained('karyawan', 'id_karyawan')->unique();
+           // $table->date('periode_awal');
+           // $table->date('periode_akhir');
+           // $table->boolean('status');
+            //$table->binary('bukti_bayar');
+        // });
     }
 
     /**

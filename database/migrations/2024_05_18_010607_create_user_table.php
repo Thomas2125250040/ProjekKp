@@ -11,14 +11,16 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('user', function (Blueprint $table) {
-            $table->uuid('id_user')->primary();
-            $table->string('username')->unique();
-            $table->string('password');
-            $table->binary('foto_profil');
-            $table->tinyInteger('hak_akses');
-            $table->foreignUuid('id_karyawan')->constrained('karyawan', 'id_karyawan')->unique();
-        });
+       // Schema::create('user', function (Blueprint $table) {
+           
+            //$table->binary('foto_profil');
+            //$table->int('hak_akses');
+            // $table->foreignUuid('id_karyawan')->constrained('karyawan', 'id_karyawan')->unique();
+         //   $table->uuid('id_user')->primary();
+         //   $table->char('kode_karyawan')->unique();
+          //  $table->string('password');
+//$table->timestamps();
+       // });
     }
 
     /**

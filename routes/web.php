@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\jabatanController;
+use App\Http\Controllers\LoginLogoutController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -32,5 +33,6 @@ Route::group(['prefix'=>'jabatan'], function() {
     Route::get('create',[jabatanController::class, 'create'])->name('jabatan.create');
     Route::get('edit',[jabatanController::class, 'edit'])->name('jabatan.edit');
     Route::post('store',[jabatanController::class, 'store'])->name('jabatan.store');
-    Route::delete('destroy',[jabatanController::class, 'destroy'])->name('jabatan.destroy');
 });
+
+Route::post('/login', [LoginLogoutController::class , 'login']);
