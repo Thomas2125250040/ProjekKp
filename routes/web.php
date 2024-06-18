@@ -28,12 +28,12 @@ Route::get('/gm-dashboard', function () {
 });
 
 
-Route::get('/pegawai', function () {
+Route::get('/karyawan', function () {
     return view('pegawai');
 });
 
-Route::get('/create-pegawai', function () {
-    return view('createPegawai');
+Route::get('/create-karyawan', function () {
+    return view('admin.createKaryawan');
 });
 
 Route::group(['prefix'=>'jabatan'], function() {
