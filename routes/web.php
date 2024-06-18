@@ -49,6 +49,10 @@ Route::group(['prefix'=>'jabatan'], function() {
 Route::post('/login', [LoginRegisterController::class , 'login']);
 
 Route::group(['prefix'=>'karyawan'], function() {
+    Route::get('',[KaryawanController::class, 'index'])->name('karyawan.index');
+    Route::get('create',[KaryawanController::class, 'create'])->name('karyawan.create');
+    Route::get('edit',[KaryawanController::class, 'edit'])->name('karyawan.edit');
+    Route::post('store',[KaryawanController::class, 'store'])->name('karyawan.store');
     Route::get('search',[KaryawanController::class, 'search'])->name('karyawan.search');
 });
 

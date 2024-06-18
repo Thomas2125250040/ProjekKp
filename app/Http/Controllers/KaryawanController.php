@@ -11,4 +11,8 @@ class KaryawanController extends Controller
         $filter = request()->query();
         return Karyawan::where('nama_karyawan', 'like', "%{$filter['q']}%")->get();
     }
+
+    public function index() {
+        
+    }
 }
