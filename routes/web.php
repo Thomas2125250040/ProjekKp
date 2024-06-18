@@ -1,6 +1,8 @@
 <?php
 
-use App\Http\Controllers\jabatanController;
+use App\Http\Controllers\AbsensiController;
+use App\Http\Controllers\KaryawanController;
+use App\Http\Controllers\JabatanController;
 use App\Http\Controllers\LoginRegisterController;
 use Illuminate\Support\Facades\Route;
 
@@ -37,11 +39,19 @@ Route::get('/create-karyawan', function () {
 });
 
 Route::group(['prefix'=>'jabatan'], function() {
-    Route::get('',[jabatanController::class, 'index'])->name('jabatan.index');
-    Route::get('create',[jabatanController::class, 'create'])->name('jabatan.create');
-    Route::get('edit',[jabatanController::class, 'edit'])->name('jabatan.edit');
-    Route::post('store',[jabatanController::class, 'store'])->name('jabatan.store');
+    Route::get('',[JabatanController::class, 'index'])->name('jabatan.index');
+    Route::get('create',[JabatanController::class, 'create'])->name('jabatan.create');
+    Route::get('edit',[JabatanController::class, 'edit'])->name('jabatan.edit');
+    Route::post('store',[JabatanController::class, 'store'])->name('jabatan.store');
+    
 });
 
 Route::post('/login', [LoginRegisterController::class , 'login']);
 
+Route::group(['prefix'=>'karyawan'], function() {
+    Route::get('search',[KaryawanController::class, 'search'])->name('karyawan.search');
+});
+
+Route::group(['prefix'=>'absensi'], function(){
+    Route::get('',[AbsensiController::class, 'index'])->name('absensi.index');
+});
