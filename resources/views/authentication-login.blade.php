@@ -20,6 +20,7 @@
                     <div class="col-md-8 col-lg-6 col-xxl-3">
                         <div class="card mb-0">
                             <div class="card-body">
+<<<<<<< Updated upstream
                                 <h2 class="text-left lh-lg">LOGIN</h2>
                                 <h3 class="text-center lh-lg"><b><u>CV ANUGRAH ABADI PALEMBANG</u></b> </h3>
                                 <form action="{{ url('login') }}" method="POST">
@@ -27,6 +28,22 @@
                                     <div class="mb-3">
                                         <label for="username" class="form-label">Username</label>
                                         <input type="text" class="form-control" id="username" name="username" required>
+=======
+                                {{-- <h2 class="text-left"><b>LOGIN<b></h2> --}}
+                                <h3 class="text-center lh-lg">
+                                    <b>CV ANUGRAH ABADI PALEMBANG</b> 
+                                </h3>
+                                @if (Session::has('error'))
+                                    <div class="alert alert-danger">
+                                        {{ Session::get('error') }}
+                                    </div>
+                                @endif
+                                <form action="{{ url('login') }}" method="POST">
+                                    @csrf
+                                    <div class="mb-3">
+                                        <label for="kode_karyawan" class="form-label">Code</label>
+                                        <input type="text" class="form-control" id="kode_karyawan" name="kode_karyawan" required>
+>>>>>>> Stashed changes
                                     </div>
                                     <div class="mb-4">
                                         <label for="password" class="form-label">Password</label>

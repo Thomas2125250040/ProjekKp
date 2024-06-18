@@ -6,16 +6,20 @@ use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Jabatan extends Model
+class Karyawan extends Model
 {
     use HasFactory, HasUuids;
-    protected $table = "jabatan";
+    protected $table = "karyawan";
 
     protected $fillable = [
+        "kode_karyawan",
+        "nama_karyawan",
         "kode_jabatan",
-        "nama_jabatan",
-        "gaji_pokok"
-        // "uang_makan",
-        // "uang_lembur"
+        "email",
+        "password",
+        "jenis_kelamin",
+        "alamat",
+        "agama",
+        "nomor_telepon"
     ];
 }
