@@ -32,14 +32,20 @@
                             <label for="tglLahir" class="form-label">Tanggal lahir</label>
                             <input type="date" class="form-control" id="tglLahir">
                         </div>
-                        <div class="mb-5">
+                        <fieldset class="mb-5" id="fielset">
                             <label for="disabledSelect" class="form-label">Jabatan</label>
                             <select id="disabledSelect" class="form-select">
-                                @foreach ($jabatan as $row)
+                                @forelse ($jabatan as $row)
                                     <option>{{ $row->nama_jabatan }}</option>
-                                @endforeach
+                                @empty
+                                    <option>-- Belum ada data jabatan --</option>
+                                    <script>
+                                        let fieldset = document.getElementById('fieldset');
+                                        fieldset.classList.add('disabled');
+                                    </script>
+                                @endforelse
                             </select>
-                        </div>
+                        </fieldset>
                         <div class="d-flex justify-content-end">
                         <button type="submit" class="btn btn-primary">Submit</button>
                         <div>

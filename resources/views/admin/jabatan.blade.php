@@ -41,7 +41,7 @@
                 </tr>
                 @empty
                 <tr>
-                    <td colspan="5">Tidak Ada Jabatan yang Ditemukan</td>
+                    <td colspan="6">Tidak Ada Jabatan yang Ditemukan</td>
                 </tr>
                 @endforelse
             </tbody>

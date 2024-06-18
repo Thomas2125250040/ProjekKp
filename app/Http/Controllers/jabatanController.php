@@ -13,7 +13,7 @@ class JabatanController extends Controller
     public function index()
     {
         $jabatan = Jabatan::latest('nama_jabatan')->get();
-        return view('jabatan', compact('jabatan'));
+        return view('admin.jabatan', compact('jabatan'));
     }
 
     /**
