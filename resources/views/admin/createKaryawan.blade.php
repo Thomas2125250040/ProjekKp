@@ -7,12 +7,12 @@
             <div class="card">
                 <div class="card-body">
                     <form>
-                        <div class="mb-3">
+                        <div class="mb-4">
                             <label for="namaPegawai" class="form-label">Nama Lengkap</label>
                             <input type="text" class="form-control" id="namaPegawai" pattern="[A-Za-z]+"
                                 title="Nama Anda tidak valid">
                         </div>
-                        <div class="mb-3">
+                        <div class="mb-4">
                             <label class="form-label">Jenis kelamin</label>
                             <div class="form-check">
                                 <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault1">
@@ -28,17 +28,21 @@
                                 </label>
                             </div>
                         </div>
-                        <div class="mb-3">
+                        <div class="mb-4">
                             <label for="tglLahir" class="form-label">Tanggal lahir</label>
                             <input type="date" class="form-control" id="tglLahir">
                         </div>
-                        <div class="mb-3">
+                        <div class="mb-5">
                             <label for="disabledSelect" class="form-label">Jabatan</label>
                             <select id="disabledSelect" class="form-select">
-                                <option>Disabled select</option>
+                                @foreach ($jabatan as $row)
+                                    <option>{{ $row->nama_jabatan }}</option>
+                                @endforeach
                             </select>
                         </div>
+                        <div class="d-flex justify-content-end">
                         <button type="submit" class="btn btn-primary">Submit</button>
+                        <div>
                     </form>
                 </div>
             </div>

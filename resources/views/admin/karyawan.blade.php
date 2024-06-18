@@ -4,7 +4,7 @@
     <div class="card-body">
         <div class="d-flex justify-content-between align-items-center mb-4">
             <h5 class="card-title fw-semibold" style="margin-bottom: 0">Data Pegawai</h5>
-            <button type="button" class="btn btn-primary">Add</button>
+            <a href="{{ route('karyawan.create') }}" class="btn btn-primary">Add</a>
         </div>
         <table class="table table-striped">
             <thead>
