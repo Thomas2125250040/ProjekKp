@@ -1,11 +1,7 @@
 <?php
 
 use App\Http\Controllers\jabatanController;
-<<<<<<< Updated upstream
-use App\Http\Controllers\LoginLogoutController;
-=======
 use App\Http\Controllers\LoginRegisterController;
->>>>>>> Stashed changes
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -47,8 +43,5 @@ Route::group(['prefix'=>'jabatan'], function() {
     Route::post('store',[jabatanController::class, 'store'])->name('jabatan.store');
 });
 
-<<<<<<< Updated upstream
-Route::post('/login', [LoginLogoutController::class , 'login']);
-=======
 Route::post('/login', [LoginRegisterController::class , 'login']);
->>>>>>> Stashed changes
+
