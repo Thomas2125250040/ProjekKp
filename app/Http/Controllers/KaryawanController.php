@@ -30,7 +30,6 @@ class KaryawanController extends Controller
 
     public function store(Request $request)
     {
-        // Validate the input data
         $request->validate([
             'kode_karyawan' => 'required|unique:karyawan,kode_karyawan',
             'nama_karyawan' => 'required',
@@ -38,14 +37,13 @@ class KaryawanController extends Controller
             'agama' => 'required',
             'email' => 'required|email|unique:karyawan,email',
             'kode_jabatan' => 'required',
-            'password' => 'required|min:6',
+            'password' => 'required|min:8',
             'tempat_lahir' => 'required',
             'tanggal_lahir' => 'required',
             'alamat' => 'required',
             'nomor_telepon' => 'required',
         ]);
 
-        // Create a new karyawan instance
         $karyawan = new Karyawan([
             'id_karyawan' => (string) \Str::uuid(),
             'kode_karyawan' => $request->kode_karyawan,
@@ -54,20 +52,16 @@ class KaryawanController extends Controller
             'agama' => $request->agama,
             'email' => $request->email,
             'kode_jabatan' => $request->kode_jabatan,
-            'password' => hash::make($request->password), // Ensure you hash the password
+            'password' => hash::make($request->password),
             'tempat_lahir' => $request->tempat_lahir,
             'tanggal_lahir' => $request->tanggal_lahir,
             'alamat' => $request->alamat,
             'nomor_telepon' => $request->nomor_telepon,
         ]);
 
-        // Save the karyawan to the database
         $karyawan->save();
-
-        // Redirect with success message
-        return redirect()->route('karyawan.index')->with('success', 'Data karyawan berhasil ditambahkan.');
+        return redirect()->route('karyawan.index')->with('success', "Biodata " . $request->nama_karyawan . " berhasil ditambahkan.");
     }
-
 
 
     public function edit($id_karyawan)
@@ -108,7 +102,4 @@ class KaryawanController extends Controller
         return redirect('karyawan')->with('success', 'Biodata ' . $karyawan->nama_karyawan . ' berhasil dihapus.');
     }
 
-    public function store() {
-        
-    }
 }

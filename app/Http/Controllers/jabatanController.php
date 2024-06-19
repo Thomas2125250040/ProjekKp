@@ -44,7 +44,6 @@ class JabatanController extends Controller
         ]);
 
         $jabatan->save();
-
         return redirect('jabatan')->with('success', 'Jabatan ' . $jabatan->nama_jabatan . '  berhasil ditambahkan.');
     }
 
@@ -71,7 +70,7 @@ class JabatanController extends Controller
     public function update(Request $request, string $id_jabatan)
     {
         $validasi = $request->validate([
-            "kode_jabatan" => "required",
+            "kode_jabatan" => 'required|unique:jabatan,kode_jabatan',
             "nama_jabatan" => "required",
             "gaji_pokok" => "required",
         ]);

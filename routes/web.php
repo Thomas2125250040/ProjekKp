@@ -14,9 +14,7 @@ Route::get('/login', function () {
     return view('authentication-login');
 });
 
-Route::get('/register', function () {
-    return view('authentication-register');
-});
+Route::post('/login', [LoginController::class , 'login']);
 
 Route::get('/director-dashboard', function () {
     return view('director.index');
@@ -29,6 +27,13 @@ Route::get('/gm-dashboard', function () {
     return view('gm.index');
 });
 
+Route::resource('karyawan', KaryawanController::class);
+Route::resource('jabatan', JabatanController::class);
+
+Route::group(['prefix'=>'absensi'], function(){
+    Route::get('',[AbsensiController::class, 'index'])->name('absensi.index');
+});
+
 
 // Route::get('/karyawan', function () {
 //     return view('pegawai');
@@ -39,9 +44,6 @@ Route::get('/gm-dashboard', function () {
 // });
 //Route::get('/create-karyawan',[KaryawanController::class, 'create']);
 
-Route::resource('karyawan', KaryawanController::class);
-Route::resource('jabatan', JabatanController::class);
-
 // Route::group(['prefix'=>'jabatan'], function() {
 //     Route::get('',[JabatanController::class, 'index'])->name('jabatan.index');
 //     Route::get('create',[JabatanController::class, 'create'])->name('jabatan.create');
@@ -49,8 +51,6 @@ Route::resource('jabatan', JabatanController::class);
 //     Route::post('store',[JabatanController::class, 'store'])->name('jabatan.store');
     
 // });
-
-Route::post('/login', [LoginController::class , 'login']);
 
 //Route::group(['prefix'=>'karyawan'], function() {
     //Route::get('',[KaryawanController::class, 'index'])->name('karyawan.index');
@@ -60,6 +60,3 @@ Route::post('/login', [LoginController::class , 'login']);
     //Route::get('search',[KaryawanController::class, 'search'])->name('karyawan.search');
 //});
 
-Route::group(['prefix'=>'absensi'], function(){
-    Route::get('',[AbsensiController::class, 'index'])->name('absensi.index');
-});
