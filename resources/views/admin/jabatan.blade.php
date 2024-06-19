@@ -13,7 +13,7 @@
                         <i class="ti ti-search"></i>
                     </span>
                 </div>
-                <a href="{{ route('jabatan.create') }}" class="btn btn-primary">Add</a>
+                <a href="{{ route('jabatan.create') }}" class="btn btn-primary">Tambah</a>
             </div>
             @if (Session::get('success'))
                 <div class="alert alert-success">
@@ -53,7 +53,7 @@
                         </tr>
                     @empty
                         <tr>
-                            <td colspan="6">Tidak Ada Jabatan yang Ditemukan</td>
+                            <td colspan="6">Tidak ada data jabatan!</td>
                         </tr>
                     @endforelse
                 </tbody>

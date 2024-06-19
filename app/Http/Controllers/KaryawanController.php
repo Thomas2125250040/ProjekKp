@@ -19,7 +19,8 @@ class KaryawanController extends Controller
     public function index()
     {
         $karyawan = DB::select('select karyawan.id_karyawan, kode_karyawan, nama_karyawan, nama_jabatan, alamat, nomor_telepon from karyawan join jabatan on jabatan.kode_jabatan = karyawan.kode_jabatan');
-        return view("admin.karyawan", ["karyawan" => $karyawan]);
+        $jabatan = DB::select('select * from jabatan');
+        return view("admin.karyawan", ["karyawan" => $karyawan], ["jabatan" => $jabatan]);
     }
 
     public function create()

@@ -73,7 +73,7 @@
                                     @forelse ($jabatan as $row)
                                         <option value="{{ $row->kode_jabatan }}">{{ $row->nama_jabatan }}</option>
                                     @empty
-                                        <option>-- Belum ada data jabatan --</option>
+                                        <option>--Tidak ada data jabatan--</option>
                                         <script>
                                             let fieldset = document.getElementById('fieldset');
                                             fieldset.classList.add('disabled');

@@ -61,7 +61,7 @@ class JabatanController extends Controller
     public function edit(string $id_jabatan)
     {
         $jabatan = Jabatan::find($id_jabatan);
-        return view("admin.editJabatan")->with("jabatan", $jabatan);
+        return view("admin.editJabatan", ["jabatan" => $jabatan]);
     }
 
     /**
@@ -70,7 +70,7 @@ class JabatanController extends Controller
     public function update(Request $request, string $id_jabatan)
     {
         $validasi = $request->validate([
-            "kode_jabatan" => 'required|unique:jabatan,kode_jabatan',
+            "kode_jabatan" => 'required',
             "nama_jabatan" => "required",
             "gaji_pokok" => "required",
         ]);
@@ -90,4 +90,5 @@ class JabatanController extends Controller
         $jabatan->delete();
         return redirect('jabatan')->with("success", "Jabatan " . $jabatan->nama_jabatan . "  berhasil dihapus.");
     }
+
 }

@@ -404,42 +404,4 @@
                 class="pe-1 text-primary text-decoration-underline">AdminMart.com</a> Distributed by <a
                 href="https://themewagon.com">ThemeWagon</a></p>
     </div>
-
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.0/sweetalert.min.js"></script>
-    <script type="text/javascript">
-        $('.hapus_jabatan').click(function(event) {
-                    var form = $(this).closest("form");
-                    var nama = $(this).data("nama");
-                    event.preventDefault();
-                    swal({
-                            title: `Apakah Anda yakin ingin menghapus data Jabatan ${nama} ?`,
-                            text: `Dengan menekan tombol OK, maka data Jabatan ${nama} beserta data Karyawan yang punya Jabatan ${nama} akan hilang selamanya!`,
-                            icon: "warning",
-                            buttons: true,
-                            dangerMode: true,
-                        })
-                        .then((willDelete) => {
-                            if (willDelete) {
-                                form.submit();
-                            }
-                        });
-
-                    $('.hapus_karyawan').click(function(event) {
-                        var form = $(this).closest("form");
-                        var nama = $(this).data("nama");
-                        event.preventDefault();
-                        swal({
-                                title: `Apakah Anda yakin ingin menghapus Biodata ${nama} ?`,
-                                text: `Dengan menekan tombol OK, maka Biodata ${nama} akan hilang selamanya!`,
-                                icon: "warning",
-                                buttons: true,
-                                dangerMode: true,
-                            })
-                            .then((willDelete) => {
-                                if (willDelete) {
-                                    form.submit();
-                                }
-                            });
-                    });
-    </script>
 @endsection

@@ -11,7 +11,6 @@ class Jabatan extends Model
     use HasFactory, HasUuids;
     protected $table = "jabatan";
     protected $primaryKey = 'id_jabatan'; 
-    public $incrementing = false; 
     protected $keyType = 'string'; 
 
     protected $fillable = [

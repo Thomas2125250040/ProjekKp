@@ -27,6 +27,10 @@ Route::get('/gm-dashboard', function () {
     return view('gm.index');
 });
 
+Route::get('/rawr', function () {
+    return view('admin.rawr');
+});
+
 Route::resource('karyawan', KaryawanController::class);
 Route::resource('jabatan', JabatanController::class);
 
@@ -47,9 +51,10 @@ Route::group(['prefix'=>'absensi'], function(){
 // Route::group(['prefix'=>'jabatan'], function() {
 //     Route::get('',[JabatanController::class, 'index'])->name('jabatan.index');
 //     Route::get('create',[JabatanController::class, 'create'])->name('jabatan.create');
-//     Route::get('edit',[JabatanController::class, 'edit'])->name('jabatan.edit');
+//     Route::get('{id_jabatan}/edit', [JabatanController::class, 'edit'])->name('jabatan.edit');
+//     Route::patch('{id_jabatan}', [JabatanController::class, 'update'])->name('jabatan.update');;
 //     Route::post('store',[JabatanController::class, 'store'])->name('jabatan.store');
-    
+//     Route::delete('{id_jabatan}', [JabatanController::class, 'destroy'])->name('jabatan.destroy');
 // });
 
 //Route::group(['prefix'=>'karyawan'], function() {

@@ -3,8 +3,16 @@
     <div class="card">
         <div class="card-body">
             <div class="d-flex justify-content-between align-items-center mb-4">
-                <h5 class="card-title fw-semibold" style="margin-bottom: 0">Data Pegawai</h5>
-                <a href="{{ route('karyawan.create') }}" class="btn btn-primary">Add</a>
+                <h5 class="card-title fw-semibold" style="margin-bottom: 0">Data Karyawan</h5>
+
+                @if (count($jabatan) == 0)
+                    <button class="btn btn-primary" disabled>Tambah</button>
+                    <div class="alert alert-warning">
+                        Tidak ada data jabatan, harap tambahkan data jabatan dahulu!
+                    </div>
+                @else
+                    <a href="{{ route('karyawan.create') }}" class="btn btn-primary">Tambah</a>
+                @endif
             </div>
             @if (Session::get('success'))
                 <div class="alert alert-success">
@@ -23,7 +31,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach ($karyawan as $item)
+                    @forelse ($karyawan as $item)
                         <tr>
                             <td>{{ $item->kode_karyawan }}</td>
                             <td>{{ $item->nama_karyawan }}</td>
@@ -43,7 +51,11 @@
                                 </form>
                             </td>
                         </tr>
-                    @endforeach
+                    @empty
+                        <tr>
+                            <td colspan="6">Tidak ada data Karyawan!</td>
+                        </tr>
+                    @endforelse
                 </tbody>
             </table>
         </div>
