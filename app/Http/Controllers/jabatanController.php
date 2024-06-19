@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Jabatan;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class JabatanController extends Controller
 {
@@ -12,8 +13,8 @@ class JabatanController extends Controller
      */
     public function index()
     {
-        $jabatan = Jabatan::latest('nama_jabatan')->get();
-        return view('admin.jabatan', compact('jabatan'));
+        $jabatan = DB::select('select * from jabatan');
+        return view("admin.jabatan", ["jabatan" => $jabatan]);
     }
 
     /**
@@ -29,14 +30,22 @@ class JabatanController extends Controller
      */
     public function store(Request $request)
     {
-        //
-        $insert = new Jabatan();
-        $insert->nama_jabatan = $request->nama;
-        $insert->gaji_pokok = $request->gajiPokok;
-        $insert->uang_makan = $request->uangMakan;
-        $insert->uang_lembur = $request->uangLembur;
-        $result = $insert->save();
-        return redirect()->route("jabatan.index")->with("Success", "Data jabatan berhasil disimpan.");
+        $request->validate([
+            'kode_jabatan' => 'required|unique:jabatan,kode_jabatan',
+            'nama_jabatan' => 'required',
+            'gaji_pokok' => 'required',
+        ]);
+
+        $jabatan = new Jabatan([
+            'id_jabatan' => (string) \Str::uuid(),
+            'kode_jabatan' => $request->kode_jabatan,
+            'nama_jabatan' => $request->nama_jabatan,
+            'gaji_pokok' => $request->gaji_pokok,
+        ]);
+
+        $jabatan->save();
+
+        return redirect()->route('jabatan.index')->with('success', 'Jabatan ' . $jabatan->nama_jabatan . '  berhasil ditambahkan !');
     }
 
     /**
@@ -66,8 +75,9 @@ class JabatanController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(Jabatan $jabatan)
     {
-        //
+        $jabatan->delete();
+        return redirect('jabatan')->with("success", "Jabatan " . $jabatan->nama_jabatan ."  berhasil dihapus !");
     }
 }

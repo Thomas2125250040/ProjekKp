@@ -3,33 +3,28 @@
 <div class="container-fluid">
     <div class="card">
         <div class="card-body">
-            <h5 class="card-title fw-semibold mb-4">Tambah Data Pegawai</h5>
+            <h5 class="card-title fw-semibold mb-4">Tambah Data Jabatan</h5>
             <div class="card">
                 <div class="card-body">
-                    <form method="POST" action="{{ route('jabatan.store') }}" enctype="multipart/form-data">
+                    <form method="POST" action="{{ route('jabatan.store') }}">
                         @csrf
-                        <div class="mb-3">
-                            <label for="namaPegawai" class="form-label">Nama Jabatan</label>
-                            <input type="text" class="form-control" id="namaPegawai" pattern="[A-Za-z]+"
-                                title="Nama Anda tidak valid" name="nama">
+                        <div class="mb-4">
+                            <label for="kode_jabatan" class="form-label">Kode Jabatan</label>
+                            <input type="text" class="form-control" id="kode_jabatan" name="kode_jabatan" required value="{{ old('kode_jabatan') }}">
                         </div>
-                        <div class="mb-3">
-                            <label for="gajiPokok" class="form-label">Gaji Pokok</label>
-                            <input type="text" class="form-control" id="gajiPokok" pattern="[0-9]+"
-                                title="Gaji Pokok tidak valid" name="gajiPokok">
+
+                        <div class="mb-4">
+                            <label for="nama_jabatan" class="form-label">Nama Jabatan</label>
+                            <input type="text" class="form-control" id="nama_jabatan" name="nama_jabatan" required value="{{ old('nama_jabatan') }}">
                         </div>
-                        <div class="mb-3">
-                            <label for="uangMakan" class="form-label">Uang Makan</label>
-                            <input type="text" class="form-control" id="uangMakan" pattern="[0-9]+"
-                                title="Uang Makan tidak valid." name="uangMakan">
+                
+                        <div class="mb-4">
+                            <label for="gaji_pokok" class="form-label">Gaji Pokok</label>
+                            <input type="text" class="form-control" id="gaji_pokok" name="gaji_pokok" required>
                         </div>
-                        <div class="mb-5">
-                            <label for="uangLembur" class="form-label">Uang Lembur</label>
-                            <input type="text" class="form-control" id="uangLembur" pattern="[0-9]+"
-                                title="Uang Lembur tidak valid." name="uangLembur">
-                        </div>
+
                         <div class="d-flex justify-content-end">
-                            <button type="submit" class="btn btn-primary" id="submitBtn">Submit</button>
+                            <button type="submit" class="btn btn-primary">Submit</button>
                         <div>
                     </form>
                 </div>

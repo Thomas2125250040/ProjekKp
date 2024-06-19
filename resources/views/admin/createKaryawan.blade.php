@@ -3,53 +3,92 @@
 <div class="container-fluid">
     <div class="card">
         <div class="card-body">
-            <h5 class="card-title fw-semibold mb-4">Tambah Data Pegawai</h5>
+            <h5 class="card-title fw-semibold mb-4">Tambah Data Karyawan</h5>
             <div class="card">
                 <div class="card-body">
-                    <form>
+                    <form method="POST" action="{{ route('karyawan.store') }}">
+                        @csrf
                         <div class="mb-4">
-                            <label for="namaPegawai" class="form-label">Nama Lengkap</label>
-                            <input type="text" class="form-control" id="namaPegawai" pattern="[A-Za-z]+"
-                                title="Nama Anda tidak valid">
+                            <label for="kode_karyawan" class="form-label">Kode Karyawan</label>
+                            <input type="text" class="form-control" id="kode_karyawan" name="kode_karyawan" required value="{{ old('kode_karyawan') }}">
                         </div>
+
                         <div class="mb-4">
-                            <label class="form-label">Jenis kelamin</label>
+                            <label for="nama_karyawan" class="form-label">Nama Karyawan</label>
+                            <input type="text" class="form-control" id="nama_karyawan" name="nama_karyawan" required value="{{ old('nama_karyawan') }}">
+                        </div>
+                
+                        <div class="mb-4">
+                            <label class="form-label">Jenis Kelamin</label>
                             <div class="form-check">
-                                <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioLaki-laki" checked>
-                                <label class="form-check-label" for="flexRadioLaki-laki">
-                                    Laki-laki
-                                </label>
+                                <input type="radio" id="laki-laki" name="jenis_kelamin" class="form-check-input" value="Laki-laki" @if(old('jenis_kelamin', 'Laki-laki') == 'Laki-laki') checked @endif>
+                                <label class="form-check-label" for="laki-laki">Laki-laki</label>
                             </div>
                             <div class="form-check">
-                                <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioPerempuan">
-                                <label class="form-check-label" for="flexRadioPerempuan">
-                                    Perempuan
-                                </label>
+                                <input type="radio" id="perempuan" name="jenis_kelamin" class="form-check-input" value="Perempuan" @if(old('jenis_kelamin', 'Perempuan') == 'Perempuan') checked @endif>
+                                <label class="form-check-label" for="perempuan">Perempuan</label>
                             </div>
                         </div>
+
                         <div class="mb-4">
-                            <label for="tglLahir" class="form-label">Tanggal lahir</label>
-                            <input type="date" class="form-control" id="tglLahir">
+                            <label class= "form-label" for="agama">Agama</label>
+                            <select class="form-select" name="agama">
+                                <option value="Islam" @if(old('agama') == 'Islam') selected @endif>Islam</option>
+                                <option value="Katolik" @if(old('agama') == 'Katolik') selected @endif>Katolik</option>
+                                <option value="Kristen" @if(old('agama') == 'Kristen') selected @endif>Kristen</option>
+                                <option value="Hindu" @if(old('agama') == 'Hindu') selected @endif>Hindu</option>
+                                <option value="Buddha" @if(old('agama') == 'Buddha') selected @endif>Buddha</option>
+                                <option value="Konghucu" @if(old('agama') == 'Konghucu') selected @endif>Konghucu</option>
+                            </select>
                         </div>
-                        <fieldset id="fieldset">
-                            <label for="disabledSelect" class="form-label">Jabatan</label>
-                            <select id="disabledSelect" class="form-select">
+
+                        <div class="mb-4">
+                            <label for="email" class="form-label">Email</label>
+                            <input type="email" class="form-control" id="email" name="email" required value="{{ old('email') }}">
+                        </div>
+
+                        <div class="mb-4" id="fieldset">
+                            <label for="kode_jabatan" class="form-label">Jabatan</label>
+                            <select id="kode_jabatan" name="kode_jabatan" class="form-select">
                                 @forelse ($jabatan as $row)
-                                    <option>{{ $row->nama_jabatan }}</option>
+                                <option value="{{ $row->kode_jabatan }}">{{ $row->nama_jabatan }}</option>
                                 @empty
                                     <option>-- Belum ada data jabatan --</option>
+                                    <script>
+                                        let fieldset = document.getElementById('fieldset');
+                                        fieldset.classList.add('disabled');
+                                    </script>
                                 @endforelse
                             </select>
-                        </fieldset>
-                        @if($jabatan->isEmpty())
-                            <div id="error-message" class="text-danger fs-2 mb-5"><i class="ti ti-x"></i> Data jabatan tidak tersedia. Silakan tambahkan data jabatan terlebih dahulu.</div>
-                        @else
-                            <script>
-                                document.getElementById('fieldset').classList.add("mb-5");
-                            </script>
-                        @endif
+                        </div>
+                      
+                        <div class="mb-4">
+                            <label for="password" class="form-label">Password</label>
+                            <input type="password" class="form-control" id="password" name="password" required value="{{ old('password') }}">
+                        </div>
+
+                        <div class="mb-4">
+                            <label for="tempat_lahir" class="form-label">Tempat Lahir</label>
+                            <input type="text" class="form-control" id="tempat_lahir" name="tempat_lahir" required value="{{ old('tempat_lahir') }}">
+                        </div>
+
+                        <div class="mb-4">
+                            <label for="tanggal_lahir" class="form-label">Tanggal Lahir</label>
+                            <input type="date" class="form-control" id="tanggal_lahir" name="tanggal_lahir" required value="{{ old('tanggal_lahir') }}">
+                        </div>
+
+                        <div class="mb-4">
+                            <label for="alamat" class="form-label">Alamat</label>
+                            <input type="text" class="form-control" id="alamat" name="alamat" required value="{{ old('alamat') }}">
+                        </div>
+
+                        <div class="mb-4">
+                            <label for="nomor_telepon" class="form-label">Nomor Telepon</label>
+                            <input type="text" class="form-control" id="nomor_telepon" name="nomor_telepon" required value="{{ old('nomor_telepon') }}">
+                        </div>
+
                         <div class="d-flex justify-content-end">
-                            <button type="submit" class="btn btn-primary" id="submitBtn">Submit</button>
+                        <button type="submit" class="btn btn-primary">Submit</button>
                         <div>
                     </form>
                 </div>
@@ -57,14 +96,4 @@
         </div>
     </div>
 </div>
-<script>
-    document.addEventListener('DOMContentLoaded', (event) => {
-        console.log("Script executed");
-        @if($jabatan->isEmpty())
-            console.log("Jabatan empty");
-            document.getElementById('fieldset').setAttribute('disabled', '');
-            document.getElementById('submitBtn').setAttribute('disabled', '');
-        @endif
-    });
-</script>
 @endsection
