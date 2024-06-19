@@ -6,6 +6,11 @@
             <h5 class="card-title fw-semibold" style="margin-bottom: 0">Data Pegawai</h5>
             <a href="{{ route('karyawan.create') }}" class="btn btn-primary">Add</a>
         </div>
+        @if (session('Success'))
+        <div class="alert alert-success">
+            {{ session('Success') }}
+        </div>
+        @endif
         <table class="table table-striped">
             <thead>
                 <tr>

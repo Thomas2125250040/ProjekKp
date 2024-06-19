@@ -31,12 +31,12 @@ class JabatanController extends Controller
     {
         //
         $insert = new Jabatan();
-        $insert->nama = $request->nama;
+        $insert->nama_jabatan = $request->nama;
         $insert->gaji_pokok = $request->gajiPokok;
         $insert->uang_makan = $request->uangMakan;
         $insert->uang_lembur = $request->uangLembur;
         $result = $insert->save();
-        dd($result);
+        return redirect()->route("jabatan.index")->with("Success", "Data jabatan berhasil disimpan.");
     }
 
     /**
