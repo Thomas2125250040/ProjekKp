@@ -32,22 +32,21 @@
                             <label for="tglLahir" class="form-label">Tanggal lahir</label>
                             <input type="date" class="form-control" id="tglLahir">
                         </div>
-                        <fieldset class="mb-5" id="fielset">
+                        <fieldset id="fieldset">
                             <label for="disabledSelect" class="form-label">Jabatan</label>
                             <select id="disabledSelect" class="form-select">
                                 @forelse ($jabatan as $row)
                                     <option>{{ $row->nama_jabatan }}</option>
                                 @empty
                                     <option>-- Belum ada data jabatan --</option>
-                                    <script>
-                                        let fieldset = document.getElementById('fieldset');
-                                        fieldset.classList.add('disabled');
-                                    </script>
                                 @endforelse
                             </select>
                         </fieldset>
+                        @if($jabatan->isEmpty())
+                            <div id="error-message" class="text-danger fs-2 mb-5"><i class="ti ti-x"></i> Data jabatan tidak tersedia. Silakan tambahkan data jabatan terlebih dahulu.</div>
+                        @endif
                         <div class="d-flex justify-content-end">
-                        <button type="submit" class="btn btn-primary">Submit</button>
+                        <button type="submit" class="btn btn-primary" id="submitBtn">Submit</button>
                         <div>
                     </form>
                 </div>
@@ -55,4 +54,14 @@
         </div>
     </div>
 </div>
+<script>
+    document.addEventListener('DOMContentLoaded', (event) => {
+        console.log("Script executed");
+        @if($jabatan->isEmpty())
+            console.log("Jabatan empty");
+            document.getElementById('fieldset').setAttribute('disabled', '');
+            document.getElementById('submitBtn').setAttribute('disabled', '');
+        @endif
+    });
+</script>
 @endsection
