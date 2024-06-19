@@ -23,12 +23,14 @@
                             <input type="text" class="form-control" id="uangMakan" pattern="[0-9]+"
                                 title="Uang Makan tidak valid." name="uangMakan">
                         </div>
-                        <div class="mb-3">
+                        <div class="mb-5">
                             <label for="uangLembur" class="form-label">Uang Lembur</label>
                             <input type="text" class="form-control" id="uangLembur" pattern="[0-9]+"
                                 title="Uang Lembur tidak valid." name="uangLembur">
                         </div>
-                        <button type="submit" class="btn btn-primary">Submit</button>
+                        <div class="d-flex justify-content-end">
+                            <button type="submit" class="btn btn-primary" id="submitBtn">Submit</button>
+                        <div>
                     </form>
                 </div>
             </div>

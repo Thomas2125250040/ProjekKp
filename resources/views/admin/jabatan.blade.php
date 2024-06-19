@@ -12,7 +12,7 @@
                     <i class="ti ti-search"></i>
                 </span>
             </div>
-            <button type="button" class="btn btn-primary">Add</button>
+            <a href="{{ route("jabatan.create") }}" class="btn btn-primary">Tambah</a>
         </div>
         <table class="table table-striped">
             <thead>

@@ -49,7 +49,7 @@
                             </script>
                         @endif
                         <div class="d-flex justify-content-end">
-                        <button type="submit" class="btn btn-primary" id="submitBtn">Submit</button>
+                            <button type="submit" class="btn btn-primary" id="submitBtn">Submit</button>
                         <div>
                     </form>
                 </div>
