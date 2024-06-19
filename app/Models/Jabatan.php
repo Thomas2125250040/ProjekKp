@@ -10,6 +10,9 @@ class Jabatan extends Model
 {
     use HasFactory, HasUuids;
     protected $table = "jabatan";
+    protected $primaryKey = 'id_jabatan'; // Set the primary key to id_karyawan
+    public $incrementing = false; // Disable auto-incrementing
+    protected $keyType = 'string'; // Specify the key type
 
     protected $fillable = [
         "kode_jabatan",

@@ -10,6 +10,9 @@ class Karyawan extends Model
 {
     use HasFactory, HasUuids;
     protected $table = "karyawan";
+    protected $primaryKey = 'id_karyawan'; // Set the primary key to id_karyawan
+    public $incrementing = false; // Disable auto-incrementing
+    protected $keyType = 'string'; // Specify the key type
 
     protected $fillable = [
         "kode_karyawan",

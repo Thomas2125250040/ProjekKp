@@ -1,48 +1,52 @@
 @extends('layouts.main')
 @section('content')
-<div class="card">
-    <div class="card-body">
-        <div class="d-flex justify-content-between align-items-center mb-4">
-            <h5 class="card-title fw-semibold" style="margin-bottom: 0">Data Pegawai</h5>
-            <a href="{{ route('karyawan.create') }}" class="btn btn-primary">Add</a>
+    <div class="card">
+        <div class="card-body">
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <h5 class="card-title fw-semibold" style="margin-bottom: 0">Data Pegawai</h5>
+                <a href="{{ route('karyawan.create') }}" class="btn btn-primary">Add</a>
+            </div>
+            @if (Session::get('success'))
+                <div class="alert alert-success">
+                    {{ Session::get('success') }}
+                </div>
+            @endif
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th scope="col">Kode</th>
+                        <th scope="col">Nama</th>
+                        <th scope="col">Jabatan</th>
+                        <th scope="col">Alamat</th>
+                        <th scope="col">No. Telepon</th>
+                        <th scope="col">Aksi</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach ($karyawan as $item)
+                        <tr>
+                            <td>{{ $item->kode_karyawan }}</td>
+                            <td>{{ $item->nama_karyawan }}</td>
+                            <td>{{ $item->nama_jabatan }}</td>
+                            <td>{{ $item->alamat }}</td>
+                            <td>{{ $item->nomor_telepon }}</td>
+                            <td>
+                                {{-- <form method="POST" action="{{ route('karyawan.destroy', $item->id) }}">
+                                    @csrf
+                                    <input name="_method" type="hidden" value="DELETE">
+                                    <button type="submit" class="btn btn-xs btn-danger btn-rounded hapus_karyawan"
+                                        data-toggle="tooltip" title='Delete'
+                                        data-nama='{{ $item->nama_karyawan }}'>Hapus</button>
+                                    <a href="{{ route('karyawan.edit', $item->id) }}"
+                                        class="btn btn-xs btn-primary btn-rounded">Ubah</a>
+                                    <a href="{{ route('karyawan.show', $item->id) }}"
+                                        class="btn btn-xs btn-warning btn-rounded">Detail</a>
+                                </form> --}}
+                            </td>
+                        </tr>
+                    @endforeach
+                </tbody>
+            </table>
         </div>
-        <table class="table table-striped">
-            <thead>
-                <tr>
-                    <th scope="col">#</th>
-                    <th scope="col">Nama</th>
-                    <th scope="col">Umur</th>
-                    <th scope="col">Jabatan</th>
-                    <th scope="col">Lama Bekerja</th>
-                    <th scope="col">Gaji Pokok</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <th scope="row">1</th>
-                    <td>Mark</td>
-                    <td>Otto</td>
-                    <td>@mdo</td>
-                    <td>@fat</td>
-                    <td>@fat</td>
-                </tr>
-                <tr>
-                    <th scope="row">2</th>
-                    <td>Jacob</td>
-                    <td>Thornton</td>
-                    <td>@fat</td>
-                    <td>@fat</td>
-                    <td>@fat</td>
-                </tr>
-                <tr>
-                    <th scope="row">3</th>
-                    <td colspan="2">Larry the Bird</td>
-                    <td>@twitter</td>
-                    <td>@fat</td>
-                    <td>@fat</td>
-                </tr>
-            </tbody>
-        </table>
     </div>
-</div>
 @endsection

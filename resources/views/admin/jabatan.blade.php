@@ -12,37 +12,52 @@
                     <i class="ti ti-search"></i>
                 </span>
             </div>
-            <button type="button" class="btn btn-primary">Add</button>
+            <a href="{{ route('jabatan.create') }}" class="btn btn-primary">Add</a>
         </div>
+        @if (Session::get('success'))
+                <div class="alert alert-success">
+                    {{ Session::get('success') }}
+                </div>
+            @endif
         <table class="table table-striped">
             <thead>
                 <tr>
-                    <th scope="col">#</th>
+                    <th scope="col">Kode Jabatan</th>
                     <th scope="col">Nama Jabatan</th>
                     <th scope="col">Gaji Pokok</th>
-                    <th scope="col">Uang Makan</th>
-                    <th scope="col">Uang Lembur</th>
+                    {{-- <th scope="col">Uang Makan</th>
+                    <th scope="col">Uang Lembur</th> --}}
                     <th scope="col">Aksi</th>
                 </tr>
             </thead>
             <tbody>
-                <?php $no=1 ?>
                 @forelse ($jabatan as $item => $row)
                 <tr>
-                    <td class="align-middle">{{ $no++ }}</td>
-                    <td class="align-middle">{{ $row->nama }}</td>
+                    <td class="align-middle">{{ $row->kode_jabatan }}</td>
+                    <td class="align-middle">{{ $row->nama_jabatan }}</td>
                     <td class="align-middle">{{ $row->gaji_pokok }}</td>
-                    <td class="align-middle">{{ $row->uang_makan }}</td>
-                    <td class="align-middle">{{ $row->uang_lembur }}</td>
+                    {{-- <td class="align-middle">{{ $row->uang_makan }}</td>
+                    <td class="align-middle">{{ $row->uang_lembur }}</td> --}}
+
                     <td>
-                        <a class="btn btn-primary fs-1">Edit</a>
-                        <a class="btn btn-danger fs-1">Hapus</a>
+                        <form method="POST" action="{{ route('jabatan.destroy', $row->id_jabatan) }}">
+                            @csrf
+                            <input name="_method" type="hidden" value="DELETE">
+                            <button type="submit"
+                                class="btn btn-danger fs-1 hapus_jabatan"
+                                data-toggle="tooltip" title='Delete'
+                                data-nama='{{ $row->nama_jabatan }}'>Hapus</button>
+                            <a href="{{ route('jabatan.edit', $row->id_jabatan) }}"
+                                class="btn btn-primary fs-1">Ubah</a>
+                        </form>
                     </td>
                 </tr>
                 @empty
                 <tr>
                     <td colspan="6">Tidak Ada Jabatan yang Ditemukan</td>
                 </tr>
+
+                
                 @endforelse
             </tbody>
         </table>
