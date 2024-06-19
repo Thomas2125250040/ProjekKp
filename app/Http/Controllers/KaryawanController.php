@@ -22,4 +22,8 @@ class KaryawanController extends Controller
         $jabatan = Jabatan::get();
         return view('admin.createKaryawan', compact('jabatan'));
     }
+
+    public function store() {
+        
+    }
 }

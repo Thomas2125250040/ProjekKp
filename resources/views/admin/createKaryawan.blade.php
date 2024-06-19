@@ -15,15 +15,14 @@
                         <div class="mb-4">
                             <label class="form-label">Jenis kelamin</label>
                             <div class="form-check">
-                                <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault1">
-                                <label class="form-check-label" for="flexRadioDefault1">
+                                <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioLaki-laki" checked>
+                                <label class="form-check-label" for="flexRadioLaki-laki">
                                     Laki-laki
                                 </label>
                             </div>
                             <div class="form-check">
-                                <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault2"
-                                    checked>
-                                <label class="form-check-label" for="flexRadioDefault2">
+                                <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioPerempuan">
+                                <label class="form-check-label" for="flexRadioPerempuan">
                                     Perempuan
                                 </label>
                             </div>
@@ -44,6 +43,10 @@
                         </fieldset>
                         @if($jabatan->isEmpty())
                             <div id="error-message" class="text-danger fs-2 mb-5"><i class="ti ti-x"></i> Data jabatan tidak tersedia. Silakan tambahkan data jabatan terlebih dahulu.</div>
+                        @else
+                            <script>
+                                document.getElementById('fieldset').classList.add("mb-5");
+                            </script>
                         @endif
                         <div class="d-flex justify-content-end">
                         <button type="submit" class="btn btn-primary" id="submitBtn">Submit</button>
