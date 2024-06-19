@@ -11,6 +11,9 @@
                         <div class="mb-4">
                             <label for="kode_jabatan" class="form-label">Kode Jabatan</label>
                             <input type="text" class="form-control" id="kode_jabatan" name="kode_jabatan" required value="{{ old('kode_jabatan') }}">
+                            @error('kode_jabatan')
+                            <label for="kode" class="text-danger">Kode Jabatan sudah terdaftar. Silahkan ganti yang lain !</label>
+                        @enderror
                         </div>
 
                         <div class="mb-4">
@@ -21,6 +24,9 @@
                         <div class="mb-4">
                             <label for="gaji_pokok" class="form-label">Gaji Pokok</label>
                             <input type="text" class="form-control" id="gaji_pokok" name="gaji_pokok" required>
+                            @error('gaji_pokok')
+                            <label for="kode" class="text-danger">Input gaji pokok berupa angka</label>
+                        @enderror
                         </div>
 
                         <div class="d-flex justify-content-end">

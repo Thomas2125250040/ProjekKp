@@ -21,6 +21,8 @@ class Karyawan extends Model
         "email",
         "password",
         "jenis_kelamin",
+        "tempat_lahir",
+        "tanggal_lahir",
         "alamat",
         "agama",
         "nomor_telepon"

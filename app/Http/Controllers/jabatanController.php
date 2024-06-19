@@ -45,7 +45,7 @@ class JabatanController extends Controller
 
         $jabatan->save();
 
-        return redirect()->route('jabatan.index')->with('success', 'Jabatan ' . $jabatan->nama_jabatan . '  berhasil ditambahkan !');
+        return redirect('jabatan')->with('success', 'Jabatan ' . $jabatan->nama_jabatan . '  berhasil ditambahkan.');
     }
 
     /**
@@ -59,17 +59,28 @@ class JabatanController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
+    public function edit(string $id_jabatan)
     {
-        //
+        $jabatan = Jabatan::find($id_jabatan);
+        return view("admin.editJabatan")->with("jabatan", $jabatan);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(Request $request, string $id_jabatan)
     {
-        //
+        $validasi = $request->validate([
+            "kode_jabatan" => "required",
+            "nama_jabatan" => "required",
+            "gaji_pokok" => "required",
+        ]);
+
+        $jabatanSebelum = Jabatan::find($id_jabatan);
+        $namaJabatanSebelum = $jabatanSebelum->nama_jabatan;
+
+        Jabatan::find($id_jabatan)->update($validasi);
+        return redirect("jabatan")->with("success", "Jabatan $namaJabatanSebelum berhasil diperbarui.");
     }
 
     /**
@@ -78,6 +89,6 @@ class JabatanController extends Controller
     public function destroy(Jabatan $jabatan)
     {
         $jabatan->delete();
-        return redirect('jabatan')->with("success", "Jabatan " . $jabatan->nama_jabatan ."  berhasil dihapus !");
+        return redirect('jabatan')->with("success", "Jabatan " . $jabatan->nama_jabatan . "  berhasil dihapus.");
     }
 }

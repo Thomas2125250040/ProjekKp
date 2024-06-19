@@ -31,17 +31,18 @@
                             <td>{{ $item->alamat }}</td>
                             <td>{{ $item->nomor_telepon }}</td>
                             <td>
-                                {{-- <form method="POST" action="{{ route('karyawan.destroy', $item->id) }}">
+                                <form method="POST" action="{{ route('karyawan.destroy', $item->id_karyawan) }}">
                                     @csrf
                                     <input name="_method" type="hidden" value="DELETE">
-                                    <button type="submit" class="btn btn-xs btn-danger btn-rounded hapus_karyawan"
+                                    <button type="submit"
+                                        class="btn btn-danger fs-1 hapus_karyawan"
                                         data-toggle="tooltip" title='Delete'
                                         data-nama='{{ $item->nama_karyawan }}'>Hapus</button>
-                                    <a href="{{ route('karyawan.edit', $item->id) }}"
-                                        class="btn btn-xs btn-primary btn-rounded">Ubah</a>
-                                    <a href="{{ route('karyawan.show', $item->id) }}"
-                                        class="btn btn-xs btn-warning btn-rounded">Detail</a>
-                                </form> --}}
+                                    <a href="{{ route('karyawan.edit', $item->id_karyawan) }}"
+                                        class="btn btn-primary fs-1">Ubah</a>
+                                        <a href="{{ route('karyawan.show', $item->id_karyawan) }}"
+                                            class="btn btn-warning fs-1 ">Detail</a>
+                                </form>
                             </td>
                         </tr>
                     @endforeach

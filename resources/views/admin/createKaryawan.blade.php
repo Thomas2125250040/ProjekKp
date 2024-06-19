@@ -11,11 +11,17 @@
                         <div class="mb-4">
                             <label for="kode_karyawan" class="form-label">Kode Karyawan</label>
                             <input type="text" class="form-control" id="kode_karyawan" name="kode_karyawan" required value="{{ old('kode_karyawan') }}">
+                            @error('kode_karyawan')
+                            <label for="kode" class="text-danger">Kode karyawan sudah terdaftar. Silahkan ganti yang lain !</label>
+                        @enderror
                         </div>
 
                         <div class="mb-4">
                             <label for="nama_karyawan" class="form-label">Nama Karyawan</label>
                             <input type="text" class="form-control" id="nama_karyawan" name="nama_karyawan" required value="{{ old('nama_karyawan') }}">
+                            @error('nama_karyawan')
+                            <label for="kode" class="text-danger">Kode karyawan sudah terdaftar. Silahkan ganti yang lain !</label>
+                        @enderror
                         </div>
                 
                         <div class="mb-4">
@@ -45,6 +51,9 @@
                         <div class="mb-4">
                             <label for="email" class="form-label">Email</label>
                             <input type="email" class="form-control" id="email" name="email" required value="{{ old('email') }}">
+                            @error('email')
+                            <label for="kode" class="text-danger">Email sudah terdaftar. Silahkan ganti yang lain !</label>
+                        @enderror
                         </div>
 
                         <div class="mb-4" id="fieldset">
@@ -65,26 +74,41 @@
                         <div class="mb-4">
                             <label for="password" class="form-label">Password</label>
                             <input type="password" class="form-control" id="password" name="password" required value="{{ old('password') }}">
+                            @error('password')
+                            <label for="kode" class="text-danger">Kode karyawan sudah terdaftar. Silahkan ganti yang lain !</label>
+                        @enderror
                         </div>
 
                         <div class="mb-4">
                             <label for="tempat_lahir" class="form-label">Tempat Lahir</label>
                             <input type="text" class="form-control" id="tempat_lahir" name="tempat_lahir" required value="{{ old('tempat_lahir') }}">
+                            @error('tempat_lahir')
+                            <label for="kode" class="text-danger">Kode karyawan sudah terdaftar. Silahkan ganti yang lain !</label>
+                        @enderror
                         </div>
 
                         <div class="mb-4">
                             <label for="tanggal_lahir" class="form-label">Tanggal Lahir</label>
                             <input type="date" class="form-control" id="tanggal_lahir" name="tanggal_lahir" required value="{{ old('tanggal_lahir') }}">
+                            @error('tanggal_lahir')
+                            <label for="kode" class="text-danger">Kode karyawan sudah terdaftar. Silahkan ganti yang lain !</label>
+                        @enderror
                         </div>
 
                         <div class="mb-4">
                             <label for="alamat" class="form-label">Alamat</label>
                             <input type="text" class="form-control" id="alamat" name="alamat" required value="{{ old('alamat') }}">
+                            @error('alamat')
+                            <label for="kode" class="text-danger">Kode karyawan sudah terdaftar. Silahkan ganti yang lain !</label>
+                        @enderror
                         </div>
 
                         <div class="mb-4">
                             <label for="nomor_telepon" class="form-label">Nomor Telepon</label>
                             <input type="text" class="form-control" id="nomor_telepon" name="nomor_telepon" required value="{{ old('nomor_telepon') }}">
+                            @error('nomor_telepon')
+                            <label for="kode" class="text-danger">Kode karyawan sudah terdaftar. Silahkan ganti yang lain !</label>
+                        @enderror
                         </div>
 
                         <div class="d-flex justify-content-end">
