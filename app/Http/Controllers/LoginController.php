@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Hash;
 
-class LoginRegisterController extends Controller
+class LoginController extends Controller
 {
     /**
      * Display a listing of the resource.

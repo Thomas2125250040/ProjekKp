@@ -3,7 +3,7 @@
 use App\Http\Controllers\AbsensiController;
 use App\Http\Controllers\KaryawanController;
 use App\Http\Controllers\JabatanController;
-use App\Http\Controllers\LoginRegisterController;
+use App\Http\Controllers\LoginController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -40,7 +40,7 @@ Route::get('/gm-dashboard', function () {
 //Route::get('/create-karyawan',[KaryawanController::class, 'create']);
 
 Route::resource('karyawan', KaryawanController::class);
-Route::resource('jabatan',JabatanController::class);
+Route::resource('jabatan', JabatanController::class);
 
 // Route::group(['prefix'=>'jabatan'], function() {
 //     Route::get('',[JabatanController::class, 'index'])->name('jabatan.index');
@@ -50,7 +50,7 @@ Route::resource('jabatan',JabatanController::class);
     
 // });
 
-Route::post('/login', [LoginRegisterController::class , 'login']);
+Route::post('/login', [LoginController::class , 'login']);
 
 //Route::group(['prefix'=>'karyawan'], function() {
     //Route::get('',[KaryawanController::class, 'index'])->name('karyawan.index');
