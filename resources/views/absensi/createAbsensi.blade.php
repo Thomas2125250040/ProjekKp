@@ -16,7 +16,32 @@
 <script>
     $(document).ready(function() {
         setInterval(timestamp, 1000);
+        readData();
+            $("#input").keyup(function () {
+                var strcari = $("#input").val();
+                if(strcari != ""){
+                    $("#read").html('<p class="text-muted"> Menunggu Mencari Data..</p>');
+                    $.ajax({
+                        type: "get",
+                        url : "{{ url('search-karyawan') }}",
+                        data: "name=" + strcari,
+                        success: function(data){
+                            $("#read").html(data);
+
+                        }
+
+                    });
+                } else {
+                    readData();
+                }
+            })
     });
+
+    function readData(){
+        $.get("{{ url('read') }}", {}, function (data, status){
+            $("#read").html(data);
+        });
+    }
 
     function timestamp() {
         $.ajax({

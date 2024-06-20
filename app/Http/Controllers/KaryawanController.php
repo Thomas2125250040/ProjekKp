@@ -13,7 +13,10 @@ class KaryawanController extends Controller
     public function search()
     {
         $filter = request()->query();
-        return Karyawan::where('nama_karyawan', 'like', "%{$filter['q']}%")->get();
+        $results = Karyawan::where('nama_karyawan', 'like', "%{$filter['q']}%")->get();
+        return view('absensi.search-nama-karyawan')->with([
+            "data"=>$results
+        ]);
     }
 
     public function index()
