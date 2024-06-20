@@ -35,7 +35,7 @@
                     $.ajax({
                         type: "get",
                         url : "{{ url('search-karyawan') }}",
-                        data: "name=" + strcari,
+                        data: "q=" + strcari,
                         success: function(data){
                             $("#read").html(data);
                         }
