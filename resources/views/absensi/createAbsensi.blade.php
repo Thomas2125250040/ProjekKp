@@ -16,12 +16,23 @@
                     <input type="search" class="form-control rounded" placeholder="Search" aria-label="Search"
                             aria-describedby="search-addon" id="input" style="width: 60%;"/>
                 </div>
-                <div id="read">
+                <div class="d-flex justify-content-center">
+                    <ul id="read">
+                    </ul>
                 </div>
             </div>
             
         </div>
     </div>
+<style>
+    li .search-result {
+        list-style: none;
+    }
+    #read {
+        width: 60%;
+        border-top: 1px solid;
+    }
+</style>
 @endsection
 @section('extra_scripts')
 <script>
