@@ -14,9 +14,15 @@ class KaryawanController extends Controller
     {
         $filter = request()->query();
         $results = Karyawan::where('nama_karyawan', 'like', "%{$filter['q']}%")->get();
-        return view('absensi.search-nama-karyawan')->with([
-            "data"=>$results
-        ]);
+        $c = count($results);
+        if ($c >= 1){
+            return view('absensi.search-nama-karyawan')->with([
+                "data"=>$results
+            ]);
+        } else {
+            return "--Nama karyawan tidak ditemukan--";
+        }
+        
     }
 
     public function index()
