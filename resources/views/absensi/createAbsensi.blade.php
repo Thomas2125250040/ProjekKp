@@ -3,14 +3,15 @@
 <div class="card">
     <div class="card-body">
         <div class="d-flex align-items-baseline mb-3">
-            <div class="card-title fw-semibold flex-grow-1">Tambah_absensi</div>
+            <div class="card-title fw-semibold flex-grow-1">Absen Masuk</div>
             <div class="card-title fs-3">
                 <div id="timestamp"></div>
             </div>
         </div>
         <div class="text-center mb-3"><?php
                 echo strftime('%A,');
-                echo date(' d-M-Y');?></div>
+                echo date(' d-M-Y');?>
+        </div>
         <div class="row text-center">
             <div class="d-flex justify-content-center">
                 <input type="search" class="form-control rounded" placeholder="Search" aria-label="Search"
@@ -21,36 +22,22 @@
             </div>
         </div>
         <div class="d-flex justify-content-center mt-3">
-            <table class="table table-striped mt-3" style="width: 90%">
+            <table class="table table-striped mt-4" style="width: 90%">
+                <?php $no=1; ?>
                 <thead>
                     <tr>
                         <th scope="col">#</th>
-                        <th scope="col">First</th>
-                        <th scope="col">Last</th>
-                        <th scope="col">Handle</th>
+                        <th scope="col">Nama</th>
+                        <th scope="col">Waktu Masuk</th>
+                        <th scope="col">Aksi</th>
                     </tr>
                 </thead>
                 <tbody>
-                    <tr>
-                        <th scope="row">1</th>
-                        <td>Mark</td>
-                        <td>Otto</td>
-                        <td>@mdo</td>
-                    </tr>
-                    <tr>
-                        <th scope="row">2</th>
-                        <td>Jacob</td>
-                        <td>Thornton</td>
-                        <td>@fat</td>
-                    </tr>
-                    <tr>
-                        <th scope="row">3</th>
-                        <td>Larry</td>
-                        <td>the Bird</td>
-                        <td>@twitter</td>
-                    </tr>
                 </tbody>
             </table>
+        </div>
+        <div class="d-flex justify-content-end mt-4">
+            <button class="btn btn-primary">Tambah</button>
         </div>
     </div>
 </div>
@@ -81,6 +68,9 @@
         color: white;
     }
 
+    .ti.ti-circle-x:hover {
+        color: rgb(250, 137, 107);
+    }
 </style>
 @endsection
 @section('extra_scripts')
@@ -114,6 +104,32 @@
                 $('#timestamp').html(data);
             },
         });
+    }
+
+    function addToTable(element) {
+        console.log("clicked");
+        const tbody = document.querySelector("table tbody");
+        var newRow = document.createElement("tr");
+        var rowNumber = tbody.rows.length + 1;
+        const time = $('#timestamp');
+        newRow.innerHTML = "<td scope='row'>" + rowNumber + "</td>"
+        + "<td>" + element.innerHTML + "</td>"
+        + "<td>" + $('#timestamp').text() +"</td>"
+        + "<td><i class=\"ti ti-circle-x fs-6\" onclick=\"delRow(this)\"></i></td>";
+        tbody.appendChild(newRow);
+    }
+
+    function delRow(element) {
+        const row = element.closest('tr');
+        row.remove();
+        updateRowNumbers();
+    }
+
+    function updateRowNumbers() {
+        const tbody = document.querySelector("table tbody");
+        for (let i = 0; i < tbody.rows.length; i++) {
+            tbody.rows[i].cells[0].textContent = i + 1;
+        }
     }
 
 </script>
