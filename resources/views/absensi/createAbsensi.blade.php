@@ -4,11 +4,13 @@
         <div class="card-body">
             <div class="d-flex align-items-baseline mb-3">
                 <div class="card-title fw-semibold flex-grow-1">Tambah_absensi</div>
-                <div>
+                <div class="card-title fs-3">
                     <div id="timestamp"></div>
                 </div>
             </div>
-            <div class="text-center"><?php echo date('d-m-Y')?></div>
+            <div class="text-center mb-3"><?php
+                echo strftime('%A,');
+                echo date(' d-M-Y');?></div>
             <div class="row text-center">
                 <div class="d-flex justify-content-center">
                     <input type="search" class="form-control rounded" placeholder="Search" aria-label="Search"
@@ -36,9 +38,7 @@
                         data: "name=" + strcari,
                         success: function(data){
                             $("#read").html(data);
-
                         }
-
                     });
                 } else {
                     readData();
