@@ -27,7 +27,7 @@
                             <div class="mb-4">
                                 <label for="gaji_pokok" class="form-label">Gaji Pokok</label>
                                 <input type="text" class="form-control" id="gaji_pokok" name="gaji_pokok" required
-                                value="{{ old('gaji_pokok') }}">>
+                                value="{{ old('gaji_pokok') }}">
                             </div>
 
                             <div class="d-flex justify-content-end">

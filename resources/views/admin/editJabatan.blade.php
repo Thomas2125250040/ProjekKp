@@ -24,14 +24,12 @@
                             <div class="mb-4">
                                 <label for="gaji_pokok" class="form-label">Gaji Pokok</label>
                                 <input type="text" class="form-control" id="gaji_pokok" name="gaji_pokok" required
-                                value="{{ $jabatan->gaji_pokok }}">
+                                    value="{{ $jabatan->gaji_pokok }}">
                             </div>
 
                             <div class="d-flex justify-content-end">
                                 <button type="submit" class="btn btn-primary">Submit</button>
                             </div>
-
-                            
                         </form>
                     </div>
                 </div>

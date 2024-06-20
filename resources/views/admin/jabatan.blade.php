@@ -5,13 +5,13 @@
             <div class="d-flex justify-content-between align-items-center mb-4">
                 <div class="input-group rounded w-50">
                     <div class="d-flex align-items-center">
-                        <h5 class="card-title fw-semibold" style="margin-bottom: 0">Daftar Jabatan</h5>
+                        <h5 class="card-title fw-semibold" style="margin-bottom: 0">Data Jabatan</h5>
                     </div>
-                    <input type="search" class="form-control rounded ms-3" placeholder="Search" aria-label="Search"
-                        aria-describedby="search-addon" />
-                    <span class="input-group-text border-0" id="search-addon">
+                    {{-- <input type="search" class="form-control rounded ms-3" placeholder="Search" aria-label="Search"
+                        aria-describedby="search-addon" /> --}}
+                    {{-- <span class="input-group-text border-0" id="search-addon">
                         <i class="ti ti-search"></i>
-                    </span>
+                    </span> --}}
                 </div>
                 <a href="{{ route('jabatan.create') }}" class="btn btn-primary">Tambah</a>
             </div>
@@ -26,8 +26,8 @@
                         <th scope="col">Kode Jabatan</th>
                         <th scope="col">Nama Jabatan</th>
                         <th scope="col">Gaji Pokok</th>
-                        {{-- <th scope="col">Uang Makan</th>
-                    <th scope="col">Uang Lembur</th> --}}
+                        <th scope="col">Uang Makan</th>
+                    <th scope="col">Uang Lembur</th>
                         <th scope="col">Aksi</th>
                     </tr>
                 </thead>
