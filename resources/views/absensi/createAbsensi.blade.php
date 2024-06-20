@@ -17,28 +17,38 @@
                             aria-describedby="search-addon" id="input" style="width: 60%;"/>
                 </div>
                 <div class="d-flex justify-content-center">
-                    <ul id="read">
-                    </ul>
+                    <div id="read"></div>
                 </div>
             </div>
             
         </div>
     </div>
 <style>
-    li .search-result {
-        list-style: none;
-    }
-    #read {
-        width: 60%;
-        border-top: 1px solid;
-    }
+#read {
+    width: 60%;
+}
+#read ul {
+    border-top: 1px solid #999;
+    padding: 15px 10px;
+}
+
+#read li {
+    list-style: none;
+    border-radius: 3px;
+    padding: 15px 10px;
+    cursor: pointer;
+}
+
+#read li:hover {
+    background: rgba(13, 110, 253, 0.6);
+    color: white;
+}
 </style>
 @endsection
 @section('extra_scripts')
 <script>
     $(document).ready(function() {
         setInterval(timestamp, 1000);
-        readData();
             $("#input").keyup(function () {
                 var strcari = $("#input").val();
                 if(strcari != ""){
@@ -52,16 +62,10 @@
                         }
                     });
                 } else {
-                    readData();
+                    $("#read").html('');
                 }
             })
     });
-
-    function readData(){
-        $.get("{{ url('read') }}", {}, function (data, status){
-            $("#read").html(data);
-        });
-    }
 
     function timestamp() {
         $.ajax({
