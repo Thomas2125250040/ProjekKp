@@ -38,6 +38,7 @@ Route::group(['prefix'=>'absensi'], function(){
     Route::get('',[AbsensiController::class, 'index'])->name('absensi.index');
 });
 
+Route::resource('absensi', AbsensiController::class);
 
 // Route::get('/karyawan', function () {
 //     return view('pegawai');
