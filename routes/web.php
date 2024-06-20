@@ -39,7 +39,7 @@ Route::group(['prefix'=>'absensi'], function(){
 });
 
 Route::resource('absensi', AbsensiController::class);
-Route::get('search-nama-karyawan', [KaryawanController::class, 'search']);
+Route::get('search-karyawan', [KaryawanController::class, 'search']);
 
 // Route::get('/karyawan', function () {
 //     return view('pegawai');

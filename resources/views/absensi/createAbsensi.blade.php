@@ -2,13 +2,21 @@
 @section('content')
     <div class="card">
         <div class="card-body">
-            <h5 class="card-title fw-semibold mb-3" style="margin-bottom: 0">Tambah_absensi</h5>
-            <div>
-                <h6><?php echo date('d-m-Y')?></h6>
-                <h6 id="timestamp"></h6>
+            <div class="d-flex align-items-baseline mb-3">
+                <div class="card-title fw-semibold flex-grow-1">Tambah_absensi</div>
+                <div>
+                    <div id="timestamp"></div>
+                </div>
             </div>
-            <input type="search" class="form-control rounded" placeholder="Search" aria-label="Search"
-                        aria-describedby="search-addon" />
+            <h6><?php echo date('d-m-Y')?></h6>
+            <div class="row">
+                <input type="search" class="form-control rounded" placeholder="Search" aria-label="Search"
+                        aria-describedby="search-addon" id="input"/>
+                <div id="read">
+
+                </div>
+            </div>
+            
         </div>
     </div>
 @endsection
@@ -20,7 +28,7 @@
             $("#input").keyup(function () {
                 var strcari = $("#input").val();
                 if(strcari != ""){
-                    $("#read").html('<p class="text-muted"> Menunggu Mencari Data..</p>');
+                    $("#read").html('<div class="d-inline-flex align-items-center"><div class="text-muted me-2">Mencari Data...</div> <div class="spinner-grow spinner-grow-sm bg-danger" role="status"></div></div>');
                     $.ajax({
                         type: "get",
                         url : "{{ url('search-karyawan') }}",
