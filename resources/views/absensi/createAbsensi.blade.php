@@ -8,12 +8,13 @@
                     <div id="timestamp"></div>
                 </div>
             </div>
-            <h6><?php echo date('d-m-Y')?></h6>
-            <div class="row">
-                <input type="search" class="form-control rounded" placeholder="Search" aria-label="Search"
-                        aria-describedby="search-addon" id="input"/>
+            <div class="text-center"><?php echo date('d-m-Y')?></div>
+            <div class="row text-center">
+                <div class="d-flex justify-content-center">
+                    <input type="search" class="form-control rounded" placeholder="Search" aria-label="Search"
+                            aria-describedby="search-addon" id="input" style="width: 60%;"/>
+                </div>
                 <div id="read">
-
                 </div>
             </div>
             
