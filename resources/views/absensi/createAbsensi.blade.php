@@ -181,6 +181,13 @@ let currentRequest = null;
         $.ajax({
             type: "post"
             url: "{{ route(absensi.cache) }}",
+            data: addedEmployees,
+            success: function(data){
+
+            },
+            error: function(xhr, status, error) {
+                
+            }
         })
         
     }
