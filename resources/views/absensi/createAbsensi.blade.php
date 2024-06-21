@@ -1,5 +1,6 @@
 @extends('layouts.main')
 @section('content')
+<meta name="csrf-token" content="{{ csrf_token() }}">
 <div class="card">
     <div class="card-body">
         <div class="d-flex align-items-baseline mb-3">
@@ -37,7 +38,7 @@
             </table>
         </div>
         <div class="d-flex align-items-end mt-4 flex-column">
-            <button class="btn btn-primary col-1 py-2" onclick="saveTable(this)" id="kirim">Kirim</button>
+            <button class="btn btn-primary py-2" style="width: 100px;" onclick="saveTable(this)" id="kirim">Kirim</button>
             <div id="keterangan_kirim"></div>
         </div>
     </div>
@@ -136,7 +137,7 @@ let nameEmployee = [];
             const tbody = document.querySelector("table tbody");
             var newRow = document.createElement("tr");
             var rowNumber = tbody.rows.length + 1;
-            const masuk = $('#timestamp').text()
+            const masuk = $('#timestamp').text();
             newRow.innerHTML = "<td scope='row'>" + rowNumber + "</td>"
             + "<td>" + name + "</td>"
             + "<td>" + masuk +"</td>"
@@ -187,18 +188,22 @@ let nameEmployee = [];
             url: "{{ route('absensi.cache') }}",
             data: addedEmployees,
             success: function(data){
+                console.log("Sukses");
                 submitBtn.innerHTML = "Kirim";
                 submitBtn.removeAttribute("disabled");
                 keterangan.innerHTML = "<div class=\"text-success\">"+ data + "</div>";
             },
             error: function(xhr, status, error) {
-                console.log("error");
                 submitBtn.innerHTML = "Kirim";
                 submitBtn.removeAttribute("disabled");
                 keterangan.innerHTML = "<div class=\"text-danger\">"+ error + "</div>";
             },
         })
-        
     }
+    $.ajaxSetup({
+    headers: {
+        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+    }
+});
 </script>
 @endsection
