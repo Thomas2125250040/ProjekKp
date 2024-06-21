@@ -37,7 +37,7 @@
             </table>
         </div>
         <div class="d-flex justify-content-end mt-4">
-            <button class="btn btn-primary">Tambah</button>
+            <button class="btn btn-primary" onclick="saveTable(this)">Tambah</button>
         </div>
     </div>
 </div>
@@ -95,7 +95,7 @@ let currentRequest = null;
                 }
                 currentRequest = $.ajax({
                     type: "get",
-                    url: "{{ url('search-karyawan') }}",
+                    url: "{{ route('karyawan.search') }}",
                     data: {
                         q: strcari,
                         added: addedEmployees
@@ -135,21 +135,25 @@ let currentRequest = null;
             const tbody = document.querySelector("table tbody");
             var newRow = document.createElement("tr");
             var rowNumber = tbody.rows.length + 1;
-            const time = $('#timestamp');
+            const masuk = $('#timestamp').text()
             newRow.innerHTML = "<td scope='row'>" + rowNumber + "</td>"
             + "<td>" + name + "</td>"
-            + "<td>" + $('#timestamp').text() +"</td>"
+            + "<td>" + masuk +"</td>"
             + "<td><i class=\"ti ti-circle-x fs-6\" onclick=\"delRow(this)\"></i></td>";
             tbody.appendChild(newRow);
-            
+            const employee = {
+                name: name,
+                masuk: masuk
+            };
             // Add to the list of added employees
-            addedEmployees.push(name);
+            addedEmployees.push(employee);
             element.remove();
             // Remove the <ul> if it becomes empty
             const ul = document.querySelector("#read ul");
             if (ul && ul.children.length === 0) {
                 ul.remove();
             }
+            console.log(addedEmployees);
         }
     }
 
@@ -169,6 +173,16 @@ let currentRequest = null;
         for (let i = 0; i < tbody.rows.length; i++) {
             tbody.rows[i].cells[0].textContent = i + 1;
         }
+    }
+
+    function saveTable(element) {
+        element.innerHTML = "<div class=\"spinner-border spinner-border-sm\" role=\"status\"></div>";
+        element.setAttribute("disabled",'');
+        $.ajax({
+            type: "post"
+            url: "{{ route(absensi.cache) }}",
+        })
+        
     }
 </script>
 @endsection

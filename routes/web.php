@@ -39,31 +39,6 @@ Route::group(['prefix'=>'absensi'], function(){
 });
 
 Route::resource('absensi', AbsensiController::class);
-Route::get('search-karyawan', [KaryawanController::class, 'search']);
-
-// Route::get('/karyawan', function () {
-//     return view('pegawai');
-// });
-
-// Route::get('/create-karyawan', function () {
-//     return view('admin.createKaryawan');
-// });
-//Route::get('/create-karyawan',[KaryawanController::class, 'create']);
-
-// Route::group(['prefix'=>'jabatan'], function() {
-//     Route::get('',[JabatanController::class, 'index'])->name('jabatan.index');
-//     Route::get('create',[JabatanController::class, 'create'])->name('jabatan.create');
-//     Route::get('{id_jabatan}/edit', [JabatanController::class, 'edit'])->name('jabatan.edit');
-//     Route::patch('{id_jabatan}', [JabatanController::class, 'update'])->name('jabatan.update');;
-//     Route::post('store',[JabatanController::class, 'store'])->name('jabatan.store');
-//     Route::delete('{id_jabatan}', [JabatanController::class, 'destroy'])->name('jabatan.destroy');
-// });
-
-//Route::group(['prefix'=>'karyawan'], function() {
-    //Route::get('',[KaryawanController::class, 'index'])->name('karyawan.index');
-    // Route::get('create',[KaryawanController::class, 'create'])->name('karyawan.create');
-    //Route::get('edit',[KaryawanController::class, 'edit'])->name('karyawan.edit');
-   // Route::post('store',[KaryawanController::class, 'store'])->name('karyawan.store');
-    //Route::get('search',[KaryawanController::class, 'search'])->name('karyawan.search');
-//});
+Route::get('search-karyawan', [KaryawanController::class, 'search'])->name('karyawan.search');
+Route::post('absensi/cache', [AbsensiController::class, 'cache'])->name('absensi.cache');
 
