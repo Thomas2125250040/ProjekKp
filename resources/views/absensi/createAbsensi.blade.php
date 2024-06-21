@@ -36,8 +36,9 @@
                 </tbody>
             </table>
         </div>
-        <div class="d-flex justify-content-end mt-4">
-            <button class="btn btn-primary" onclick="saveTable(this)">Tambah</button>
+        <div class="d-flex align-items-end mt-4 flex-column">
+            <button class="btn btn-primary col-1 py-2" onclick="saveTable(this)" id="kirim">Kirim</button>
+            <div id="keterangan_kirim"></div>
         </div>
     </div>
 </div>
@@ -80,6 +81,7 @@
 @section('extra_scripts')
 <script>
 let currentRequest = null;
+let nameEmployee = [];
     $(document).ready(function () {
         setInterval(timestamp, 1000);
         $("#input").on("input",function () {
@@ -98,7 +100,7 @@ let currentRequest = null;
                     url: "{{ route('karyawan.search') }}",
                     data: {
                         q: strcari,
-                        added: addedEmployees
+                        added: nameEmployee
                     },
                     success: function (data) {
                         $("#read").html(data);
@@ -131,7 +133,6 @@ let currentRequest = null;
     function addToTable(element) {
         const name = element.innerHTML;
         if (!addedEmployees.includes(name)) {
-            console.log("clicked");
             const tbody = document.querySelector("table tbody");
             var newRow = document.createElement("tr");
             var rowNumber = tbody.rows.length + 1;
@@ -147,13 +148,13 @@ let currentRequest = null;
             };
             // Add to the list of added employees
             addedEmployees.push(employee);
+            nameEmployee.push(name);
             element.remove();
             // Remove the <ul> if it becomes empty
             const ul = document.querySelector("#read ul");
             if (ul && ul.children.length === 0) {
                 ul.remove();
             }
-            console.log(addedEmployees);
         }
     }
 
@@ -177,17 +178,25 @@ let currentRequest = null;
 
     function saveTable(element) {
         element.innerHTML = "<div class=\"spinner-border spinner-border-sm\" role=\"status\"></div>";
+        const submitBtn = document.getElementById("kirim");
+        const keterangan = document.getElementById("keterangan_kirim");
+        keterangan.innerHTML ="";
         element.setAttribute("disabled",'');
         $.ajax({
-            type: "post"
-            url: "{{ route(absensi.cache) }}",
+            type: "post",
+            url: "{{ route('absensi.cache') }}",
             data: addedEmployees,
             success: function(data){
-
+                submitBtn.innerHTML = "Kirim";
+                submitBtn.removeAttribute("disabled");
+                keterangan.innerHTML = "<div class=\"text-success\">"+ data + "</div>";
             },
             error: function(xhr, status, error) {
-                
-            }
+                console.log("error");
+                submitBtn.innerHTML = "Kirim";
+                submitBtn.removeAttribute("disabled");
+                keterangan.innerHTML = "<div class=\"text-danger\">"+ error + "</div>";
+            },
         })
         
     }

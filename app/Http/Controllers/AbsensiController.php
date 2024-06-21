@@ -63,6 +63,6 @@ class AbsensiController extends Controller
     }
 
     public function cache(Request $request){
-
+        dd($request);
     }
 }
