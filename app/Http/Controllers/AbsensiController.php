@@ -2,7 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use Carbon\Carbon;
+use DateTime;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Cache;
 
 class AbsensiController extends Controller
 {
@@ -63,6 +66,22 @@ class AbsensiController extends Controller
     }
 
     public function cache(Request $request){
-        return "Masuk sayang!";
+        $temp = $request->data;
+        date_default_timezone_set('Asia/Jakarta');
+        $current_time = Carbon::now();
+        $next_midnight = Carbon::tomorrow()->startOfDay();
+        $seconds_until_midnight = (int) abs($next_midnight->diffInSeconds($current_time));
+        Cache::put("absen", $temp, $seconds_until_midnight);
+        return $seconds_until_midnight;
+    }
+
+    public function getCache(){
+        return Cache::get("absen");
+    }
+
+    public function absenKeluar(){
+        $data = Cache::get("absen");
+        dd($data);
+        return view('absensi.absenKeluar', compact('data'));
     }
 }

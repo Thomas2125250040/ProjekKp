@@ -186,9 +186,9 @@ let nameEmployee = [];
         $.ajax({
             type: "post",
             url: "{{ route('absensi.cache') }}",
-            data: addedEmployees,
+            data: {"data": addedEmployees},
             success: function(data){
-                console.log("Sukses");
+                console.log(data);
                 submitBtn.innerHTML = "Kirim";
                 submitBtn.removeAttribute("disabled");
                 keterangan.innerHTML = "<div class=\"text-success\">"+ data + "</div>";
