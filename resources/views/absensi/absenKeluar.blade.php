@@ -37,7 +37,7 @@
                         <td style="vertical-align: middle;">{{ $index + 1 }}</td>
                         <td style="vertical-align: middle;">{{ $row['name'] }}</td>
                         <td style="vertical-align: middle;">{{ $row['masuk'] }}</td>
-                        <td class="waktuKeluar" style="vertical-align: middle;"><div class="btn btn-danger fs-1 p-2 py-1">Tambah</div></td>
+                        <td class="waktuKeluar" style="vertical-align: middle;"><div class="btn btn-danger fs-1 p-2 py-1" onclick="setJamKeluar(this)">Tambah</div></td>
                         <td><i class="ti ti-circle-x fs-6" onclick="delWaktuKeluar(this)" style="vertical-align: middle"></i></td>
                     </tr>
                 @empty
@@ -77,8 +77,23 @@ function updateRowNumbers() {
         tbody.rows[i].cells[0].textContent = i + 1;
     }
 }
-function delWaktuKeluar() {
-
+function delWaktuKeluar(element) {
+    const parent = element.parentNode.parentNode;
+    const waktuKeluarCell = parent.querySelector('.waktuKeluar div');
+    waktuKeluarCell.innerHTML = "Tambah";
+    waktuKeluarCell.classList.remove("btn-success", "disabled");
+    waktuKeluarCell.classList.add("btn-danger");
+}
+function setJamKeluar(element) {
+    const timestamp = document.getElementById("timestamp").innerHTML;
+    if (timestamp.trim() === "") {
+        alert("Timestamp is empty. Cannot set Waktu Keluar.");
+        return;
+    }
+    element.innerHTML = timestamp;
+    element.classList.add("disabled");
+    element.classList.remove("btn-danger");
+    element.classList.add("btn-success");
 }
 </script>
 @endsection
