@@ -73,7 +73,9 @@
     .ti.ti-circle-x:hover {
         color: rgb(250, 137, 107);
     }
-
+    .ti.ti-circle-x {
+        cursor: pointer;
+    }
     ul {
         margin-bottom: 0;
     }

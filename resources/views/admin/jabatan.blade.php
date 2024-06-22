@@ -27,7 +27,7 @@
                         <th scope="col">Nama Jabatan</th>
                         <th scope="col">Gaji Pokok</th>
                         <th scope="col">Uang Makan</th>
-                    <th scope="col">Uang Lembur</th>
+                        <th scope="col">Uang Lembur</th>
                         <th scope="col">Aksi</th>
                     </tr>
                 </thead>

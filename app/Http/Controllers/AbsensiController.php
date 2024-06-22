@@ -72,7 +72,7 @@ class AbsensiController extends Controller
         $next_midnight = Carbon::tomorrow()->startOfDay();
         $seconds_until_midnight = (int) abs($next_midnight->diffInSeconds($current_time));
         Cache::put("absen", $temp, $seconds_until_midnight);
-        return $seconds_until_midnight;
+        return "Data berhasil disimpan.";
     }
 
     public function getCache(){
@@ -81,7 +81,6 @@ class AbsensiController extends Controller
 
     public function absenKeluar(){
         $data = Cache::get("absen");
-        dd($data);
         return view('absensi.absenKeluar', compact('data'));
     }
 }
