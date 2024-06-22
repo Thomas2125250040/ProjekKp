@@ -34,11 +34,11 @@
                 <tbody>
                 @forelse ($data as $index => $row)
                     <tr>
-                        <td>{{ $index + 1 }}</td>
-                        <td>{{ $row['name'] }}</td>
-                        <td>{{ $row['masuk'] }}</td>
-                        <td class="waktuKeluar">--:--:--</td>
-                        <td><i class="ti ti-circle-x fs-6" onclick="delWaktuKeluar(this)"></i></td>
+                        <td style="vertical-align: middle;">{{ $index + 1 }}</td>
+                        <td style="vertical-align: middle;">{{ $row['name'] }}</td>
+                        <td style="vertical-align: middle;">{{ $row['masuk'] }}</td>
+                        <td class="waktuKeluar" style="vertical-align: middle;"><div class="btn btn-danger fs-1 p-2 py-1">Tambah</div></td>
+                        <td><i class="ti ti-circle-x fs-6" onclick="delWaktuKeluar(this)" style="vertical-align: middle"></i></td>
                     </tr>
                 @empty
                     
