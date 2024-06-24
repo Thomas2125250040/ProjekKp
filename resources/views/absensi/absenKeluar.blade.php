@@ -28,6 +28,7 @@
                         <th scope="col">Nama</th>
                         <th scope="col">Waktu Masuk</th>
                         <th scope="col">Waktu Keluar</th>
+                        <th scope="col">Status</th>
                         <th scope="col">Aksi</th>
                     </tr>
                 </thead>
@@ -38,17 +39,16 @@
                         <td style="vertical-align: middle;">{{ $row['name'] }}</td>
                         <td style="vertical-align: middle;">{{ $row['masuk'] }}</td>
                         <td class="waktuKeluar" style="vertical-align: middle;"><div class="btn btn-danger fs-1 p-2 py-1" onclick="setJamKeluar(this)">Tambah</div></td>
+                        <td class="status">-</td>
                         <td><i class="ti ti-circle-x fs-6" onclick="delWaktuKeluar(this)" style="vertical-align: middle"></i></td>
                     </tr>
                 @empty
-                    
+                    <tr>
+                        <td colspan="6">Silahkan Absen Masuk terlebih dahulu.</td>
+                    </tr>
                 @endforelse
                 </tbody>
             </table>
-        </div>
-        <div class="d-flex align-items-end mt-4 flex-column">
-            <button class="btn btn-primary py-2" style="width: 100px;">Kirim</button>
-            <div></div>
         </div>
     </div>
 </div>
@@ -94,6 +94,9 @@ function setJamKeluar(element) {
     element.classList.add("disabled");
     element.classList.remove("btn-danger");
     element.classList.add("btn-success");
+}
+function simpan() {
+    
 }
 </script>
 @endsection

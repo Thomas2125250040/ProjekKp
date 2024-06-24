@@ -102,11 +102,10 @@ let nameEmployee = [];
                     type: "get",
                     url: "{{ route('karyawan.search') }}",
                     data: {
-                        q: strcari,
-                        added: nameEmployee
+                        q: strcari
                     },
                     success: function (data) {
-                        $("#read").html(data);
+                        addSearchResult(data);
                     },
                     error: function (xhr, status, error) {
                         if (status !== 'abort') {
@@ -207,5 +206,26 @@ let nameEmployee = [];
         'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
     }
 });
+function addSearchResult(data) {
+    const read = document.getElementById("read");
+    read.innerHTML = ''; // Clear previous results
+    if (Array.isArray(data.data)) {
+        const ul = document.createElement("ul");
+        data.data.forEach(function(item) {
+            const nameExists = addedEmployees.some(employee => employee.name === item.nama_karyawan);
+            if (!nameExists){
+                const li = document.createElement("li");
+                li.className = "search-result";
+                li.setAttribute("onclick", "addToTable(this)");
+                li.textContent = item.nama_karyawan;
+                ul.appendChild(li);
+            }
+        
+        });
+        read.appendChild(ul);
+    } else {
+        read.innerHTML = data; // Display message if no results found
+    }
+}
 </script>
 @endsection

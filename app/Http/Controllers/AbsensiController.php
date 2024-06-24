@@ -80,7 +80,27 @@ class AbsensiController extends Controller
     }
 
     public function absenKeluar(){
-        $data = Cache::get("absen");
+        $data = Cache::get("absen", []);
         return view('absensi.absenKeluar', compact('data'));
+    }
+
+    public function absenIzin() {
+        return view('absensi.absenIzin');
+    }
+
+    public function absensiEdit() {
+        return view('absensi.editAbsensi');
+    }
+
+    public function absensiLibur() {
+        return view('absensi.hariLibur');
+    }
+
+    public function gaji() {
+        return view('absensi.gaji');
+    }
+
+    public function laporan() {
+        return view('absensi.laporan');
     }
 }

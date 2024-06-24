@@ -43,3 +43,8 @@ Route::get('search-karyawan', [KaryawanController::class, 'search'])->name('kary
 Route::post('absensi/cache', [AbsensiController::class, 'cache'])->name('absensi.cache');
 Route::get('absensi/get-cache', [AbsensiController::class, 'getCache'])->name('absensi.get-cache');
 Route::get('absensi/keluar', [AbsensiController::class, 'absenKeluar'])->name('absensi.keluar');
+Route::get('absensi/izin', [AbsensiController::class, 'absenIzin'])->name('absensi.izin');
+Route::get('absensi/edit', [AbsensiController::class, 'absensiEdit'])->name('absensi.edit');
+Route::get('absensi/hari-libur', [AbsensiController::class, 'absensiLibur'])->name('absensi.libur');
+Route::get('gaji', [AbsensiController::class, 'gaji'])->name("gaji");
+Route::get('laporan', [AbsensiController::class, 'laporan'])->name("laporan");
