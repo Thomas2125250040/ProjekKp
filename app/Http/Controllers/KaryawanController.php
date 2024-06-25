@@ -10,17 +10,6 @@ use Illuminate\Support\Facades\DB;
 
 class KaryawanController extends Controller
 {
-    public function search()
-    {
-        $filter = request()->query();
-        $data = Karyawan::where('nama_karyawan', 'like', "%{$filter['q']}%")->get();
-        if (count($data) >= 1) {
-            return response()->json(['data' => $data]);
-        } else {
-            return response()->json('--Nama karyawan tidak ditemukan--');
-        }
-    }
-
     public function index()
     {
         $karyawan = DB::select('select karyawan.id_karyawan, kode_karyawan, nama_karyawan, nama_jabatan, alamat, nomor_telepon from karyawan join jabatan on jabatan.kode_jabatan = karyawan.kode_jabatan');

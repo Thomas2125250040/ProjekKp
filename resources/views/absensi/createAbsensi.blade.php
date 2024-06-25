@@ -100,7 +100,7 @@ let nameEmployee = [];
                 }
                 currentRequest = $.ajax({
                     type: "get",
-                    url: "{{ route('karyawan.search') }}",
+                    url: "{{ route('absensi.search-karyawan') }}",
                     data: {
                         q: strcari
                     },
@@ -166,7 +166,7 @@ let nameEmployee = [];
         row.remove();
         
         // Remove from the list of added employees
-        addedEmployees = addedEmployees.filter(employee => employee !== name);
+        addedEmployees = addedEmployees.filter(employee => employee.name !== name);
         
         updateRowNumbers();
     }

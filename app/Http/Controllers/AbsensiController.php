@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Karyawan;
 use Carbon\Carbon;
 use DateTime;
 use Illuminate\Http\Request;
@@ -102,5 +103,24 @@ class AbsensiController extends Controller
 
     public function laporan() {
         return view('absensi.laporan');
+    }
+
+    public function search()
+    {
+        $filter = request()->query();
+        $cache = Cache::get("absen", []);
+        $cachedNames = collect($cache)->pluck('name')->toArray();
+        $data = Karyawan::where('nama_karyawan', 'like', "%{$filter['q']}%")
+            ->whereNotIn('nama_karyawan', $cachedNames)
+            ->pluck('nama_karyawan');
+        if (count($data) >= 1) {
+            return response()->json(['data' => $data]);
+        } else {
+            return response()->json('--Nama karyawan tidak ditemukan--');
+        }
+    }
+
+    public function test() {
+        return view("absensi.test");
     }
 }

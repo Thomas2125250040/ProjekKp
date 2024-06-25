@@ -39,7 +39,7 @@ Route::group(['prefix'=>'absensi'], function(){
 });
 
 Route::get('absensi/masuk', [AbsensiController::class, 'create']);
-Route::get('search-karyawan', [KaryawanController::class, 'search'])->name('karyawan.search');
+Route::get('search-karyawan', [AbsensiController::class, 'search'])->name('absensi.search-karyawan');
 Route::post('absensi/cache', [AbsensiController::class, 'cache'])->name('absensi.cache');
 Route::get('absensi/get-cache', [AbsensiController::class, 'getCache'])->name('absensi.get-cache');
 Route::get('absensi/keluar', [AbsensiController::class, 'absenKeluar'])->name('absensi.keluar');
@@ -48,3 +48,5 @@ Route::get('absensi/edit', [AbsensiController::class, 'absensiEdit'])->name('abs
 Route::get('absensi/hari-libur', [AbsensiController::class, 'absensiLibur'])->name('absensi.libur');
 Route::get('gaji', [AbsensiController::class, 'gaji'])->name("gaji");
 Route::get('laporan', [AbsensiController::class, 'laporan'])->name("laporan");
+
+Route::get('test', [AbsensiController::class, 'test'])->name("test");
