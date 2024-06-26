@@ -20,6 +20,7 @@ return new class extends Migration
             $table->foreign('id_absensi')->references('id')->on('absensi');
             $table->time('waktu_masuk');
             $table->time('waktu_keluar');
+            $table->primary(array('id_absensi', 'id_karyawan'));
             $table->timestamps();
         });
     }

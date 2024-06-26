@@ -32,16 +32,12 @@
                                 <form action="{{ url('login') }}" method="POST">
                                     @csrf
                                     <div class="mb-3">
-                                        <label for="kode_karyawan" class="form-label">Code</label>
+                                        <label for="kode_karyawan" class="form-label">Username</label>
                                         <input type="text" class="form-control" id="kode_karyawan" name="kode_karyawan" required>
                                     </div>
                                     <div class="mb-4">
                                         <label for="password" class="form-label">Password</label>
                                         <input type="password" class="form-control" id="password" name="password" required>
-                                    </div>
-                                    <div class="d-flex align-items-center justify-content-between mb-4">
-                                        <div class="form-check"></div>
-                                        <a class="text-primary fw-bold" href="./index.html">Forgot Password ?</a>
                                     </div>
                                     <button type="submit" class="btn btn-primary w-100 py-8 fs-4 mb-4 rounded-2">Login</button>
                                 </form>

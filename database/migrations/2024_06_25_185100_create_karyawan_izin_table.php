@@ -18,6 +18,7 @@ return new class extends Migration
             $table->foreign('id_absensi')->references('id')->on('absensi');
             $table->boolean('izin');
             $table->string('keterangan')->nullable();
+            $table->primary(array('id_absensi', 'id_karyawan'));
             $table->timestamps();
         });
     }
