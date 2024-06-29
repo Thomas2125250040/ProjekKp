@@ -29,26 +29,30 @@
                     <th scope="col">Nama</th>
                     <th scope="col">Status</th>
                     <th scope="col">Keterangan</th>
+                    <th scope="col">Status</th>
                 </tr>
             </thead>
             <tbody>
                 <tr>
                     <td>1</td>
                     <td>Thomas Setiawan</td>
-                    <td><div class="btn btn-danger py-0 col-6">Alpha</div></td>
+                    <td><div class="btn btn-danger py-0 col-7">Alpha</div></td>
                     <td><input type="text" class="form-control bg-light py-0 px-2"/></td>
+                    <td>-</td>
                 </tr>
                 <tr>
                     <td>2</td>
                     <td>Cindy Tri Sella</td>
-                    <td><div class="btn btn-danger py-0 col-6">Alpha</div></td>
+                    <td><div class="btn btn-danger py-0 col-7">Alpha</div></td>
                     <td><input type="text" class="form-control bg-light py-0 px-2"/></td>
+                    <td>-</td>
                 </tr>
                 <tr>
                     <td>3</td>
                     <td>Nicholas</td>
-                    <td><div class="btn btn-primary py-0 col-6">Izin</div></td>
+                    <td><div class="btn btn-primary py-0 col-7">Izin</div></td>
                     <td><input type="text" class="form-control bg-light py-0 px-2" disabled value="Sakit perut akibat kebanyakan makan pedas"/></td>
+                    <td><i class="ti ti-check text-success-emphasis fs-5"></i></td>
                 </tr>
             </tbody>
         </table>

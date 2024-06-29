@@ -23,7 +23,7 @@ class AbsensiController extends Controller
      */
     public function create()
     {
-        return view('absensi.createAbsensi');
+        return view('absensi.absenMasuk');
     }
 
     /**
@@ -47,7 +47,7 @@ class AbsensiController extends Controller
      */
     public function edit(string $id)
     {
-        //
+        return view('absensi.absenEdit');
     }
 
     /**
@@ -93,10 +93,6 @@ class AbsensiController extends Controller
         return view('absensi.editAbsensi');
     }
 
-    public function absensiLibur() {
-        return view('absensi.hariLibur');
-    }
-
     public function gaji() {
         return view('absensi.gaji');
     }
@@ -118,6 +114,10 @@ class AbsensiController extends Controller
         } else {
             return response()->json('--Nama karyawan tidak ditemukan--');
         }
+    }
+
+    public function logHarian() {
+        return view('absensi.logHarian');
     }
 
     public function test() {

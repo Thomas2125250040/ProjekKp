@@ -32,30 +32,57 @@
                     </tr>
                 </thead>
                 <tbody>
-                    @forelse ($jabatan as $item => $row)
-                        <tr>
-                            <td class="align-middle">{{ $row->kode_jabatan }}</td>
-                            <td class="align-middle">{{ $row->nama_jabatan }}</td>
-                            <td class="align-middle">{{ $row->gaji_pokok }}</td>
-                            {{-- <td class="align-middle">{{ $row->uang_makan }}</td>
-                    <td class="align-middle">{{ $row->uang_lembur }}</td> --}}
-
-                            <td>
-                                <form method="POST" action="{{ route('jabatan.destroy', $row->id_jabatan) }}">
-                                    @csrf
-                                    <input name="_method" type="hidden" value="DELETE">
-                                    <button type="submit" class="btn btn-danger fs-1 hapus_jabatan" data-toggle="tooltip"
-                                        title='Delete' data-nama='{{ $row->nama_jabatan }}'>Hapus</button>
-                                    <a href="{{ route('jabatan.edit', $row->id_jabatan) }}"
-                                        class="btn btn-primary fs-1">Ubah</a>
-                                </form>
-                            </td>
-                        </tr>
-                    @empty
-                        <tr>
-                            <td colspan="6">Tidak ada data jabatan!</td>
-                        </tr>
-                    @endforelse
+                    <tr>
+                        <td>1</td>
+                        <td>Manajer</td>
+                        <td>10.000.000</td>
+                        <td>70.000</td>
+                        <td>100.000</td>
+                        <td>
+                            <form method="POST" action="">
+                                @csrf
+                                <input name="_method" type="hidden" value="DELETE">
+                                <button type="submit" class="btn btn-danger fs-1 hapus_jabatan" data-toggle="tooltip"
+                                    title='Delete' data-nama=''>Hapus</button>
+                                <a href=""
+                                    class="btn btn-primary fs-1">Ubah</a>
+                            </form>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>2</td>
+                        <td>Kepala Gudang</td>
+                        <td>8.000.000</td>
+                        <td>80.000</td>
+                        <td>50.000</td>
+                        <td>
+                            <form method="POST" action="">
+                                @csrf
+                                <input name="_method" type="hidden" value="DELETE">
+                                <button type="submit" class="btn btn-danger fs-1 hapus_jabatan" data-toggle="tooltip"
+                                    title='Delete' data-nama=''>Hapus</button>
+                                <a href=""
+                                    class="btn btn-primary fs-1">Ubah</a>
+                            </form>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>3</td>
+                        <td>Admin</td>
+                        <td>4.000.000</td>
+                        <td>60.000</td>
+                        <td>30.000</td>
+                        <td>
+                            <form method="POST" action="">
+                                @csrf
+                                <input name="_method" type="hidden" value="DELETE">
+                                <button type="submit" class="btn btn-danger fs-1 hapus_jabatan" data-toggle="tooltip"
+                                    title='Delete' data-nama=''>Hapus</button>
+                                <a href=""
+                                    class="btn btn-primary fs-1">Ubah</a>
+                            </form>
+                        </td>
+                    </tr>
                 </tbody>
             </table>
         </div>
