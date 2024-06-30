@@ -3,7 +3,7 @@
     <div class="container-fluid">
         <div class="card">
             <div class="card-body">
-                <h5 class="card-title fw-semibold mb-4">Ubah Data Jabatan</h5>
+                <h5 class="card-title fw-semibold">Ubah Data Jabatan</h5>
                 <div class="card">
                     <div class="card-body">
                         <form method="POST" action="{{ route('jabatan.store') }}">

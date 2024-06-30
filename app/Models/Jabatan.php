@@ -14,10 +14,10 @@ class Jabatan extends Model
     protected $keyType = 'string'; 
 
     protected $fillable = [
-        "kode_jabatan",
-        "nama_jabatan",
-        "gaji_pokok"
-        // "uang_makan",
-        // "uang_lembur"
+        "id",
+        "nama",
+        "gaji_pokok",
+        "uang_makan",
+        "uang_lembur"
     ];
 }

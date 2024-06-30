@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', [LoginController::class, 'index'])->name('login-page');
 Route::post('/', [LoginController::class, 'login'])->name('login');
 Route::get('register', [LoginController::class, 'register'])->name('register');
+Route::post('register', [LoginController::class, 'store'])->name('save');
 Route::resource('karyawan', KaryawanController::class);
 Route::resource('jabatan', JabatanController::class);
 // Route::get('absensi/masuk', [AbsensiController::class, 'create']);

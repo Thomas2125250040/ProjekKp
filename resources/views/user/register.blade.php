@@ -6,45 +6,46 @@
             <h5 class="card-title fw-semibold mb-4">Tambah Username</h5>
             <div class="card">
                 <div class="card-body">
-                    <form method="POST" action="{{ route('karyawan.store') }}">
+                    <form method="POST" action="{{ route('save') }}">
                         @csrf
                         <div class="mb-4">
-                            <label for="kode_karyawan" class="form-label">Kode Karyawan</label>
-                            <input type="text" class="form-control" id="kode_karyawan" name="kode_karyawan" required
-                                value="{{ old('kode_karyawan') }}">
-                            @error('kode_karyawan')
-                                <label for="kode" class="text-danger">Kode karyawan sudah terdaftar. Silahkan ganti yang
-                                    lain !</label>
+                            <label for="id_karyawan" class="form-label">Id Karyawan</label>
+                            <input type="text" class="form-control" id="id_karyawan" name="id_karyawan" required
+                                value="{{ old('id_karyawan') }}">
+                            @error('id_karyawan')
+                                <label for="kode" class="text-danger">{{ $message }}</label>
                             @enderror
                         </div>
 
                         <div class="mb-4">
-                            <label for="nama_karyawan" class="form-label">Username</label>
-                            <input type="text" class="form-control" id="nama_karyawan" name="nama_karyawan" required
-                                value="{{ old('nama_karyawan') }}">
-                            @error('nama_karyawan')
-                                <label for="kode" class="text-danger">Kode karyawan sudah terdaftar. Silahkan ganti yang
-                                    lain !</label>
+                            <label for="username" class="form-label">Username</label>
+                            <input type="text" class="form-control" id="username" name="username" required
+                                value="{{ old('username') }}">
+                            @error('username')
+                                <label for="kode" class="text-danger">{{ $message }}</label>
                             @enderror
                         </div>
 
                         <div class="mb-4">
                             <label class="form-label">Hak Akses</label>
                             <div class="form-check">
-                                <input type="radio" id="laki-laki" name="jenis_kelamin" class="form-check-input"
-                                    value="Laki-laki" @if (old('jenis_kelamin', 'Laki-laki') == 'Laki-laki') checked @endif>
-                                <label class="form-check-label" for="laki-laki">Director</label>
+                                <input type="radio" id="perempuan" name="hak_akses" class="form-check-input"
+                                    value="Manajer" @if (old('hak_akses') == 'Manajer') checked @endif>
+                                <label class="form-check-label" for="manajer">Manajer</label>
                             </div>
                             <div class="form-check">
-                                <input type="radio" id="perempuan" name="jenis_kelamin" class="form-check-input"
-                                    value="Perempuan" @if (old('jenis_kelamin', 'Perempuan') == 'Perempuan') checked @endif>
-                                <label class="form-check-label" for="perempuan">Manajer</label>
+                                <input type="radio" id="admin" name="hak_akses" class="form-check-input"
+                                    value="Admin" @if (old('hak_akses') == 'Admin') checked @endif>
+                                <label class="form-check-label" for="admin">Admin</label>
                             </div>
                             <div class="form-check">
-                                <input type="radio" id="perempuan" name="jenis_kelamin" class="form-check-input"
-                                    value="Perempuan" @if (old('jenis_kelamin', 'Perempuan') == 'Perempuan') checked @endif>
-                                <label class="form-check-label" for="perempuan">Admin</label>
+                                <input type="radio" id="director" name="hak_akses" class="form-check-input"
+                                    value="Director" @if (old('hak_akses') == 'Director') checked @endif>
+                                <label class="form-check-label" for="director">Director</label>
                             </div>
+                            @error('hak_akses')
+                                <label for="hak_akses" class="text-danger">{{ $message }}</label>
+                            @enderror
                         </div>
 
                         <div class="mb-4">
@@ -52,7 +53,7 @@
                             <input type="password" class="form-control" id="password" name="password" required
                                 value="{{ old('password') }}">
                             @error('password')
-                                <label for="kode" class="text-danger">Password minimal 8 karakter!</label>
+                                <label for="password" class="text-danger">{{ $message }}</label>
                             @enderror
                         </div>
                         
