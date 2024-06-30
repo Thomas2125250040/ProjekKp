@@ -40,14 +40,12 @@ class KaryawanController extends Controller
         ]);
 
         $karyawan = new Karyawan([
-            'id_karyawan' => (string) \Str::uuid(),
             'kode_karyawan' => $request->kode_karyawan,
             'nama_karyawan' => $request->nama_karyawan,
             'jenis_kelamin' => $request->jenis_kelamin,
             'agama' => $request->agama,
             'email' => $request->email,
             'kode_jabatan' => $request->kode_jabatan,
-            'password' => hash::make($request->password),
             'tempat_lahir' => $request->tempat_lahir,
             'tanggal_lahir' => $request->tanggal_lahir,
             'alamat' => $request->alamat,

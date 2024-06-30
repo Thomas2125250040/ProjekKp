@@ -37,7 +37,6 @@ class JabatanController extends Controller
         ]);
 
         $jabatan = new Jabatan([
-            'id_jabatan' => (string) \Str::uuid(),
             'kode_jabatan' => $request->kode_jabatan,
             'nama_jabatan' => $request->nama_jabatan,
             'gaji_pokok' => $request->gaji_pokok,

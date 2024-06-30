@@ -9,48 +9,34 @@ use Illuminate\Support\Facades\Hash;
 
 class LoginController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
+
+     public function index()
+     {
+         return view('user.login');
+     }
 
     public function login(Request $request)
      {
          // Validasi input
-         $request->validate([
-             'kode_karyawan' => 'required',
+        $credentials = $request->validate([
+             'username' => 'required',
              'password' => 'required'
          ]);
- 
-         $kode_karyawan = $request->kode_karyawan;
-         $password = $request->password;
- 
-         // Ambil karyawan berdasarkan kode_karyawan
-         $karyawan = Karyawan::where('kode_karyawan', $kode_karyawan)->first();
- 
-         // Cek apakah karyawan ditemukan dan password sesuai
-         if ($karyawan && Hash::check($password, $karyawan->password)) {
-            // Ambil kode_jabatan dari karyawan yang ditemukan
-            $kode_jabatan = $karyawan->kode_jabatan;
 
-            // Arahkan ke halaman berdasarkan kode_jabatan
-            if ($kode_jabatan === 'A01') {
-                return redirect('/director-dashboard');
-            } else if ($kode_jabatan === 'A02') {
-                return redirect('/gm-dashboard');
-            } else if ($kode_jabatan === 'A07') {
-                return redirect('/admin-dashboard');
-            } else {
-                return redirect('/register');
-            }
+         if (auth()->attempt($credentials)){
+            $request->session()->regenerate();
+            return redirect()->intended('jabatan');
          }
- 
-         // Jika login gagal, kembalikan ke halaman login dengan pesan error
-         Session::flash('error', 'Login gagal. Periksa kode atau password dan coba kembali!');
-         return redirect('/login');
+
+         return redirect()->back()->withErrors(['username' => 'Invalid Credentials']);
      }
 
      public function register() {
         return view('user.register');
+     }
+
+     public function showListOfUsername() {
+      return view('user.index');
      }
 
      public function edit() {

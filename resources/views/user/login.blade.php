@@ -21,23 +21,21 @@
                         <div class="card mb-0">
                             <div class="card-body">
                                 {{-- <h2 class="text-left"><b>LOGIN<b></h2> --}}
-                                <h3 class="text-center lh-lg">
+                                <h3 class="text-center lh-lg mb-4">
                                     <b>CV ANUGRAH ABADI PALEMBANG</b> 
                                 </h3>
-                                @if (Session::has('error'))
-                                    <div class="alert alert-danger">
-                                        {{ Session::get('error') }}
-                                    </div>
-                                @endif
-                                <form action="{{ url('login') }}" method="POST">
+                                @error('username')
+                                    <div class="alert alert-danger">{{ $message }}</div>
+                                @enderror
+                                <form action="{{ route('login') }}" method="POST">
                                     @csrf
                                     <div class="mb-3">
-                                        <label for="kode_karyawan" class="form-label">Username</label>
-                                        <input type="text" class="form-control" id="kode_karyawan" name="kode_karyawan" required>
+                                        <label for="username" class="form-label" aria-autocomplete="off">Username</label>
+                                        <input type="text" class="form-control" id="username" name="username" autocomplete="off" required>
                                     </div>
                                     <div class="mb-4">
-                                        <label for="password" class="form-label">Password</label>
-                                        <input type="password" class="form-control" id="password" name="password" required>
+                                        <label for="password" class="form-label" aria-autocomplete="off">Password</label>
+                                        <input type="password" class="form-control" id="password" name="password" autocomplete="off" required>
                                     </div>
                                     <button type="submit" class="btn btn-primary w-100 py-8 fs-4 mb-4 rounded-2">Login</button>
                                 </form>

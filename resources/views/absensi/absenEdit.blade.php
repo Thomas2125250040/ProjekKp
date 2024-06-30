@@ -51,7 +51,7 @@
               </tr>
               <tr class="bg-light-primary">
                 <th scope="row">4</th>
-                <td>26-06-2024</td>
+                <td>26-06-2024</td>22
                 <td>I</td>
                 <td>I</td>
                 <td>Sakit perut karena kebanyakan makan pedas</td>

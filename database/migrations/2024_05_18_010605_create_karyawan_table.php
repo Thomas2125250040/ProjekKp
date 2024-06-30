@@ -17,7 +17,6 @@ return new class extends Migration
             $table->foreign('id_jabatan')->references('id')->on('jabatan')->cascadeOnUpdate();
             $table->string("nama")->unique();
             $table->string('email')->unique();
-            $table->string("password");
             $table->enum('jenis_kelamin', ['Laki-laki', 'Perempuan']);
             $table->string("tempat_lahir");
             $table->date("tanggal_lahir");

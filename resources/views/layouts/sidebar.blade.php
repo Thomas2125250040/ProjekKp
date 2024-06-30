@@ -71,7 +71,7 @@
             </li>
 
             <li class="sidebar-item">
-                <a class="sidebar-link" href="{{route('jabatan.index')}}" aria-expanded="false">
+                <a class="sidebar-link" href="{{  url('jabatan') }}" aria-expanded="false">
                     <span>
                         <i class="ti ti-affiliate"></i>
                     </span>
@@ -100,7 +100,7 @@
             </li>
 
             <li class="sidebar-item">
-                <a class="sidebar-link active" aria-expanded="false">
+                <a class="sidebar-link" aria-expanded="false">
                     <span>
                         <i class="ti ti-key"></i>
                     </span>
