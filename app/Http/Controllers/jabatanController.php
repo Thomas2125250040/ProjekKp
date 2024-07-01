@@ -47,7 +47,7 @@ class JabatanController extends Controller
         ]);
 
         $jabatan->save();
-        return redirect('jabatan')->with('success', 'Jabatan ' . $jabatan->nama_jabatan . '  berhasil ditambahkan.');
+        return redirect('jabatan')->with('success', 'Jabatan "' . $jabatan->nama . '" berhasil ditambahkan.');
     }
 
     /**
@@ -91,7 +91,7 @@ class JabatanController extends Controller
     public function destroy(Jabatan $jabatan)
     {
         $jabatan->delete();
-        return redirect('jabatan')->with("success", "Jabatan " . $jabatan->nama_jabatan . "  berhasil dihapus.");
+        return redirect()->route('jabatan.index')->with("success", 'Jabatan "'.$jabatan->nama.'" berhasil dihapus.');
     }
 
 }

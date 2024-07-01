@@ -33,10 +33,9 @@
                         <td>{{ $row->uang_makan }}</td>
                         <td>{{ $row->uang_lembur }}</td>
                         <td>
-                            <form method="POST" data-route="{{ route('jabatan.destroy', $row->id) }}">
-                                @method('delete')
+                            <form method="POST" action="{{ route('jabatan.destroy', $row->id) }}">
                                 @csrf
-                                <input name="_method" type="hidden" value="DELETE">
+                                @method('delete')
                                 <button type="submit" class="btn btn-danger fs-1 hapus_jabatan" data-toggle="tooltip"
                                     title='Delete' data-nama=''>Hapus</button>
                                 <a href=""
