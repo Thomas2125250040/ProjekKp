@@ -9,10 +9,10 @@
                         <form method="POST" action="{{ route('jabatan.store') }}">
                             @csrf
                             <div class="mb-4">
-                                <label for="kode_jabatan" class="form-label">Id Jabatan</label>
-                                <input type="text" class="form-control" id="kode_jabatan" name="kode_jabatan" required
-                                    value="{{ old('kode_jabatan') }}">
-                                @error('kode_jabatan')
+                                <label for="id_jabatan" class="form-label">Id Jabatan</label>
+                                <input type="text" class="form-control" id="id_jabatan" name="id_jabatan" required
+                                    value="{{ old('id_jabatan') }}">
+                                @error('id_jabatan')
                                     <label for="kode" class="text-danger">Kode Jabatan sudah terdaftar. Silahkan ganti yang
                                         lain !</label>
                                 @enderror

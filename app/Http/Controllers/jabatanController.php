@@ -13,7 +13,7 @@ class JabatanController extends Controller
      */
     public function index()
     {
-        $jabatan = DB::select('select * from jabatan');
+        $jabatan = Jabatan::all();
         return view("admin.jabatan", ["jabatan" => $jabatan]);
     }
 
@@ -31,15 +31,19 @@ class JabatanController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'kode_jabatan' => 'required|unique:jabatan,kode_jabatan',
+            'id_jabatan' => 'required|unique:jabatan,id',
             'nama_jabatan' => 'required',
             'gaji_pokok' => 'required',
+            'uang_makan' => 'required',
+            'uang_lembur' => 'required'
         ]);
 
         $jabatan = new Jabatan([
-            'kode_jabatan' => $request->kode_jabatan,
-            'nama_jabatan' => $request->nama_jabatan,
+            'id' => $request->id_jabatan,
+            'nama' => $request->nama_jabatan,
             'gaji_pokok' => $request->gaji_pokok,
+            'uang_makan' => $request->uang_makan,
+            'uang_lembur' => $request->uang_lembur
         ]);
 
         $jabatan->save();

@@ -8,10 +8,9 @@ use Illuminate\Database\Eloquent\Model;
 
 class Jabatan extends Model
 {
-    use HasFactory, HasUuids;
+    use HasFactory;
     protected $table = "jabatan";
-    protected $primaryKey = 'id_jabatan'; 
-    protected $keyType = 'string'; 
+    protected $keyType = 'string';
 
     protected $fillable = [
         "id",

@@ -27,17 +27,14 @@
                 <tbody>
                 @foreach ($jabatan as $row)
                     <tr>
-                        <td>$row->id</td>
-                    </tr>
-                @endforeach
-                    <tr>
-                        <td>1</td>
-                        <td>Manajer</td>
-                        <td>10.000.000</td>
-                        <td>70.000</td>
-                        <td>100.000</td>
+                        <td>{{ $row->id }}</td>
+                        <td>{{ $row->nama }}</td>
+                        <td>{{ $row->gaji_pokok }}</td>
+                        <td>{{ $row->uang_makan }}</td>
+                        <td>{{ $row->uang_lembur }}</td>
                         <td>
-                            <form method="POST" action="">
+                            <form method="POST" data-route="{{ route('jabatan.destroy', $row->id) }}">
+                                @method('delete')
                                 @csrf
                                 <input name="_method" type="hidden" value="DELETE">
                                 <button type="submit" class="btn btn-danger fs-1 hapus_jabatan" data-toggle="tooltip"
@@ -47,6 +44,7 @@
                             </form>
                         </td>
                     </tr>
+                @endforeach
                 </tbody>
             </table>
         </div>
