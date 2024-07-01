@@ -38,7 +38,7 @@
                                 @method('delete')
                                 <button type="submit" class="btn btn-danger fs-1 hapus_jabatan" data-toggle="tooltip"
                                     title='Delete' data-nama=''>Hapus</button>
-                                <a href=""
+                                <a href="{{ route('jabatan.edit', $row->id) }}"
                                     class="btn btn-primary fs-1">Ubah</a>
                             </form>
                         </td>

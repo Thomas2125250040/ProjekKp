@@ -6,7 +6,7 @@
                 <h5 class="card-title fw-semibold mb-4">Ubah Data Jabatan</h5>
                 <div class="card">
                     <div class="card-body">
-                        <form method="POST" action="{{ route('jabatan.update', [$jabatan->id_jabatan]) }}">
+                        <form method="POST" action="{{ route('jabatan.update', $jabatan->id) }}">
                             @csrf
                             @method('PUT')
                             <div class="mb-4">
