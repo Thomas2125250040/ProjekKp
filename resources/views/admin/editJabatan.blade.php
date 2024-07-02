@@ -8,7 +8,7 @@
                     <div class="card-body">
                         <form method="POST" action="{{ route('jabatan.update', $jabatan->id) }}">
                             @csrf
-                            @method('PUT')
+                            @method('PATCH')
                             <div class="mb-4">
                                 <label for="id_jabatan" class="form-label">Id Jabatan</label>
                                 <input type="text" class="form-control" id="id" name="id" required

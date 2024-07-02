@@ -5,7 +5,7 @@
             <a href="./index.html" class="logo-img d-flex align-items-center">
                 <img class="rounded-circle me-3" src="/assets/images/profile/user-1.jpg" width="60" height="60" alt="">
                 <div>
-                    <div>Nicholas14</div>
+                    <div>Nicholas</div>
                     <div class="fs-1 text-danger" style="color:dimgray;">Direktur</div>
                 </div>
             </a>
@@ -18,7 +18,7 @@
                 <span class="hide-menu">Absensi</span>
             </li>
             <li class="sidebar-item">
-                <a class="sidebar-link" href="{{url('admin-dashboard')}}" aria-expanded="false">
+                <a class="sidebar-link" href="{{url('absensi/')}}" aria-expanded="false">
                     <span>
                         <i class="ti ti-transfer-in"></i>
                     </span>
@@ -26,7 +26,7 @@
                 </a>
             </li>
             <li class="sidebar-item">
-                <a class="sidebar-link" href="{{url('admin-dashboard')}}" aria-expanded="false">
+                <a class="sidebar-link" href="{{url('absensi/')}}" aria-expanded="false">
                     <span>
                         <i class="ti ti-transfer-out"></i>
                     </span>
@@ -34,7 +34,7 @@
                 </a>
             </li>
             <li class="sidebar-item">
-                <a class="sidebar-link" href="{{url('admin-dashboard')}}" aria-expanded="false">
+                <a class="sidebar-link" href="{{url('absensi/')}}" aria-expanded="false">
                     <span>
                         <i class="ti ti-license-off"></i>
                     </span>
@@ -42,7 +42,7 @@
                 </a>
             </li>
             <li class="sidebar-item">
-                <a class="sidebar-link" href="{{url('admin-dashboard')}}" aria-expanded="false">
+                <a class="sidebar-link" href="{{url('absensi/')}}" aria-expanded="false">
                     <span>
                         <i class="ti ti-edit"></i>
                     </span>
@@ -54,7 +54,7 @@
                 <span class="hide-menu">Beranda</span>
             </li>
             <li class="sidebar-item">
-                <a class="sidebar-link" href="{{url('admin-dashboard')}}" aria-expanded="false">
+                <a class="sidebar-link" href="{{url('laporan')}}" aria-expanded="false">
                     <span>
                         <i class="ti ti-brand-google-analytics"></i>
                     </span>
@@ -79,7 +79,7 @@
                 </a>
             </li>
             <li class="sidebar-item">
-                <a class="sidebar-link" aria-expanded="false">
+                <a class="sidebar-link" href="{{  url('hari-libur') }}" aria-expanded="false">
                     <span>
                         <i class="ti ti-calendar-event"></i>
                     </span>
@@ -87,7 +87,7 @@
                 </a>
             </li>
             <li class="sidebar-item">
-                <a class="sidebar-link" aria-expanded="false">
+                <a class="sidebar-link" href="{{  url('gaji') }}" aria-expanded="false">
                     <span>
                         <i class="ti ti-cash"></i>
                     </span>
@@ -100,7 +100,7 @@
             </li>
 
             <li class="sidebar-item">
-                <a class="sidebar-link" aria-expanded="false">
+                <a class="sidebar-link" href="{{  url('#') }}" aria-expanded="false">
                     <span>
                         <i class="ti ti-key"></i>
                     </span>
@@ -109,7 +109,7 @@
             </li>
 
             <li class="sidebar-item">
-                <a class="sidebar-link" href="./authentication-login.html" aria-expanded="false">
+                <a class="sidebar-link" href="{{  url('#') }}" aria-expanded="false">
                     <span>
                         <i class="ti ti-settings"></i>
                     </span>

@@ -109,9 +109,7 @@
 
                             <div class="mb-4">
                                 <label for="foto" class="form-label">Foto</label>
-                                <input type="file" class="form-control" id="foto" name="foto"
-                                    value="{{ $karyawan->foto }}">
-
+                                <input type="file" class="form-control" id="foto" name="foto" value="{{ $karyawan->foto }}">
                                 <img id="foto-preview"
                                     src="{{ $karyawan->foto ? asset('storage/' . $karyawan->foto) : '' }}"
                                     alt="Preview Foto"

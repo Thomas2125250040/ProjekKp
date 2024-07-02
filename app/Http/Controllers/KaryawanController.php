@@ -138,7 +138,7 @@ class KaryawanController extends Controller
     public function destroy(Karyawan $karyawan)
     {
         $karyawan->delete();
-        return redirect('karyawan')->with('success', 'Biodata ' . $karyawan->nama . ' berhasil dihapus.');
+        return redirect('karyawan')->with('success', 'Biodata "' . $karyawan->nama . '" berhasil dihapus.');
     }
 
 }

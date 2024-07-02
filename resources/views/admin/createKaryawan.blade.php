@@ -104,8 +104,7 @@
 
                             <div class="mb-4">
                                 <label for="foto" class="form-label">Foto</label>
-                                <input type="file" class="form-control" id="foto" name="foto" required
-                                    value="{{ old('foto') }}">
+                                <input type="file" class="form-control" id="foto" name="foto" value="{{ old('foto') }}">
                                 <img id="foto-preview" src="#" alt="Preview Foto"
                                     style="display: none; margin-top: 10px;" width="150", height="200"> 
                             </div>

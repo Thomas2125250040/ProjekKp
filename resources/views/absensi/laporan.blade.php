@@ -1,16 +1,12 @@
 @extends('layouts.main')
 @section('content')
-<style>
-  a.log-harian:hover {
-    color: dimgray;
-    cursor: pointer;
-  }
+
 </style>
 <div class="card">
   <div class="card-body">
       <div class="d-flex mb-4 justify-content-between">
           <div class="card-title fw-semibold flex-grow-1">Laporan</div>
-          <a class="log-harian">Log Harian ></a>
+          <a class="btn btn-success" href="{{url('log-harian')}}">Log Harian</a>
       </div>
       <div class="d-flex justify-content-between align-items-center">
         <div>

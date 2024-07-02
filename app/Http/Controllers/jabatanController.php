@@ -71,11 +71,11 @@ class JabatanController extends Controller
             'uang_lembur' => 'required'
         ]);
 
-        $jabatanSebelum = Jabatan::find($id);
-        $namaJabatanSebelum = $jabatanSebelum->nama;
+        // $jabatanSebelum = Jabatan::find($id);
+        // $namaJabatanSebelum = $jabatanSebelum->nama;
 
         Jabatan::find($id)->update($validasi);
-        return redirect("jabatan")->with("success", "Jabatan $namaJabatanSebelum berhasil diperbarui.");
+        return redirect("jabatan")->with("success", 'Jabatan "'.$request->nama.'" berhasil dihapus.');
     }
 
     /**

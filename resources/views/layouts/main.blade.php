@@ -67,6 +67,24 @@
                     }
                 });
         });
+
+        $('.hapus_hari-libur').click(function(event) {
+            var form = $(this).closest("form");
+            var nama = $(this).data("nama");
+            event.preventDefault();
+            swal({
+                    title: `Apakah Anda yakin ingin menghapus data hari libur memperingati ${nama} ?`,
+                    text: `Dengan menekan tombol OK, maka data hari libur memperingati ${nama} akan hilang selamanya!`,
+                    icon: "warning",
+                    buttons: true,
+                    dangerMode: true,
+                })
+                .then((willDelete) => {
+                    if (willDelete) {
+                        form.submit();
+                    }
+                });
+        });
     </script>
     @yield('extra_scripts')
 </body>
