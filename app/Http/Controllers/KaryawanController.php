@@ -114,8 +114,22 @@ class KaryawanController extends Controller
             'agama' => $request->agama,
             'no_telp' => $request->no_telp,
         ]);
-        
+
         return redirect("karyawan")->with("success", "Biodata " . $request->nama . " berhasil diperbarui.");
+    }
+
+    /**
+     * Display the specified resource.
+     */
+    public function show($id)
+    {
+        $karyawan = DB::table('karyawan')
+        ->join('jabatan', 'karyawan.id_jabatan', '=', 'jabatan.id')
+        ->select('karyawan.*', 'jabatan.nama as nama_jabatan')
+        ->where('karyawan.id', $id)
+        ->first();
+
+    return view('Admin.showKaryawan', ['karyawan' => $karyawan]);
     }
 
     /**

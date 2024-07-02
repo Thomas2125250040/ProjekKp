@@ -107,7 +107,7 @@
                                 <input type="file" class="form-control" id="foto" name="foto" required
                                     value="{{ old('foto') }}">
                                 <img id="foto-preview" src="#" alt="Preview Foto"
-                                    style="display: none; margin-top: 10px;" width="200", height="200"> 
+                                    style="display: none; margin-top: 10px;" width="150", height="200"> 
                             </div>
 
                             <div class="d-flex justify-content-end">

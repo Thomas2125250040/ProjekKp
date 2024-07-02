@@ -116,7 +116,7 @@
                                     src="{{ $karyawan->foto ? asset('storage/' . $karyawan->foto) : '' }}"
                                     alt="Preview Foto"
                                     style="display: {{ $karyawan->foto ? 'block' : 'none' }}; margin-top: 10px;"
-                                    width="200" height="200">
+                                    width="150" height="200">
                             </div>
 
                             <div class="d-flex justify-content-end">
