@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Models\Jabatan;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
 
 class JabatanController extends Controller
 {
@@ -31,16 +30,16 @@ class JabatanController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'id_jabatan' => 'required|unique:jabatan,id',
-            'nama_jabatan' => 'required',
+            'id' => 'required',
+            'nama' => 'required',
             'gaji_pokok' => 'required',
             'uang_makan' => 'required',
             'uang_lembur' => 'required'
         ]);
 
         $jabatan = new Jabatan([
-            'id' => $request->id_jabatan,
-            'nama' => $request->nama_jabatan,
+            'id' => $request->id,
+            'nama' => $request->nama,
             'gaji_pokok' => $request->gaji_pokok,
             'uang_makan' => $request->uang_makan,
             'uang_lembur' => $request->uang_lembur
@@ -51,37 +50,31 @@ class JabatanController extends Controller
     }
 
     /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
-    {
-        //
-    }
-
-    /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id_jabatan)
+    public function edit(string $id)
     {
-        $jabatan = Jabatan::find($id_jabatan);
+        $jabatan = Jabatan::find($id);
         return view("admin.editJabatan", ["jabatan" => $jabatan]);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id_jabatan)
+    public function update(Request $request, string $id)
     {
         $validasi = $request->validate([
-            "kode_jabatan" => 'required',
-            "nama_jabatan" => "required",
-            "gaji_pokok" => "required",
+            'id' => 'required',
+            'nama' => 'required',
+            'gaji_pokok' => 'required',
+            'uang_makan' => 'required',
+            'uang_lembur' => 'required'
         ]);
 
-        $jabatanSebelum = Jabatan::find($id_jabatan);
-        $namaJabatanSebelum = $jabatanSebelum->nama_jabatan;
+        $jabatanSebelum = Jabatan::find($id);
+        $namaJabatanSebelum = $jabatanSebelum->nama;
 
-        Jabatan::find($id_jabatan)->update($validasi);
+        Jabatan::find($id)->update($validasi);
         return redirect("jabatan")->with("success", "Jabatan $namaJabatanSebelum berhasil diperbarui.");
     }
 

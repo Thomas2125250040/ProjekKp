@@ -16,7 +16,7 @@
             <table id="myTable" class="display">
                 <thead>
                     <tr>
-                        <th>Kode Jabatan</th>
+                        <th>Id Jabatan</th>
                         <th>Nama Jabatan</th>
                         <th>Gaji Pokok</th>
                         <th>Uang Makan</th>

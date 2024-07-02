@@ -10,21 +10,33 @@
                             @csrf
                             @method('PUT')
                             <div class="mb-4">
-                                <label for="kode_jabatan" class="form-label">Kode Jabatan</label>
-                                <input type="text" class="form-control" id="kode_jabatan" name="kode_jabatan" required
-                                    value="{{ $jabatan->kode_jabatan }}">
+                                <label for="id_jabatan" class="form-label">Id Jabatan</label>
+                                <input type="text" class="form-control" id="id" name="id" required
+                                    value="{{ $jabatan->id }}">
                             </div>
 
                             <div class="mb-4">
-                                <label for="nama_jabatan" class="form-label">Nama Jabatan</label>
-                                <input type="text" class="form-control" id="nama_jabatan" name="nama_jabatan" required
-                                    value="{{ $jabatan->nama_jabatan }}">
+                                <label for="nama" class="form-label">Nama Jabatan</label>
+                                <input type="text" class="form-control" id="nama" name="nama" required
+                                    value="{{ $jabatan->nama }}">
                             </div>
 
                             <div class="mb-4">
                                 <label for="gaji_pokok" class="form-label">Gaji Pokok</label>
                                 <input type="text" class="form-control" id="gaji_pokok" name="gaji_pokok" required
                                     value="{{ $jabatan->gaji_pokok }}">
+                            </div>
+
+                            <div class="mb-4">
+                                <label for="uang_makan" class="form-label">Uang Makan per Hari </label>
+                                <input type="text" class="form-control" id="uang_makan" name="uang_makan" required
+                                    value="{{ $jabatan->uang_makan }}">
+                            </div>
+
+                            <div class="mb-4">
+                                <label for="uang_lembur" class="form-label">Uang Lembur per Jam</label>
+                                <input type="text" class="form-control" id="uang_lembur" name="uang_lembur" required
+                                    value="{{ $jabatan->uang_lembur }}">
                             </div>
 
                             <div class="d-flex justify-content-end">
