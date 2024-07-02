@@ -38,7 +38,7 @@
             event.preventDefault();
             swal({
                     title: `Apakah Anda yakin ingin menghapus data jabatan ${nama} ?`,
-                    text: `Dengan menekan tombol OK, maka data jabatan ${nama} beserta data karyawan yang punya jabatan ${nama} akan hilang selamanya!`,
+                    text: `Dengan menekan tombol OK, maka data jabatan ${nama} beserta data karyawan dengan jabatan ${nama} akan hilang selamanya!`,
                     icon: "warning",
                     buttons: true,
                     dangerMode: true,

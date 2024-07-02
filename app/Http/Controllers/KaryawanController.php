@@ -5,14 +5,14 @@ namespace App\Http\Controllers;
 use App\Models\Jabatan;
 use App\Models\Karyawan;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\DB;
 
 class KaryawanController extends Controller
 {
     public function index()
     {
-        $karyawan = DB::select('select karyawan.id_karyawan, kode_karyawan, nama_karyawan, nama_jabatan, alamat, nomor_telepon from karyawan join jabatan on jabatan.kode_jabatan = karyawan.kode_jabatan');
+        $karyawan = DB::select('select karyawan.* , jabatan.nama as nama_jabatan FROM karyawan join jabatan on jabatan.id = karyawan.id_jabatan;');
         $jabatan = DB::select('select * from jabatan');
         return view("admin.karyawan", ["karyawan" => $karyawan], ["jabatan" => $jabatan]);
     }
@@ -26,64 +26,96 @@ class KaryawanController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'kode_karyawan' => 'required|unique:karyawan,kode_karyawan',
-            'nama_karyawan' => 'required',
-            'jenis_kelamin' => 'required',
-            'agama' => 'required',
-            'email' => 'required|email|unique:karyawan,email',
-            'kode_jabatan' => 'required',
-            'password' => 'required|min:8',
-            'tempat_lahir' => 'required',
-            'tanggal_lahir' => 'required',
-            'alamat' => 'required',
-            'nomor_telepon' => 'required',
+        'id' => 'required',
+        'id_jabatan' => 'required',
+        'nama' => 'required',
+        'email' => 'required',
+        'jenis_kelamin' => 'required',
+        'tempat_lahir'=> 'required',
+        'tanggal_lahir'=> 'required',
+        'alamat'=> 'required',
+        'foto' => 'nullable|file|image|max:5000',
+        'agama'=> 'required',
+        'no_telp'=> 'required',
         ]);
 
+        $ext = $request->foto->getClientOriginalExtension();
+        $nama_file = "foto-". time() . "." . $ext;
+        $path = $request->foto->storeAs('public', $nama_file);
+        
         $karyawan = new Karyawan([
-            'kode_karyawan' => $request->kode_karyawan,
-            'nama_karyawan' => $request->nama_karyawan,
-            'jenis_kelamin' => $request->jenis_kelamin,
-            'agama' => $request->agama,
+            'id' => $request->id,
+            'id_jabatan' => $request->id_jabatan,
+            'nama' => $request->nama,
             'email' => $request->email,
-            'kode_jabatan' => $request->kode_jabatan,
-            'tempat_lahir' => $request->tempat_lahir,
-            'tanggal_lahir' => $request->tanggal_lahir,
-            'alamat' => $request->alamat,
-            'nomor_telepon' => $request->nomor_telepon,
+            'jenis_kelamin' => $request->jenis_kelamin,
+            'tempat_lahir'=> $request->tempat_lahir,
+            'tanggal_lahir'=> $request->tanggal_lahir,
+            'alamat'=> $request->alamat,
+            'foto'=> $nama_file,
+            'agama'=> $request->agama,
+            'no_telp'=> $request->no_telp,
         ]);
 
         $karyawan->save();
-        return redirect()->route('karyawan.index')->with('success', "Biodata " . $request->nama_karyawan . " berhasil ditambahkan.");
+        return redirect()->route('karyawan.index')->with('success', "Biodata " . $request->nama . " berhasil ditambahkan.");
     }
 
-
-    public function edit($id_karyawan)
+    public function edit($id)
     {
-        $karyawan = Karyawan::find($id_karyawan);
-        $jabatanOptions = Jabatan::pluck('nama_jabatan', 'kode_jabatan');
+        $karyawan = Karyawan::find($id);
+        $jabatanOptions = Jabatan::pluck('nama', 'id');
         return view("admin.editKaryawan", compact('karyawan', 'jabatanOptions'));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, $id_karyawan)
+    public function update(Request $request, Karyawan $karyawan)
     {
-        $validasi = $request->validate([
-            "email" => "required",
-            "password" => "required|min:8",
-            "kode_karyawan" => "required",
-            "nama_karyawan" => "required",
-            "kode_jabatan" => "required",
-            "jenis_kelamin" => "required",
-            "tempat_lahir" => "required",
-            "tanggal_lahir" => "required",
-            "alamat" => "required",
-            "agama" => "required",
-            "nomor_telepon" => "required",
+        $request->validate([
+            'id' => 'required',
+            'id_jabatan' => 'required',
+            'nama' => 'required',
+            'email' => 'required',
+            'jenis_kelamin' => 'required',
+            'tempat_lahir'=> 'required',
+            'tanggal_lahir'=> 'required',
+            'alamat'=> 'required',
+            'foto'=> 'required',
+            'agama'=> 'required',
+            'no_telp'=> 'required',
         ]);
-        Karyawan::find($id_karyawan)->update($validasi);
-        return redirect("karyawan")->with("success", "Biodata " . $request->nama_karyawan . " berhasil diperbarui.");
+
+        $nama_file = $karyawan->foto;
+
+        if ($request->hasFile('foto')) {
+            $ext = $request->foto->getClientOriginalExtension();
+            $nama_file = "foto-" . time() . "." . $ext;
+            $path = $request->foto->storeAs('public', $nama_file);
+    
+            if (Storage::exists('public/'.$karyawan->foto)) {
+                Storage::delete('public/'.$karyawan->foto);
+            }
+        } else {
+            $nama_file = $karyawan->foto;
+        }
+
+        $karyawan->update([
+            'id' => $request->id,
+            'id_jabatan' => $request->id_jabatan,
+            'nama' => $request->nama,
+            'email' => $request->email,
+            'jenis_kelamin' => $request->jenis_kelamin,
+            'tempat_lahir' => $request->tempat_lahir,
+            'tanggal_lahir' => $request->tanggal_lahir,
+            'alamat' => $request->alamat,
+            'foto' => $nama_file,
+            'agama' => $request->agama,
+            'no_telp' => $request->no_telp,
+        ]);
+        
+        return redirect("karyawan")->with("success", "Biodata " . $request->nama . " berhasil diperbarui.");
     }
 
     /**
@@ -92,7 +124,7 @@ class KaryawanController extends Controller
     public function destroy(Karyawan $karyawan)
     {
         $karyawan->delete();
-        return redirect('karyawan')->with('success', 'Biodata ' . $karyawan->nama_karyawan . ' berhasil dihapus.');
+        return redirect('karyawan')->with('success', 'Biodata ' . $karyawan->nama . ' berhasil dihapus.');
     }
 
 }

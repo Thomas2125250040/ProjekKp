@@ -31,13 +31,13 @@
                             </div>
 
                             <div class="mb-4">
-                                <label for="uang_makan" class="form-label">Uang Makan</label>
+                                <label for="uang_makan" class="form-label">Uang Makan per Hari</label>
                                 <input type="text" class="form-control" id="uang_makan" name="uang_makan" required
                                 value="{{ old('uang_makan') }}">
                             </div>
 
                             <div class="mb-4">
-                                <label for="uang_lembur" class="form-label">Bayaran Lembur per jam</label>
+                                <label for="uang_lembur" class="form-label">Bayaran Lembur per Jam</label>
                                 <input type="text" class="form-control" id="uang_lembur" name="uang_lembur" required
                                 value="{{ old('uang_lembur') }}">
                             </div>

@@ -12,9 +12,15 @@ class Karyawan extends Model
     protected $keyType = 'string';
     protected $fillable = [
         "id",
+        "id_jabatan",
         "nama",
-        "gaji_pokok",
-        "uang_makan",
-        "uang_lembur"
+        "email",
+        "jenis_kelamin",
+        "tempat_lahir",
+        "tanggal_lahir",
+        "alamat",
+        "foto",
+        "agama",
+        "no_telp"
     ];
 }
