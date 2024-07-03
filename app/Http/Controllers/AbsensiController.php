@@ -55,7 +55,8 @@ class AbsensiController extends Controller
         //
     }
 
-    public function cache(Request $request){
+    public function cache(Request $request)
+    {
         $temp = $request->data;
         date_default_timezone_set('Asia/Jakarta');
         $current_time = Carbon::now();
@@ -65,29 +66,44 @@ class AbsensiController extends Controller
         return "Data berhasil disimpan.";
     }
 
-    public function getCache(){
+    public function getCache()
+    {
         return Cache::get("absen");
     }
 
-    public function absenKeluar(){
+    public function absenKeluar()
+    {
         $data = Cache::get("absen", []);
         return view('absensi.absenKeluar', compact('data'));
     }
 
-    public function absenIzin() {
+    public function absenIzin()
+    {
         return view('absensi.absenIzin');
     }
 
-    public function absensiEdit() {
+    public function absensiEdit()
+    {
         return view('absensi.editAbsensi');
     }
 
-    public function gaji() {
-        return view('absensi.gaji');
+    // public function gaji() {
+    //     return view('absensi.gaji');
+    // }
+
+    // public function laporan() {
+    //     return view('absensi.laporan');
+    // }
+
+    public function laporan()
+    {
+        return view('absensi.laporan');
     }
 
-    public function laporan() {
-        return view('absensi.laporan');
+
+    public function gaji()
+    {
+        return view('absensi.gaji');
     }
 
     public function search()
@@ -105,11 +121,13 @@ class AbsensiController extends Controller
         }
     }
 
-    public function logHarian() {
+    public function logHarian()
+    {
         return view('absensi.logHarian');
     }
 
-    public function test() {
+    public function test()
+    {
         return view("absensi.test");
     }
 }

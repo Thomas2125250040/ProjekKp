@@ -26,35 +26,35 @@ class KaryawanController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-        'id' => 'required',
-        'id_jabatan' => 'required',
-        'nama' => 'required',
-        'email' => 'required',
-        'jenis_kelamin' => 'required',
-        'tempat_lahir'=> 'required',
-        'tanggal_lahir'=> 'required',
-        'alamat'=> 'required',
-        'foto' => 'nullable|file|image',
-        'agama'=> 'required',
-        'no_telp'=> 'required',
+            'id' => 'required',
+            'id_jabatan' => 'required',
+            'nama' => 'required',
+            'email' => 'required',
+            'jenis_kelamin' => 'required',
+            'tempat_lahir' => 'required',
+            'tanggal_lahir' => 'required',
+            'alamat' => 'required',
+            'foto' => 'nullable|file|image',
+            'agama' => 'required',
+            'no_telp' => 'required',
         ]);
 
         $ext = $request->foto->getClientOriginalExtension();
-        $nama_file = "foto-". time() . "." . $ext;
+        $nama_file = "foto-" . time() . "." . $ext;
         $path = $request->foto->storeAs('public', $nama_file);
-        
+
         $karyawan = new Karyawan([
             'id' => $request->id,
             'id_jabatan' => $request->id_jabatan,
             'nama' => $request->nama,
             'email' => $request->email,
             'jenis_kelamin' => $request->jenis_kelamin,
-            'tempat_lahir'=> $request->tempat_lahir,
-            'tanggal_lahir'=> $request->tanggal_lahir,
-            'alamat'=> $request->alamat,
-            'foto'=> $nama_file,
-            'agama'=> $request->agama,
-            'no_telp'=> $request->no_telp,
+            'tempat_lahir' => $request->tempat_lahir,
+            'tanggal_lahir' => $request->tanggal_lahir,
+            'alamat' => $request->alamat,
+            'foto' => $nama_file,
+            'agama' => $request->agama,
+            'no_telp' => $request->no_telp,
         ]);
 
         $karyawan->save();
@@ -79,12 +79,12 @@ class KaryawanController extends Controller
             'nama' => 'required',
             'email' => 'required',
             'jenis_kelamin' => 'required',
-            'tempat_lahir'=> 'required',
-            'tanggal_lahir'=> 'required',
-            'alamat'=> 'required',
+            'tempat_lahir' => 'required',
+            'tanggal_lahir' => 'required',
+            'alamat' => 'required',
             'foto' => 'nullable|file|image',
-            'agama'=> 'required',
-            'no_telp'=> 'required',
+            'agama' => 'required',
+            'no_telp' => 'required',
         ]);
 
         $nama_file = $karyawan->foto;
@@ -93,9 +93,9 @@ class KaryawanController extends Controller
             $ext = $request->foto->getClientOriginalExtension();
             $nama_file = "foto-" . time() . "." . $ext;
             $path = $request->foto->storeAs('public', $nama_file);
-    
-            if (Storage::exists('public/'.$karyawan->foto)) {
-                Storage::delete('public/'.$karyawan->foto);
+
+            if (Storage::exists('public/' . $karyawan->foto)) {
+                Storage::delete('public/' . $karyawan->foto);
             }
         } else {
             $nama_file = $karyawan->foto;
@@ -115,21 +115,22 @@ class KaryawanController extends Controller
             'no_telp' => $request->no_telp,
         ]);
 
-        return redirect()->route('login-page')->with("success", "Biodata " . $request->nama . " berhasil diperbarui. Silahkan login ulang");
+        return redirect()->route('login-page')->with("success", "Biodata " . $request->nama . " berhasil dipA erbarui. Silahkan login ulang");
     }
 
     /**
+     * ';LEWA
      * Display the specified resource.
      */
     public function show($id)
     {
         $karyawan = DB::table('karyawan')
-        ->join('jabatan', 'karyawan.id_jabatan', '=', 'jabatan.id')
-        ->select('karyawan.*', 'jabatan.nama as nama_jabatan')
-        ->where('karyawan.id', $id)
-        ->first();
+            ->join('jabatan', 'karyawan.id_jabatan', '=', 'jabatan.id')
+            ->select('karyawan.*', 'jabatan.nama as nama_jabatan')
+            ->where('karyawan.id', $id)
+            ->first();
 
-    return view('Admin.showKaryawan', ['karyawan' => $karyawan]);
+        return view('Admin.showKaryawan', ['karyawan' => $karyawan]);
     }
 
     /**

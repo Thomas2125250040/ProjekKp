@@ -68,7 +68,7 @@ class KaryawanSeeder extends Seeder
                 'no_telp'=> "089987612342",
             ],
             [
-                'id'=> "006",
+                'id'=> "005",
                 'id_jabatan' => "A05",
                 'nama'=>"Karyawan-2",
                 'email'=>"karyawan2@gmail.com",
