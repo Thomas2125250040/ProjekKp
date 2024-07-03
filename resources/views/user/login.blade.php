@@ -20,13 +20,18 @@
                     <div class="col-md-8 col-lg-6 col-xxl-3">
                         <div class="card mb-0">
                             <div class="card-body">
-                                {{-- <h2 class="text-left"><b>LOGIN<b></h2> --}}
                                 <h3 class="text-center lh-lg mb-4">
                                     <b>CV ANUGRAH ABADI PALEMBANG</b> 
                                 </h3>
+                                @if (Session::get('success'))
+                                <div class="alert alert-success">
+                                    {{ Session::get('success') }}
+                                </div>
+                                @endif
                                 @error('username')
                                     <div class="alert alert-danger">{{ $message }}</div>
                                 @enderror
+                
                                 <form action="{{ route('login') }}" method="POST">
                                     @csrf
                                     <div class="mb-3">

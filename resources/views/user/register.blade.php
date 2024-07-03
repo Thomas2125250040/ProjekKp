@@ -30,8 +30,8 @@
                             <label class="form-label">Hak Akses</label>
                             <div class="form-check">
                                 <input type="radio" id="perempuan" name="hak_akses" class="form-check-input"
-                                    value="Manajer" @if (old('hak_akses') == 'Manajer') checked @endif>
-                                <label class="form-check-label" for="manajer">Manajer</label>
+                                    value="Manajer" @if (old('hak_akses') == 'General Manager') checked @endif>
+                                <label class="form-check-label" for="manajer">General Manager</label>
                             </div>
                             <div class="form-check">
                                 <input type="radio" id="admin" name="hak_akses" class="form-check-input"

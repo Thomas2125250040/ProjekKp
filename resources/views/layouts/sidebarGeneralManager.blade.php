@@ -6,7 +6,7 @@
                 <img class="rounded-circle me-3" src="/assets/images/profile/user-1.jpg" width="60" height="60" alt="">
                 <div>
                     <div>Nicholas</div>
-                    <div class="fs-1 text-danger" style="color:dimgray;">Direktur</div>
+                    <div class="fs-1 text-danger" style="color:dimgray;">General Manager</div>
                 </div>
             </a>
         </div>
