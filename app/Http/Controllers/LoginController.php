@@ -53,7 +53,7 @@ class LoginController extends Controller
                break;
          }
       } else {
-         return redirect()->back()->with('error', 'Username or password salah!');
+         return redirect()->back()->with('error', 'Username atau password salah!');
       }
 
    }
