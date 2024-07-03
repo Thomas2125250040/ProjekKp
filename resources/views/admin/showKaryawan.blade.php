@@ -13,7 +13,6 @@
                 <img src="{{ asset('storage/' . $karyawan->foto) }}" width="180" height="240" />
             @endif
 
-
             <div style="margin-top: 30px;"></div>
 
             <table class="table">

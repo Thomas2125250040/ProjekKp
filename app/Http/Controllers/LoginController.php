@@ -43,13 +43,10 @@ class LoginController extends Controller
          switch ($user->hak_akses) {
             case 'Admin':
                return redirect('laporan');
-               break;
             case 'General Manager':
                return redirect('laporan');
-               break;
             case 'Director':
                return redirect('laporan');
-               break;
          }
       } else {
          return redirect()->back()->with('error', 'Username atau password salah!');
