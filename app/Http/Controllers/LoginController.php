@@ -33,7 +33,7 @@ class LoginController extends Controller
    //   $user = User::where('username', $username)->first();
    $user = DB::table('users')
             ->join('karyawan', 'users.id_karyawan', '=', 'karyawan.id')
-            ->select('users.*', 'karyawan.nama')
+            ->select('users.*', 'karyawan.nama', 'karyawan.foto')
             ->where('users.username', $username)
             ->first();
    //   dd($user);   
@@ -42,6 +42,8 @@ class LoginController extends Controller
       session(['hak_akses' => $user->hak_akses]);
       session(['username' => $user->username]);
       session(['nama' => $user->nama]);
+      session(['foto' => $user->foto]);
+  
   
       // Redirect based on user's role
       switch ($user->hak_akses) {

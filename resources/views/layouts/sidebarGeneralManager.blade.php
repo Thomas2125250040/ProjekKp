@@ -2,13 +2,23 @@
     <!-- Sidebar scroll-->
     <div>
         <div class="brand-logo d-flex align-items-center justify-content-between mt-3 mb-4">
-            <a href="./index.html" class="logo-img d-flex align-items-center">
-                <img class="rounded-circle me-3" src="/assets/images/profile/user-1.jpg" width="60" height="60" alt="">
+            <div class="logo-img d-flex align-items-center">
+                @php
+                    $foto = session('foto');
+                    $defaultFoto = '/assets/images/profile/user-1.jpg'; ; // Nama file default gambar
+                @endphp
+            
+                @if ($foto && file_exists(public_path('storage/' . $foto)))
+                    <img class="rounded-circle me-3" src="{{ asset('storage/' . $foto) }}" alt="" width="60" height="60">
+                @else
+                    <img class="rounded-circle me-3" src="{{ asset($defaultFoto) }}" alt="" width="60" height="60">
+                @endif
+            
                 <div>
-                    <div>{{session('nama')}}</div>
-                    <div class="fs-1 text-danger" style="color:dimgray;">{{session('hak_akses')}}</div>
+                    <div>{{ session('nama') }}</div>
+                    <div class="fs-1 text-danger" style="color: dimgray;">{{ session('hak_akses') }}</div>
                 </div>
-            </a>
+            </div>
         </div>
     <!-- Sidebar navigation-->
     <nav class="sidebar-nav scroll-sidebar" data-simplebar="">

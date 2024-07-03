@@ -34,7 +34,7 @@ class KaryawanController extends Controller
         'tempat_lahir'=> 'required',
         'tanggal_lahir'=> 'required',
         'alamat'=> 'required',
-        'foto' => 'nullable|file|image|max:5000',
+        'foto' => 'nullable|file|image',
         'agama'=> 'required',
         'no_telp'=> 'required',
         ]);
@@ -82,7 +82,7 @@ class KaryawanController extends Controller
             'tempat_lahir'=> 'required',
             'tanggal_lahir'=> 'required',
             'alamat'=> 'required',
-            'foto'=> 'required',
+            'foto' => 'nullable|file|image',
             'agama'=> 'required',
             'no_telp'=> 'required',
         ]);
@@ -115,7 +115,7 @@ class KaryawanController extends Controller
             'no_telp' => $request->no_telp,
         ]);
 
-        return redirect("karyawan")->with("success", "Biodata " . $request->nama . " berhasil diperbarui.");
+        return redirect()->route('login-page')->with("success", "Biodata " . $request->nama . " berhasil diperbarui. Silahkan login ulang");
     }
 
     /**
