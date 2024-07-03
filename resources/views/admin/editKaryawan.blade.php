@@ -30,15 +30,16 @@
                                 <label class="form-label">Jenis Kelamin</label>
                                 <div class="form-check">
                                     <input type="radio" id="laki-laki" name="jenis_kelamin" class="form-check-input"
-                                        value="Laki-laki" @if (old('jenis_kelamin', 'Laki-laki') == 'Laki-laki') checked @endif>
+                                        value="Laki-laki" @if (old('jenis_kelamin', $karyawan->jenis_kelamin) == 'Laki-laki') checked @endif>
                                     <label class="form-check-label" for="laki-laki">Laki-laki</label>
                                 </div>
                                 <div class="form-check">
                                     <input type="radio" id="perempuan" name="jenis_kelamin" class="form-check-input"
-                                        value="Perempuan" @if (old('jenis_kelamin', 'Perempuan') == 'Perempuan') checked @endif>
+                                        value="Perempuan" @if (old('jenis_kelamin', $karyawan->jenis_kelamin) == 'Perempuan') checked @endif>
                                     <label class="form-check-label" for="perempuan">Perempuan</label>
                                 </div>
                             </div>
+                            
 
                             <div class="mb-4">
                                 <label class= "form-label" for="agama">Agama</label>
