@@ -115,7 +115,9 @@ class KaryawanController extends Controller
             'no_telp' => $request->no_telp,
         ]);
 
-        return redirect()->route('login-page')->with("success", "Biodata " . $request->nama . " berhasil dipA erbarui. Silahkan login ulang");
+        session(['foto' => $karyawan->foto]);
+
+        return redirect('karyawan')->with("success", "Biodata " . $request->nama . " berhasil diperbarui.");
     }
 
     /**
