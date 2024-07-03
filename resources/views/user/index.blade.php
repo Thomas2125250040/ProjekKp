@@ -6,7 +6,16 @@
                 <div class="d-flex align-items-center">
                     <h5 class="card-title fw-semibold" style="margin-bottom: 0">Data User</h5>
                 </div>
-                <a href="{{ url('users/create') }}" class="btn btn-primary">Tambah</a>
+
+                @if (count($karyawan) == 0)
+                    <button class="btn btn-primary" disabled>Tambah</button>
+                    <div class="alert alert-warning">
+                        Tidak ada data karyawan, harap tambahkan data karyawan dahulu!
+                    </div>
+                @else
+                    <a href="{{ url('users/create') }}" class="btn btn-primary">Tambah</a>
+                @endif
+
             </div>
             @if (Session::get('success'))
                 <div class="alert alert-success">
@@ -23,32 +32,32 @@
                     </tr>
                 </thead>
                 <tbody>
-                @foreach ($users as $row)
-                    <tr>
-                        <td>{{ $row->username }}</td>
-                        <td>{{ $row->nama }}</td>
-                        <td>{{ $row->hak_akses }}</td>
-                        <td>
-                            <form method="POST" action="{{ route('users.destroy', $row->id_karyawan) }}">
-                                @csrf
-                                @method('delete')
-                                <button type="submit" class="btn btn-danger fs-1 hapus_user" data-toggle="tooltip"
-                                    title='Delete' data-nama='{{ $row->nama }}'>Hapus</button>
-                                <a href="{{ route('users.edit', $row->id_karyawan) }}"
-                                    class="btn btn-primary fs-1">Ubah</a>
-                            </form>
-                        </td>
-                    </tr>
-                @endforeach
+                    @foreach ($users as $row)
+                        <tr>
+                            <td>{{ $row->username }}</td>
+                            <td>{{ $row->nama }}</td>
+                            <td>{{ $row->hak_akses }}</td>
+                            <td>
+                                <form method="POST" action="{{ route('users.destroy', $row->id_karyawan) }}">
+                                    @csrf
+                                    @method('delete')
+                                    <button type="submit" class="btn btn-danger fs-1 hapus_user" data-toggle="tooltip"
+                                        title='Delete' data-nama='{{ $row->nama }}'>Hapus</button>
+                                    <a href="{{ route('users.edit', $row->id_karyawan) }}"
+                                        class="btn btn-primary fs-1">Ubah</a>
+                                </form>
+                            </td>
+                        </tr>
+                    @endforeach
                 </tbody>
             </table>
         </div>
     </div>
 @endsection
 @section('extra_scripts')
-<script>
-$(document).ready( function () {
-    $('#myTable').DataTable();
-});
-</script>
+    <script>
+        $(document).ready(function() {
+            $('#myTable').DataTable();
+        });
+    </script>
 @endsection

@@ -30,11 +30,11 @@ class JabatanController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'id' => 'required',
+            'id' => 'required|unique:jabatan,id',
             'nama' => 'required',
-            'gaji_pokok' => 'required',
-            'uang_makan' => 'required',
-            'uang_lembur' => 'required'
+            'gaji_pokok' => 'required|numeric',
+            'uang_makan' => 'required|numeric',
+            'uang_lembur' => 'required|numeric'
         ]);
 
         $jabatan = new Jabatan([
@@ -66,16 +66,16 @@ class JabatanController extends Controller
         $validasi = $request->validate([
             'id' => 'required',
             'nama' => 'required',
-            'gaji_pokok' => 'required',
-            'uang_makan' => 'required',
-            'uang_lembur' => 'required'
+            'gaji_pokok' => 'required|numeric',
+            'uang_makan' => 'required|numeric',
+            'uang_lembur' => 'required|numeric'
         ]);
 
         // $jabatanSebelum = Jabatan::find($id);
         // $namaJabatanSebelum = $jabatanSebelum->nama;
 
         Jabatan::find($id)->update($validasi);
-        return redirect("jabatan")->with("success", 'Jabatan "'.$request->nama.'" berhasil diperbarui.');
+        return redirect("jabatan")->with("success", 'Jabatan "' . $request->nama . '" berhasil diperbarui.');
     }
 
     /**
@@ -84,7 +84,7 @@ class JabatanController extends Controller
     public function destroy(Jabatan $jabatan)
     {
         $jabatan->delete();
-        return redirect()->route('jabatan.index')->with("success", 'Jabatan "'.$jabatan->nama.'" berhasil dihapus.');
+        return redirect()->route('jabatan.index')->with("success", 'Jabatan "' . $jabatan->nama . '" berhasil dihapus.');
     }
 
 }

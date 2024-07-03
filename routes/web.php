@@ -16,7 +16,7 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', [LoginController::class, 'index'])->name('login-page');
 Route::post('/', [LoginController::class, 'login'])->name('login');
 Route::get('/logout', [LoginController::class, 'logout'])->name('logout');
-Route::get('/error', function() {
+Route::get('/error', function () {
     return view('user.error');
 });
 

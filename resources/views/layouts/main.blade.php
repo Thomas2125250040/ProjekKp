@@ -5,9 +5,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>CV Anugrah Abadi</title>
-    {{-- <link rel="shortcut icon" type="image/png" href="../assets/images/logos/favicon.png" /> --}}
     <link rel="shortcut icon" type="image/png" href="{{ asset('assets/images/logos/favicon.png') }}" />
-    {{-- <link rel="stylesheet" href="../assets/css/styles.min.css" /> --}}
     <link rel="stylesheet" href="{{ asset('assets/css/styles.min.css') }}" />
     <link rel="stylesheet" href="https://cdn.datatables.net/2.0.8/css/dataTables.dataTables.css" />
 </head>
@@ -17,14 +15,14 @@
     <div class="page-wrapper" id="main-wrapper" data-layout="vertical" data-navbarbg="skin6" data-sidebartype="full"
         data-sidebar-position="fixed" data-header-position="fixed">
         @if (session('hak_akses') === 'Admin')
-        @include('layouts.sidebarAdmin')
-    @elseif (session('hak_akses') === 'General Manager')
-        @include('layouts.sidebarGeneralManager')
-    @elseif (session('hak_akses') === 'Director')
-        @include('layouts.sidebarDirector')
-    @else
-        {{-- Handle default case --}}
-    @endif
+            @include('layouts.sidebarAdmin')
+        @elseif (session('hak_akses') === 'General Manager')
+            @include('layouts.sidebarGeneralManager')
+        @elseif (session('hak_akses') === 'Director')
+            @include('layouts.sidebarDirector')
+        @else
+            {{-- Handle default case --}}
+        @endif
 
         <!--  Main wrapper -->
         <div class="body-wrapper">
@@ -96,7 +94,7 @@
                     }
                 });
         });
-        
+
         $('.hapus_user').click(function(event) {
             var form = $(this).closest("form");
             var nama = $(this).data("nama");

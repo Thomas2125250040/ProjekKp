@@ -15,7 +15,8 @@ class RegisterController extends Controller
     public function index()
     {
         $users = DB::select('select users.*, karyawan.nama from users,karyawan where karyawan.id = users.id_karyawan');
-        return view("user.index", ["users" => $users]);
+        $karyawan = DB::select('select * from karyawan');
+        return view("user.index", ["users" => $users], ["karyawan" => $karyawan]);
     }
 
     public function store(Request $request)

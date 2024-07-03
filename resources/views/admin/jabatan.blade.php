@@ -25,34 +25,33 @@
                     </tr>
                 </thead>
                 <tbody>
-                @foreach ($jabatan as $row)
-                    <tr>
-                        <td>{{ $row->id }}</td>
-                        <td>{{ $row->nama }}</td>
-                        <td>{{ $row->gaji_pokok }}</td>
-                        <td>{{ $row->uang_makan }}</td>
-                        <td>{{ $row->uang_lembur }}</td>
-                        <td>
-                            <form method="POST" action="{{ route('jabatan.destroy', $row->id) }}">
-                                @csrf
-                                @method('delete')
-                                <button type="submit" class="btn btn-danger fs-1 hapus_jabatan" data-toggle="tooltip"
-                                    title='Delete' data-nama='{{ $row->nama }}'>Hapus</button>
-                                <a href="{{ route('jabatan.edit', $row->id) }}"
-                                    class="btn btn-primary fs-1">Ubah</a>
-                            </form>
-                        </td>
-                    </tr>
-                @endforeach
+                    @foreach ($jabatan as $row)
+                        <tr>
+                            <td>{{ $row->id }}</td>
+                            <td>{{ $row->nama }}</td>
+                            <td>{{ $row->gaji_pokok }}</td>
+                            <td>{{ $row->uang_makan }}</td>
+                            <td>{{ $row->uang_lembur }}</td>
+                            <td>
+                                <form method="POST" action="{{ route('jabatan.destroy', $row->id) }}">
+                                    @csrf
+                                    @method('delete')
+                                    <button type="submit" class="btn btn-danger fs-1 hapus_jabatan" data-toggle="tooltip"
+                                        title='Delete' data-nama='{{ $row->nama }}'>Hapus</button>
+                                    <a href="{{ route('jabatan.edit', $row->id) }}" class="btn btn-primary fs-1">Ubah</a>
+                                </form>
+                            </td>
+                        </tr>
+                    @endforeach
                 </tbody>
             </table>
         </div>
     </div>
 @endsection
 @section('extra_scripts')
-<script>
-$(document).ready( function () {
-    $('#myTable').DataTable();
-});
-</script>
+    <script>
+        $(document).ready(function() {
+            $('#myTable').DataTable();
+        });
+    </script>
 @endsection

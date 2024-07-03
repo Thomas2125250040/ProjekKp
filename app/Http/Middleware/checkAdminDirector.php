@@ -8,11 +8,6 @@ use Symfony\Component\HttpFoundation\Response;
 
 class checkAdminDirector
 {
-    /**
-     * Handle an incoming request.
-     *
-     * @param  \Closure(\Illuminate\Http\Request): (\Symfony\Component\HttpFoundation\Response)  $next
-     */
     public function handle($request, Closure $next)
     {
         if (session()->has('hak_akses') && in_array(session('hak_akses'), ['Admin', 'Director'])) {

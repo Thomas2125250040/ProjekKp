@@ -62,13 +62,14 @@ class LoginController extends Controller
    //    return view('user.index');
    // }
 
-   public function logout(){
-    Auth::logout(); // Menghapus sesi autentikasi pengguna
-    Session::forget('hak_akses'); // Menghapus data hak_akses dari session
-    Session::forget('username'); // Menghapus data username dari session
-    Session::forget('nama'); // Menghapus data nama dari session
-    Session::forget('foto'); // Menghapus data foto dari session
+   public function logout()
+   {
+      Auth::logout();
+      Session::forget('hak_akses');
+      Session::forget('username');
+      Session::forget('nama');
+      Session::forget('foto');
 
-    return redirect('/')->with('success', 'Anda telah berhasil logout.');
+      return redirect('/')->with('success', 'Anda telah berhasil logout.');
    }
 }

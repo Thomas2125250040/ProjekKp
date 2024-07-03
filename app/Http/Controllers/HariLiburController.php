@@ -30,7 +30,7 @@ class HariLiburController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'keterangan' => 'required',
+            'keterangan' => 'required|unique:libur,keterangan',
             'tanggal_mulai' => 'required',
             'tanggal_selesai' => 'required',
         ]);

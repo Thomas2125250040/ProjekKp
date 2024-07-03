@@ -121,7 +121,6 @@ class KaryawanController extends Controller
     }
 
     /**
-     * ';LEWA
      * Display the specified resource.
      */
     public function show($id)

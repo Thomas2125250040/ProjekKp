@@ -10,7 +10,6 @@
 </head>
 
 <body>
-    <!--  Body Wrapper -->
     <div class="page-wrapper" id="main-wrapper" data-layout="vertical" data-navbarbg="skin6" data-sidebartype="full"
         data-sidebar-position="fixed" data-header-position="fixed">
         <div
@@ -21,30 +20,35 @@
                         <div class="card mb-0">
                             <div class="card-body">
                                 <h3 class="text-center lh-lg mb-4">
-                                    <b>CV ANUGRAH ABADI PALEMBANG</b> 
+                                    <b>CV ANUGRAH ABADI PALEMBANG</b>
                                 </h3>
                                 @if (Session::get('success'))
-                                <div class="alert alert-success">
-                                    {{ Session::get('success') }}
-                                </div>
+                                    <div class="alert alert-success">
+                                        {{ Session::get('success') }}
+                                    </div>
                                 @endif
                                 @if (Session::get('error'))
-                                <div class="alert alert-danger">
-                                    {{ Session::get('error') }}
-                                </div>
+                                    <div class="alert alert-danger">
+                                        {{ Session::get('error') }}
+                                    </div>
                                 @endif
-                
+
                                 <form action="{{ route('login') }}" method="POST">
                                     @csrf
                                     <div class="mb-3">
-                                        <label for="username" class="form-label" aria-autocomplete="off">Username</label>
-                                        <input type="text" class="form-control" id="username" name="username" autocomplete="off" required>
+                                        <label for="username" class="form-label"
+                                            aria-autocomplete="off">Username</label>
+                                        <input type="text" class="form-control" id="username" name="username"
+                                            autocomplete="off" required>
                                     </div>
                                     <div class="mb-4">
-                                        <label for="password" class="form-label" aria-autocomplete="off">Password</label>
-                                        <input type="password" class="form-control" id="password" name="password" autocomplete="off" required>
+                                        <label for="password" class="form-label"
+                                            aria-autocomplete="off">Password</label>
+                                        <input type="password" class="form-control" id="password" name="password"
+                                            autocomplete="off" required>
                                     </div>
-                                    <button type="submit" class="btn btn-primary w-100 py-8 fs-4 mb-4 rounded-2">Login</button>
+                                    <button type="submit"
+                                        class="btn btn-primary w-100 py-8 fs-4 mb-4 rounded-2">Login</button>
                                 </form>
                             </div>
                         </div>
