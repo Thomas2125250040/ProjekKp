@@ -113,14 +113,14 @@
                     </a>
                 </li>
 
-                <li class="sidebar-item">
+                {{-- <li class="sidebar-item">
                     <a class="sidebar-link" href="{{ url('#') }}" aria-expanded="false">
                         <span>
                             <i class="ti ti-settings"></i>
                         </span>
                         <span class="hide-menu">Pengaturan</span>
                     </a>
-                </li>
+                </li> --}}
 
                 <li class="sidebar-item mb-5">
                     <a class="sidebar-link" href="{{ route('logout') }}" aria-expanded="false">
