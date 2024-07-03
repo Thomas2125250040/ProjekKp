@@ -29,7 +29,7 @@
             </li>
           
             <li class="sidebar-item">
-                <a class="sidebar-link" href="{{url('absensi/')}}" aria-expanded="false">
+                <a class="sidebar-link" href="{{url('absensi/ubah')}}" aria-expanded="false">
                     <span>
                         <i class="ti ti-edit"></i>
                     </span>
