@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('gaji', function (Blueprint $table) {
             $table->char('tahun', 4);
-            $table->char('bulan', 1);
+            $table->char('bulan', 2);
             $table->primary(['tahun', 'bulan']);
             $table->string('id_jabatan');
             $table->foreign('id_jabatan')->references('id')->on('jabatan')->cascadeOnUpdate();

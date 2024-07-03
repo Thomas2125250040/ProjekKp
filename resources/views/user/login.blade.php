@@ -28,9 +28,11 @@
                                     {{ Session::get('success') }}
                                 </div>
                                 @endif
-                                @error('username')
-                                    <div class="alert alert-danger">{{ $message }}</div>
-                                @enderror
+                                @if (Session::get('error'))
+                                <div class="alert alert-danger">
+                                    {{ Session::get('error') }}
+                                </div>
+                                @endif
                 
                                 <form action="{{ route('login') }}" method="POST">
                                     @csrf

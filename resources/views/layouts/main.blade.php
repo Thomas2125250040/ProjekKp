@@ -1,5 +1,6 @@
 <!doctype html>
 <html lang="en">
+
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -10,11 +11,21 @@
     <link rel="stylesheet" href="{{ asset('assets/css/styles.min.css') }}" />
     <link rel="stylesheet" href="https://cdn.datatables.net/2.0.8/css/dataTables.dataTables.css" />
 </head>
+
 <body>
     <!--  Body Wrapper -->
     <div class="page-wrapper" id="main-wrapper" data-layout="vertical" data-navbarbg="skin6" data-sidebartype="full"
         data-sidebar-position="fixed" data-header-position="fixed">
-        @include('layouts.sidebar')
+        @if (session('hak_akses') === 'Admin')
+        @include('layouts.sidebarAdmin')
+    @elseif (session('hak_akses') === 'General Manager')
+        @include('layouts.sidebarGeneralManager')
+    @elseif (session('hak_akses') === 'Director')
+        @include('layouts.sidebarDirector')
+    @else
+        {{-- Handle default case --}}
+    @endif
+
         <!--  Main wrapper -->
         <div class="body-wrapper">
             <div class="container-fluid" style="padding-top: 24px;">

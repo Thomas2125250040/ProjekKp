@@ -5,8 +5,8 @@
             <a href="./index.html" class="logo-img d-flex align-items-center">
                 <img class="rounded-circle me-3" src="/assets/images/profile/user-1.jpg" width="60" height="60" alt="">
                 <div>
-                    <div>{{ Auth::user()->hak_akses }}</div>
-                    <div class="fs-1 text-danger" style="color:dimgray;">Admin</div>
+                    <div>{{session('nama')}}</div>
+                    <div class="fs-1 text-danger" style="color:dimgray;">{{session('hak_akses')}}</div>
                 </div>
             </a>
         </div>

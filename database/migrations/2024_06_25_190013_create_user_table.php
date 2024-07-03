@@ -16,7 +16,7 @@ return new class extends Migration
             $table->foreign('id_karyawan')->references('id')->on('karyawan')->cascadeOnDelete()->cascadeOnUpdate();
             $table->string('username');
             $table->string('password');
-            $table->enum('hak_akses', ['Director', 'Manajer', 'Admin']);
+            $table->enum('hak_akses', ['Director', 'General Manager', 'Admin']);
             $table->rememberToken();
             $table->timestamps();
         });
