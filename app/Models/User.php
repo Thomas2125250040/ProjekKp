@@ -12,8 +12,10 @@ class User extends Authenticatable
     use HasFactory, Notifiable;
 
     protected $table = "users";
-
+    protected $keyType = 'string';
+    protected $primaryKey = 'id_karyawan';
     /**
+     * 
      * The attributes that are mass assignable.
      *
      * @var array<int, string>

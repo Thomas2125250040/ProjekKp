@@ -6,7 +6,7 @@
             <h5 class="card-title fw-semibold mb-4">Tambah Username</h5>
             <div class="card">
                 <div class="card-body">
-                    <form method="POST" action="{{ route('save') }}">
+                    <form method="POST" action="{{ route('users.store')}}">
                         @csrf
                         <div class="mb-4">
                             <label for="id_karyawan" class="form-label">Id Karyawan</label>
@@ -30,7 +30,7 @@
                             <label class="form-label">Hak Akses</label>
                             <div class="form-check">
                                 <input type="radio" id="perempuan" name="hak_akses" class="form-check-input"
-                                    value="Manajer" @if (old('hak_akses') == 'General Manager') checked @endif>
+                                    value="General Manager" @if (old('hak_akses') == 'General Manager') checked @endif>
                                 <label class="form-check-label" for="manajer">General Manager</label>
                             </div>
                             <div class="form-check">

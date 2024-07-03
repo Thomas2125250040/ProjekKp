@@ -58,7 +58,7 @@ class KaryawanController extends Controller
         ]);
 
         $karyawan->save();
-        return redirect()->route('karyawan.index')->with('success', "Biodata " . $request->nama . " berhasil ditambahkan.");
+        return redirect()->route('karyawan.index')->with('success', 'Biodata "' . $request->nama . '" berhasil ditambahkan.');
     }
 
     public function edit($id)

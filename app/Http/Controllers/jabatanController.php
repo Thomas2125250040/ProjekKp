@@ -75,7 +75,7 @@ class JabatanController extends Controller
         // $namaJabatanSebelum = $jabatanSebelum->nama;
 
         Jabatan::find($id)->update($validasi);
-        return redirect("jabatan")->with("success", 'Jabatan "'.$request->nama.'" berhasil dihapus.');
+        return redirect("jabatan")->with("success", 'Jabatan "'.$request->nama.'" berhasil diperbarui.');
     }
 
     /**

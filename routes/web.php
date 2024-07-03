@@ -9,6 +9,7 @@ use App\Http\Middleware\checkHakAkses;
 use App\Http\Middleware\checkDirector;
 use App\Http\Middleware\checkAdmin;
 use App\Http\Middleware\checkGeneralManager;
+use App\Http\Controllers\RegisterController;
 use App\Http\Middleware\checkAdminDirector;
 use Illuminate\Support\Facades\Route;
 
@@ -28,6 +29,7 @@ Route::middleware([checkHakAkses::class])->group(function () {
         Route::get('gaji', [AbsensiController::class, 'gaji'])->name('gaji');
         Route::get('register', [LoginController::class, 'register'])->name('register');
         Route::post('register', [LoginController::class, 'store'])->name('save');
+        Route::resource('users', RegisterController::class);
     });
 
     // Route untuk Admin

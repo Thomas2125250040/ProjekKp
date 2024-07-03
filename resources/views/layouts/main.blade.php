@@ -96,6 +96,24 @@
                     }
                 });
         });
+        
+        $('.hapus_user').click(function(event) {
+            var form = $(this).closest("form");
+            var nama = $(this).data("nama");
+            event.preventDefault();
+            swal({
+                    title: `Apakah Anda yakin ingin menghapus hak akses  ${nama} ?`,
+                    text: `Dengan menekan tombol OK, maka hak akses  ${nama} akan hilang selamanya!`,
+                    icon: "warning",
+                    buttons: true,
+                    dangerMode: true,
+                })
+                .then((willDelete) => {
+                    if (willDelete) {
+                        form.submit();
+                    }
+                });
+        });
     </script>
     @yield('extra_scripts')
 </body>
