@@ -117,7 +117,7 @@ class KaryawanController extends Controller
 
         session(['foto' => $karyawan->foto]);
 
-        return redirect('karyawan')->with("success", "Biodata " . $request->nama . " berhasil diperbarui.");
+        return redirect()->route('karyawan.index')->with('success', 'Biodata "' . $request->nama . '" berhasil diperbarui.');
     }
 
     /**

@@ -9,19 +9,21 @@ use App\Http\Middleware\checkHakAkses;
 use App\Http\Middleware\checkDirector;
 use App\Http\Middleware\checkAdmin;
 use App\Http\Middleware\checkGeneralManager;
+use App\Http\Middleware\antiLoginLagi;
 use App\Http\Controllers\RegisterController;
 use App\Http\Middleware\checkAdminDirector;
 use Illuminate\Support\Facades\Route;
 
-Route::get('/', [LoginController::class, 'index'])->name('login-page');
-Route::post('/', [LoginController::class, 'login'])->name('login');
-Route::get('/logout', [LoginController::class, 'logout'])->name('logout');
-Route::get('/error', function () {
-    return view('user.error');
+Route::middleware([antiLoginLagi::class])->group(function () {
+    Route::get('/', [LoginController::class, 'index'])->name('login-page');
+    Route::post('/', [LoginController::class, 'login'])->name('login');
 });
 
 Route::middleware([checkHakAkses::class])->group(function () {
-
+    Route::get('/logout', [LoginController::class, 'logout'])->name('logout');
+    Route::get('/error', function () {
+        return view('user.error');
+    });
     Route::get('laporan', [AbsensiController::class, 'laporan'])->name("laporan");
     Route::get('log-harian', [AbsensiController::class, 'logharian'])->name("logharian");
 
