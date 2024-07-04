@@ -5,6 +5,7 @@ namespace Database\Seeders;
 use Database\Seeders\HariLiburSeeder;
 use Database\Seeders\JabatanSeeder;
 use Database\Seeders\KaryawanSeeder;
+use Database\Seeders\GajiSeeder;
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
@@ -18,5 +19,6 @@ class DatabaseSeeder extends Seeder
         $this->call(JabatanSeeder::class);
         $this->call(KaryawanSeeder::class);
         $this->call(UserSeeder::class);
+        $this->call(GajiSeeder::class);
     }
 }

@@ -13,17 +13,17 @@
             <div class="col-lg-4 col-sm-3">
                 <div class="input-group d-flex">
                     <select class="form-select" name="bulan">
-                        <option value="Islam">Januari</option>
-                        <option value="Katolik">Februari</option>
-                        <option value="Kristen">Maret</option>
-                        <option value="Hindu">April</option>
-                        <option value="Buddha">Mei</option>
-                        <option value="Konghucu">Juni</option>
-                        <option value="Konghucu">Juli</option>
-                        <option value="Konghucu">Agustus</option>
-                        <option value="Konghucu">September</option>
-                        <option value="Konghucu">Oktober</option>
-                        <option value="Konghucu">November</option>
+                        <option value="01">Januari</option>
+                        <option value="02">Februari</option>
+                        <option value="03">Maret</option>
+                        <option value="04">April</option>
+                        <option value="05">Mei</option>
+                        <option value="06">Juni</option>
+                        <option value="07">Juli</option>
+                        <option value="08">Agustus</option>
+                        <option value="09">September</option>
+                        <option value="10">Oktober</option>
+                        <option value="11">November</option>
                         <option value="Konghucu">Desember</option>
                     </select>
                     <input type="number" class="form-control" value="2024"/>

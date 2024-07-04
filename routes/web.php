@@ -28,7 +28,8 @@ Route::middleware([checkHakAkses::class])->group(function () {
     Route::get('log-harian', [AbsensiController::class, 'logharian'])->name("logharian");
 
     Route::middleware([CheckAdminDirector::class])->group(function () {
-        Route::get('gaji', [AbsensiController::class, 'gaji'])->name('gaji');
+        Route::get('/gaji', [AbsensiController::class, 'index'])->name('gaji.index');
+Route::post('/gaji/filter', [AbsensiController::class, 'filter'])->name('gaji.filter');Route::get('gaji', [AbsensiController::class, 'gaji'])->name('gaji');
         Route::get('register', [LoginController::class, 'register'])->name('register');
         Route::post('register', [LoginController::class, 'store'])->name('save');
         Route::resource('users', RegisterController::class);

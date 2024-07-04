@@ -12,9 +12,19 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('gaji', function (Blueprint $table) {
+            // $table->char('tahun', 4);
+            // $table->char('bulan', 2);
+            // $table->primary(['tahun', 'bulan']);
+            // $table->string('id_jabatan');
+            // $table->foreign('id_jabatan')->references('id')->on('jabatan')->cascadeOnUpdate();
+            // $table->integer('gaji_pokok');
+            // $table->mediumInteger('uang_makan');
+            // $table->mediumInteger('uang_lembur');
+            // $table->timestamps();
+
+            $table->increments('id');
             $table->char('tahun', 4);
             $table->char('bulan', 2);
-            $table->primary(['tahun', 'bulan']);
             $table->string('id_jabatan');
             $table->foreign('id_jabatan')->references('id')->on('jabatan')->cascadeOnUpdate();
             $table->integer('gaji_pokok');
