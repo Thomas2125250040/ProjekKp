@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\Karyawan;
+use App\Models\Absensi;
+use App\Models\HariLibur;
 use Carbon\Carbon;
 use DateTime;
 use Illuminate\Http\Request;
@@ -13,7 +15,22 @@ class AbsensiController extends Controller
 {
     public function masuk()
     {
-        return view('absensi.absenMasuk');
+        date_default_timezone_set('Asia/Jakarta');
+        $currentDate = now()->toDateString(); // Get the current date in 'Y-m-d' format
+        $absensi = Absensi::whereDate('tanggal', $currentDate)->get();
+        if ($absensi->isEmpty()){
+            $libur = HariLibur::whereDate('tanggal_mulai', '<=', $currentDate)
+                    ->whereDate('tanggal_selesai', '>=', $currentDate)
+                    ->get(['id']);
+            if (!$libur->isEmpty()) {
+                $absen = new Absensi([
+                    'id_libur' => $libur->first()->id,
+                    'tanggal' => $currentDate
+                ]);
+                $absen->save();
+            }
+        }
+        return view('absensi.absenMasuk')->with('error', "Tidak ada data absensi untuk hari ini, apakah Anda ingin membuat satu?");
     }
 
     /**
@@ -94,8 +111,8 @@ class AbsensiController extends Controller
         $data_izin = collect(Cache::get('izin', []));
         $nama_masuk = $data_masuk->pluck('nama');
         $nama_izin = $data_izin->pluck('nama');
-        $nama_alpha = Karyawan::all()->whereNotIn('nama', $nama_masuk->merge($nama_izin))->pluck('nama');
-        return view('absensi.absenIzin', ['alpha' => $nama_alpha, 'izin' => $nama_izin]);
+        $data_alpha = Karyawan::whereNotIn('nama', $nama_masuk->merge($nama_izin))->get(['id', 'nama']);
+        return view('absensi.absenIzin', ['alpha' => $data_alpha, 'izin' => $data_izin]);
     }
 
     // public function gaji() {
@@ -137,7 +154,7 @@ class AbsensiController extends Controller
         $cachedNames = collect($cache)->pluck('nama')->toArray();
         $data = Karyawan::where('nama', 'like', "%{$filter['q']}%")
             ->whereNotIn('nama', $cachedNames)
-            ->pluck('nama');
+            ->get(['id', 'nama']);
         if (count($data) >= 1) {
             return response()->json(['data' => $data]);
         } else {

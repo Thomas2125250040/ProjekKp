@@ -24,10 +24,10 @@
         </div>
         <div class="d-flex justify-content-center mt-4">
             <table class="table table-bordered">
-                <?php $no=1; ?>
                 <thead>
                     <tr>
                         <th scope="col">#</th>
+                        <th scope="col">Id</th>
                         <th scope="col">Nama</th>
                         <th scope="col">Waktu Masuk</th>
                         <th scope="col">Aksi</th>
@@ -133,19 +133,26 @@ let nameEmployee = [];
     let addedEmployees = [];
 
     function addToTable(element) {
-        const name = element.innerHTML;
+        const id = element.querySelector('span').textContent;
+        const nama = Array.from(element.childNodes)
+                .filter(node => node.nodeType === Node.TEXT_NODE)
+                .map(node => node.textContent)
+                .join('')
+                .trim();
         if (!addedEmployees.includes(name)) {
             const tbody = document.querySelector("table tbody");
             var newRow = document.createElement("tr");
             var rowNumber = tbody.rows.length + 1;
             const masuk = $('#timestamp').text();
             newRow.innerHTML = "<td scope='row'>" + rowNumber + "</td>"
-            + "<td>" + name + "</td>"
+            + "<td>" + id + "</td>"
+            + "<td>" + nama + "</td>"
             + "<td>" + masuk +"</td>"
             + "<td><i class=\"ti ti-circle-x fs-6\" onclick=\"delRow(this)\"></i></td>";
             tbody.appendChild(newRow);
             const employee = {
-                nama: name,
+                id: id,
+                nama: nama,
                 masuk: masuk
             };
             // Add to the list of added employees
@@ -212,12 +219,12 @@ function addSearchResult(data) {
     if (Array.isArray(data.data)) {
         const ul = document.createElement("ul");
         data.data.forEach(function(item) {
-            const nameExists = addedEmployees.some(employee => employee.name === item);
+            const nameExists = addedEmployees.some(employee => employee.name === item.nama);
             if (!nameExists){
                 const li = document.createElement("li");
                 li.className = "search-result";
                 li.setAttribute("onclick", "addToTable(this)");
-                li.textContent = item;
+                li.innerHTML = "<span class='d-none'>"+item.id+"</span>"+item.nama;
                 ul.appendChild(li);
             }
         

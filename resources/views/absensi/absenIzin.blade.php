@@ -16,6 +16,7 @@
             <thead>
                 <tr>
                     <th scope="col">#</th>
+                    <th scope="col">Id</th>
                     <th scope="col">Nama</th>
                     <th scope="col">Status</th>
                     <th scope="col">Keterangan</th>
@@ -23,20 +24,28 @@
                 </tr>
             </thead>
             <tbody>
-                <tr>
-                    <td>1</td>
-                    <td>Thomas Setiawan</td>
-                    <td>Alpha</td>
-                    <td><input type="text" class="form-control bg-light py-0 px-2"/></td>
-                    <td>-</td>
-                </tr>
-                <tr>
-                    <td>2</td>
-                    <td>Cindy Tri Sella</td>
-                    <td>Izin</td>
-                    <td><input type="text" class="form-control bg-light py-0 px-2"/></td>
-                    <td>-</td>
-                </tr>
+            @foreach($alpha as $row)
+            <tr class="align-middle">
+                <td></td>
+                <td>{{$row->id}}</td>
+                <td>{{$row->nama}}</td>
+                <td class="text-center">Alpha</td>
+                <td><input type="text" class="form-control bg-light"/></td>
+                <td>-</td>
+            </tr>
+            @endforeach
+            @foreach($izin as $row)
+            <tr class="align-middle">
+                <td></td>
+                <td>{{$row->id}}</td>
+                <td>{{$row->nama}}</td>
+                <td class="text-center">Izin</td>
+                <td><input type="text" class="form-control bg-light"/></td>
+                <td>-</td>
+            </tr>
+            @endforeach
+                
+                
             </tbody>
         </table>
     </div>
@@ -45,7 +54,21 @@
 @section('extra_scripts')
 <script>
     $(document).ready(function() {
-        $('#myTable').DataTable();
+        $('#myTable').DataTable({
+            "createdRow": function(row, data, dataIndex) {
+                    $(row).children().eq(0).html(dataIndex + 1);
+            }
+        });
+        // Add event listener for 'Enter' key press on input fields
+        $('#myTable').on('keypress', 'input', function(e) {
+            if (e.which == 13) { // Enter key pressed
+                var inputField = $(this);
+                var keterangan = inputField.val();
+                
+
+                
+            }
+        });
     });
 </script>
 @endsection
