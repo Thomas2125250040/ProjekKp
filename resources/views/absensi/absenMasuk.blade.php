@@ -14,7 +14,7 @@
                 echo date(' d-M-Y');?>
         </div>
         <div class="row text-center">
-            <div class="d-flex justify-content-center">
+            <div class="d-flex justify-content-center mt-3">
                 <input type="search" class="form-control rounded" placeholder="Search" aria-label="Search"
                     aria-describedby="search-addon" id="input" style="width: 60%;" />
             </div>
@@ -22,8 +22,8 @@
                 <div id="read"></div>
             </div>
         </div>
-        <div class="d-flex justify-content-center mt-3">
-            <table class="table table-striped mt-4" style="width: 90%">
+        <div class="d-flex justify-content-center mt-4">
+            <table class="table table-bordered">
                 <?php $no=1; ?>
                 <thead>
                     <tr>

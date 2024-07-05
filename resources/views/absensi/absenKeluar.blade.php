@@ -20,8 +20,7 @@
                 echo strftime('%A,');
                 echo date(' d-M-Y');?>
         </div>
-        <div class="d-flex justify-content-center">
-            <table class="table table-striped mt-4" style="width: 90%">
+            <table class="table table-hover mt-4" id="myTable">
                 <thead>
                     <tr>
                         <th scope="col">#</th>
@@ -35,12 +34,12 @@
                 <tbody>
                 @forelse ($data as $index => $row)
                     <tr>
-                        <td style="vertical-align: middle;">{{ $index + 1 }}</td>
-                        <td style="vertical-align: middle;">{{ $row['nama'] }}</td>
-                        <td style="vertical-align: middle;">{{ $row['masuk'] }}</td>
-                        <td class="waktuKeluar" style="vertical-align: middle;"><div class="btn btn-danger fs-1 p-2 py-1" onclick="setJamKeluar(this)">Tambah</div></td>
+                        <td>{{ $index + 1 }}</td>
+                        <td>{{ $row['nama'] }}</td>
+                        <td>{{ $row['masuk'] }}</td>
+                        <td class="waktuKeluar"><div class="btn btn-danger fs-1 p-2 py-1" onclick="setJamKeluar(this)">Tambah</div></td>
                         <td class="status">-</td>
-                        <td><i class="ti ti-circle-x fs-6" onclick="delWaktuKeluar(this)" style="vertical-align: middle"></i></td>
+                        <td><i class="ti ti-circle-x fs-6" onclick="delWaktuKeluar(this)"></i></td>
                     </tr>
                 @empty
                     <tr>
@@ -49,7 +48,6 @@
                 @endforelse
                 </tbody>
             </table>
-        </div>
     </div>
 </div>
 @endsection
@@ -57,6 +55,7 @@
 <script>
 $(document).ready(function () {
         setInterval(timestamp, 1000);
+        $('#myTable').DataTable();
 });
 function timestamp() {
     $.ajax({

@@ -84,18 +84,18 @@ class AbsensiController extends Controller
 
     public function keluar()
     {
-        $data = Cache::get("absen", []);
+        $data = Cache::get('absen', []);
         return view('absensi.absenKeluar', compact('data'));
     }
 
     public function izin()
     {
-        $data_masuk = collect(Cache::get("absen", []));
-        $data_izin = collect(Cache::get("izin", []));
+        $data_masuk = collect(Cache::get('absen', []));
+        $data_izin = collect(Cache::get('izin', []));
         $nama_masuk = $data_masuk->pluck('nama');
         $nama_izin = $data_izin->pluck('nama');
-        $nama_alpha = 
-        return view('absensi.absenIzin');
+        $nama_alpha = Karyawan::all()->whereNotIn('nama', $nama_masuk->merge($nama_izin))->pluck('nama');
+        return view('absensi.absenIzin', ['alpha' => $nama_alpha, 'izin' => $nama_izin]);
     }
 
     // public function gaji() {

@@ -10,18 +10,8 @@
                 echo strftime('%A,');
                 echo date(' d-M-Y');?>
             </div>
-            <div class="col-lg-3 col-sm-4">
-                <div class="input-group d-flex flex-nowrap">
-                    <div class="form-outline" data-mdb-input-init>
-                        <input type="search" id="form1" class="form-control" placeholder="Search"/>
-                    </div>
-                    <button type="button" class="btn btn-primary py-0" data-mdb-ripple-init>
-                        <i class="ti ti-search"></i>
-                    </button>
-                </div>
-            </div>
         </div>
-        <table class="table table-striped mt-4">
+        <table class="table mt-4"id="myTable">
             <?php $no=1; ?>
             <thead>
                 <tr>
@@ -36,23 +26,16 @@
                 <tr>
                     <td>1</td>
                     <td>Thomas Setiawan</td>
-                    <td><div class="btn btn-danger py-0 col-7">Alpha</div></td>
+                    <td>Alpha</td>
                     <td><input type="text" class="form-control bg-light py-0 px-2"/></td>
                     <td>-</td>
                 </tr>
                 <tr>
                     <td>2</td>
                     <td>Cindy Tri Sella</td>
-                    <td><div class="btn btn-danger py-0 col-7">Alpha</div></td>
+                    <td>Izin</td>
                     <td><input type="text" class="form-control bg-light py-0 px-2"/></td>
                     <td>-</td>
-                </tr>
-                <tr>
-                    <td>3</td>
-                    <td>Nicholas</td>
-                    <td><div class="btn btn-primary py-0 col-7">Izin</div></td>
-                    <td><input type="text" class="form-control bg-light py-0 px-2" disabled value="Sakit perut akibat kebanyakan makan pedas"/></td>
-                    <td><i class="ti ti-check text-success-emphasis fs-5"></i></td>
                 </tr>
             </tbody>
         </table>
@@ -60,4 +43,9 @@
 </div>
 @endsection
 @section('extra_scripts')
+<script>
+    $(document).ready(function() {
+        $('#myTable').DataTable();
+    });
+</script>
 @endsection
