@@ -38,7 +38,7 @@
             </table>
         </div>
         <div class="d-flex align-items-end mt-4 flex-column">
-            <button class="btn btn-primary py-2" style="width: 100px;" onclick="saveTable(this)" id="kirim">Kirim</button>
+            <button class="btn btn-primary py-2" style="width: 100px;" onclick="saveTable(this)">Kirim</button>
             <div id="keterangan_kirim"></div>
         </div>
     </div>
@@ -180,7 +180,6 @@ let nameEmployee = [];
 
     function saveTable(element) {
         element.innerHTML = "<div class=\"spinner-border spinner-border-sm\" role=\"status\"></div>";
-        const submitBtn = document.getElementById("kirim");
         const keterangan = document.getElementById("keterangan_kirim");
         keterangan.innerHTML ="";
         element.setAttribute("disabled",'');
@@ -189,14 +188,13 @@ let nameEmployee = [];
             url: "{{ route('absensi.cache') }}",
             data: {"data": addedEmployees},
             success: function(data){
-                console.log(data);
-                submitBtn.innerHTML = "Kirim";
-                submitBtn.removeAttribute("disabled");
+                element.innerHTML = "Kirim";
+                element.removeAttribute("disabled");
                 keterangan.innerHTML = "<div class=\"text-success\">"+ data + "</div>";
             },
             error: function(xhr, status, error) {
-                submitBtn.innerHTML = "Kirim";
-                submitBtn.removeAttribute("disabled");
+                element.innerHTML = "Kirim";
+                element.removeAttribute("disabled");
                 keterangan.innerHTML = "<div class=\"text-danger\">"+ error + "</div>";
             },
         })
@@ -212,12 +210,12 @@ function addSearchResult(data) {
     if (Array.isArray(data.data)) {
         const ul = document.createElement("ul");
         data.data.forEach(function(item) {
-            const nameExists = addedEmployees.some(employee => employee.name === item.nama_karyawan);
+            const nameExists = addedEmployees.some(employee => employee.name === item);
             if (!nameExists){
                 const li = document.createElement("li");
                 li.className = "search-result";
                 li.setAttribute("onclick", "addToTable(this)");
-                li.textContent = item.nama_karyawan;
+                li.textContent = item;
                 ul.appendChild(li);
             }
         

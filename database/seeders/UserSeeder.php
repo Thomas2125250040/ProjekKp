@@ -18,19 +18,19 @@ class UserSeeder extends Seeder
                 'id_karyawan' => "001",
                 'username' => "123",
                 'hak_akses' => "Admin",
-                'password' => Hash::make(123456),
+                'password' => Hash::make(123456)
             ],
             [
                 'id_karyawan' => "002",
                 'username' => "1234",
                 'hak_akses' => "General Manager",
-                'password' => Hash::make(123456),
+                'password' => Hash::make(123456)
             ],
             [
                 'id_karyawan' => "003",
                 'username' => "12345",
                 'hak_akses' => "Director",
-                'password' => Hash::make(123456),
+                'password' => Hash::make(123456)
             ],
         ]);
     }

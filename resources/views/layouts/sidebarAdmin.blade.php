@@ -30,7 +30,7 @@
                     <span class="hide-menu">Absensi</span>
                 </li>
                 <li class="sidebar-item">
-                    <a class="sidebar-link" href="{{ url('absensi/') }}" aria-expanded="false">
+                    <a class="sidebar-link" href="{{ route('absensi.masuk') }}" aria-expanded="false">
                         <span>
                             <i class="ti ti-transfer-in"></i>
                         </span>
@@ -38,7 +38,7 @@
                     </a>
                 </li>
                 <li class="sidebar-item">
-                    <a class="sidebar-link" href="{{ url('absensi/') }}" aria-expanded="false">
+                    <a class="sidebar-link" href="{{ route('absensi.keluar') }}" aria-expanded="false">
                         <span>
                             <i class="ti ti-transfer-out"></i>
                         </span>
@@ -46,7 +46,7 @@
                     </a>
                 </li>
                 <li class="sidebar-item">
-                    <a class="sidebar-link" href="{{ url('absensi/') }}" aria-expanded="false">
+                    <a class="sidebar-link" href="{{ route('absensi.izin') }}" aria-expanded="false">
                         <span>
                             <i class="ti ti-license-off"></i>
                         </span>

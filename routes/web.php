@@ -40,9 +40,12 @@ Route::post('/gaji/filter', [AbsensiController::class, 'filter'])->name('gaji.fi
         Route::resource('karyawan', KaryawanController::class);
         Route::resource('jabatan', JabatanController::class);
         Route::resource('hari-libur', HariLiburController::class);
-        Route::get('absensi/masuk', [AbsensiController::class, 'create']);
-        Route::get('absensi/izin', [AbsensiController::class, 'absenIzin'])->name('absensi.izin');
-        Route::get('absensi/keluar', [AbsensiController::class, 'absenKeluar'])->name('absensi.keluar');
+        Route::get('absensi/masuk', [AbsensiController::class, 'masuk'])->name('absensi.masuk');
+        Route::get('absensi/izin', [AbsensiController::class, 'izin'])->name('absensi.izin');
+        Route::get('absensi/keluar', [AbsensiController::class, 'keluar'])->name('absensi.keluar');
+        Route::get('search', [AbsensiController::class, 'search'])->name('absensi.search-karyawan');
+        Route::post('cache', [AbsensiController::class, 'cache'])->name('absensi.cache');
+        Route::get('cache', [AbsensiController::class, 'get_cache'])->name('absensi.get-cache');
     });
 
     // Route untuk Director
@@ -53,5 +56,9 @@ Route::post('/gaji/filter', [AbsensiController::class, 'filter'])->name('gaji.fi
     // Route untuk General Manager
     Route::middleware([CheckGeneralManager::class])->group(function () {
 
+    });
+
+    Route::get('test', function() {
+        return view('test');
     });
 });

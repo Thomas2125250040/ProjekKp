@@ -11,7 +11,7 @@ use Illuminate\Support\Facades\Cache;
 
 class AbsensiController extends Controller
 {
-    public function create()
+    public function masuk()
     {
         return view('absensi.absenMasuk');
     }
@@ -58,34 +58,39 @@ class AbsensiController extends Controller
 
     public function cache(Request $request)
     {
-        $temp = $request->data;
+        $new_data = $request->data;
+        if (empty($new_data)) {
+            return response()->json("",400);
+        }
         date_default_timezone_set('Asia/Jakarta');
         $current_time = Carbon::now();
         $next_midnight = Carbon::tomorrow()->startOfDay();
         $seconds_until_midnight = (int) abs($next_midnight->diffInSeconds($current_time));
-        Cache::put("absen", $temp, $seconds_until_midnight);
+        $old_data = Cache::get('absen');
+        // If there's no old data, initialize it as an empty array
+        if (is_null($old_data)) {
+            $old_data = [];
+        }
+        // Merge old data with new data
+        $merged_data = array_merge($old_data, $new_data);
+        Cache::put('absen', $merged_data, $seconds_until_midnight);
         return "Data berhasil disimpan.";
     }
 
-    public function getCache()
+    public function get_cache()
     {
-        return Cache::get("absen");
+        return Cache::get('absen');
     }
 
-    public function absenKeluar()
+    public function keluar()
     {
         $data = Cache::get("absen", []);
         return view('absensi.absenKeluar', compact('data'));
     }
 
-    public function absenIzin()
+    public function izin()
     {
         return view('absensi.absenIzin');
-    }
-
-    public function absensiEdit()
-    {
-        return view('absensi.editAbsensi');
     }
 
     // public function gaji() {
@@ -125,9 +130,9 @@ class AbsensiController extends Controller
         $filter = request()->query();
         $cache = Cache::get("absen", []);
         $cachedNames = collect($cache)->pluck('name')->toArray();
-        $data = Karyawan::where('nama_karyawan', 'like', "%{$filter['q']}%")
-            ->whereNotIn('nama_karyawan', $cachedNames)
-            ->pluck('nama_karyawan');
+        $data = Karyawan::where('nama', 'like', "%{$filter['q']}%")
+            ->whereNotIn('nama', $cachedNames)
+            ->pluck('nama');
         if (count($data) >= 1) {
             return response()->json(['data' => $data]);
         } else {
@@ -138,10 +143,5 @@ class AbsensiController extends Controller
     public function logHarian()
     {
         return view('absensi.logHarian');
-    }
-
-    public function test()
-    {
-        return view("absensi.test");
     }
 }
