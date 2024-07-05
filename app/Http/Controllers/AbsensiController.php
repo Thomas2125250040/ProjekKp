@@ -90,6 +90,11 @@ class AbsensiController extends Controller
 
     public function izin()
     {
+        $data_masuk = collect(Cache::get("absen", []));
+        $data_izin = collect(Cache::get("izin", []));
+        $nama_masuk = $data_masuk->pluck('nama');
+        $nama_izin = $data_izin->pluck('nama');
+        $nama_alpha = 
         return view('absensi.absenIzin');
     }
 
@@ -129,7 +134,7 @@ class AbsensiController extends Controller
     {
         $filter = request()->query();
         $cache = Cache::get("absen", []);
-        $cachedNames = collect($cache)->pluck('name')->toArray();
+        $cachedNames = collect($cache)->pluck('nama')->toArray();
         $data = Karyawan::where('nama', 'like', "%{$filter['q']}%")
             ->whereNotIn('nama', $cachedNames)
             ->pluck('nama');

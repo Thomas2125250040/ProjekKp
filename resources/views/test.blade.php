@@ -1,0 +1,1 @@
+<a href="/absensi/izin">Klik disini</a>

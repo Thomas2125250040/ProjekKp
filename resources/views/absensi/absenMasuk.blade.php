@@ -145,7 +145,7 @@ let nameEmployee = [];
             + "<td><i class=\"ti ti-circle-x fs-6\" onclick=\"delRow(this)\"></i></td>";
             tbody.appendChild(newRow);
             const employee = {
-                name: name,
+                nama: name,
                 masuk: masuk
             };
             // Add to the list of added employees

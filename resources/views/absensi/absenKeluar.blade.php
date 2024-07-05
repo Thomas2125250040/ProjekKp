@@ -36,7 +36,7 @@
                 @forelse ($data as $index => $row)
                     <tr>
                         <td style="vertical-align: middle;">{{ $index + 1 }}</td>
-                        <td style="vertical-align: middle;">{{ $row['name'] }}</td>
+                        <td style="vertical-align: middle;">{{ $row['nama'] }}</td>
                         <td style="vertical-align: middle;">{{ $row['masuk'] }}</td>
                         <td class="waktuKeluar" style="vertical-align: middle;"><div class="btn btn-danger fs-1 p-2 py-1" onclick="setJamKeluar(this)">Tambah</div></td>
                         <td class="status">-</td>
