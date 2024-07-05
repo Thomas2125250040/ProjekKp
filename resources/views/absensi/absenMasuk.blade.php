@@ -190,6 +190,8 @@ let nameEmployee = [];
             success: function(data){
                 element.innerHTML = "Kirim";
                 element.removeAttribute("disabled");
+                const tbody = document.querySelector("table tbody");
+                tbody.innerHTML = "";
                 keterangan.innerHTML = "<div class=\"text-success\">"+ data + "</div>";
             },
             error: function(xhr, status, error) {
