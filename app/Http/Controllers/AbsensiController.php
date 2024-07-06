@@ -161,15 +161,15 @@ class AbsensiController extends Controller
 
     public function search()
     {
-        $filter = request()->query();
-        $cache = Cache::get("absen", []);
-        $cachedNames = collect($cache)->pluck('nama')->toArray();
-        $data = Karyawan::where('nama', 'like', "%{$filter['q']}%")
-            ->whereNotIn('nama', $cachedNames)
+        $params = request()->query();
+        $id_absensi = $params['id'];
+        $q = $params['q'];
+        $data = Karyawan::where('nama', 'like', "%{$q}%")
             ->get(['id', 'nama']);
         if (count($data) >= 1) {
             return response()->json(['data' => $data]);
         } else {
+            dd($data);
             return response()->json('--Nama karyawan tidak ditemukan--');
         }
     }

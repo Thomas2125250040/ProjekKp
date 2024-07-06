@@ -111,6 +111,7 @@ let nameEmployee = [];
                     type: "get",
                     url: "{{ route('absensi.search-karyawan') }}",
                     data: {
+                        id: <?= $id_absensi ?>,
                         q: strcari
                     },
                     success: function (data) {
