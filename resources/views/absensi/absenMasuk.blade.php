@@ -3,29 +3,30 @@
 <meta name="csrf-token" content="{{ csrf_token() }}">
 <div class="card">
     <div class="card-body">
-        <div class="d-flex align-items-baseline mb-3">
+        <div class="d-flex align-items-baseline mb-1">
             <div class="card-title fw-semibold flex-grow-1">Absen Masuk</div>
             <div class="card-title fs-3">
                 <div id="timestamp"></div>
             </div>
         </div>
         @isset($error)
-        <div class="alert alert-danger d-flex justify-content-between align-items-center mb-5">
-            {{$error}}
-            <a class="btn btn-danger ms-3" href="{{route('absensi.buatSatu')}}">Buat Absensi</a>
-        </div>
+            <div class="alert alert-danger d-flex justify-content-between align-items-center mb-4">
+                {{$error}}
+                <a class="btn btn-danger ms-3" href="{{route('absensi.buatSatu')}}">Buat Absensi</a>
+            </div>
         @endisset
         @isset($libur)
-        <h3 class="text-danger text-center">{{$libur}}</h3>
+            <h3 class="text-danger text-center">{{$libur}}</h3>
         @endisset
         <div class="text-center mb-3"><?php
                 echo strftime('%A,');
                 echo date(' d-M-Y');?>
         </div>
         <div class="row text-center">
-            <div class="d-flex justify-content-center mt-3">
+            <div class="d-flex justify-content-center">
                 <input type="search" class="form-control rounded" placeholder="Search" aria-label="Search"
-                    aria-describedby="search-addon" id="input" style="width: 60%;" />
+                    aria-describedby="search-addon" id="input" style="width: 60%;"
+                    @if (isset($libur) or isset($error)) disabled @endif />
             </div>
             <div class="d-flex justify-content-center">
                 <div id="read"></div>
@@ -111,7 +112,6 @@ let nameEmployee = [];
                     type: "get",
                     url: "{{ route('absensi.search-karyawan') }}",
                     data: {
-                        id: <?= $id_absensi ?>,
                         q: strcari
                     },
                     success: function (data) {
@@ -203,7 +203,7 @@ let nameEmployee = [];
         $.ajax({
             type: "post",
             url: "{{ route('absensi.simpan-data-masuk') }}",
-            data: {"id_absensi": <?=$id_absensi ?>, "data": addedEmployees},
+            data: {"data": addedEmployees},
             success: function(data){
                 element.innerHTML = "Kirim";
                 element.removeAttribute("disabled");
