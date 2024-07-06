@@ -94,7 +94,7 @@
 @section('extra_scripts')
 <script>
 let currentRequest = null;
-let nameEmployee = [];
+let addedEmployees = [];
     $(document).ready(function () {
         setInterval(timestamp, 1000);
         $("#input").on("input",function () {
@@ -112,7 +112,8 @@ let nameEmployee = [];
                     type: "get",
                     url: "{{ route('absensi.search-karyawan') }}",
                     data: {
-                        q: strcari
+                        q: strcari,
+                        data: addedEmployees
                     },
                     success: function (data) {
                         addSearchResult(data);
@@ -140,8 +141,6 @@ let nameEmployee = [];
         });
     }
 
-    let addedEmployees = [];
-
     function addToTable(element) {
         const id = element.querySelector('span').textContent;
         const nama = Array.from(element.childNodes)
@@ -167,7 +166,6 @@ let nameEmployee = [];
             };
             // Add to the list of added employees
             addedEmployees.push(employee);
-            nameEmployee.push(name);
             element.remove();
             // Remove the <ul> if it becomes empty
             const ul = document.querySelector("#read ul");
@@ -179,12 +177,9 @@ let nameEmployee = [];
 
     function delRow(element) {
         const row = element.closest('tr');
-        const name = row.cells[1].innerHTML;
+        const id = row.cells[1].innerHTML;
         row.remove();
-        
-        // Remove from the list of added employees
-        addedEmployees = addedEmployees.filter(employee => employee.name !== name);
-        
+        addedEmployees = addedEmployees.filter(employee => employee.id !== id);
         updateRowNumbers();
     }
 

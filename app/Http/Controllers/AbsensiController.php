@@ -74,7 +74,7 @@ class AbsensiController extends Controller
 
     public function simpan_masuk(Request $request)
     {
-        $id_absensi = $request->id_absensi;
+        $id_absensi = Cache::get('id_absensi');
         $new_data = $request->data;
         if (empty($new_data)) {
             return response()->json("",400);
@@ -144,17 +144,18 @@ class AbsensiController extends Controller
     public function search()
     {
         $params = request()->query();
-        $id_absensi = Cache::get('id_absensi');
-        $nama_masuk = KaryawanAbsensi::with('karyawan')->where('id_absensi', $id_absensi)->get('id_karyawan')
-                    ->map(function($item){
-                        return $item ? $item->karyawan->nama : null;
-                    });
-        $nama_izin = KaryawanIzin::with('karyawan')->where('id_absensi', $id_absensi)->get('id_karyawan')
-                    ->map(function($item){
-                        return $item ? $item->karyawan->nama : null;
-                    });
-        $existedName = $nama_masuk->merge($nama_izin)->filter()->unique();
         $q = $params['q'];
+        $exist_on_page = collect($params['data'] ?? [])->pluck('nama');
+        $id_absensi = Cache::get('id_absensi');
+        $nama_masuk = KaryawanAbsensi::with('karyawan')->where('id_absensi', $id_absensi)->get('id_karyawan', 'nama')
+                    ->map(function($item){
+                        return $item ? $item->karyawan->nama : null;
+                    })->pluck('nama');
+        $nama_izin = KaryawanIzin::with('karyawan')->where('id_absensi', $id_absensi)->get('id_karyawan', 'nama')
+                    ->map(function($item){
+                        return $item ? $item->karyawan->nama : null;
+                    })->pluck('nama');
+        $existedName = $nama_masuk->merge($nama_izin)->merge($exist_on_page)->filter()->unique();
         $data = Karyawan::where('nama', 'like', "%{$q}%")
             ->whereNotIn('nama', $existedName)
             ->get(['id', 'nama']);
