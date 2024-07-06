@@ -45,6 +45,7 @@ Route::post('/gaji/filter', [AbsensiController::class, 'filter'])->name('gaji.fi
         Route::get('absensi/keluar', [AbsensiController::class, 'keluar'])->name('absensi.keluar');
         Route::get('search', [AbsensiController::class, 'search'])->name('absensi.search-karyawan');
         Route::post('save/masuk', [AbsensiController::class, 'simpan_masuk'])->name('absensi.simpan-data-masuk');
+        Route::post('save/izin', [AbsensiController::class, 'simpan_izin'])->name('absensi.simpan-data-izin');
         Route::get('absensi/buat', [AbsensiController::class, 'buat'])->name('absensi.buatSatu');
     });
 

@@ -90,6 +90,21 @@ class AbsensiController extends Controller
         return "Data berhasil disimpan.";
     }
 
+    public function simpan_izin(Request $request)
+    {
+        $id_karyawan = $request->id_karyawan;
+        $id_absensi = Cache::get('id_absensi');
+        $keterangan = $request->keterangan;
+        $izin = new KaryawanIzin([
+            'id_absensi'=> $id_absensi,
+            'id_karyawan'=> $id_karyawan,
+            'izin'=> 1,
+            'keterangan'=> $keterangan
+        ]);
+        $izin->save();
+        return "Data berhasil disimpan";
+    }
+
     public function keluar()
     {
         return view('absensi.absenKeluar', compact('data'));
