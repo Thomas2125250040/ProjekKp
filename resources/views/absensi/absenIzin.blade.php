@@ -67,6 +67,7 @@
 <script>
     $(document).ready(function() {
         $('#myTable').DataTable({
+            "order": [[3, 'asc']],
             "createdRow": function(row, data, dataIndex) {
                     $(row).children().eq(0).html(dataIndex + 1);
             }
