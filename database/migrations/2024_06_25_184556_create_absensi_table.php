@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('absensi', function (Blueprint $table) {
             $table->id();
-            $table->unsignedInteger('id_libur');
+            $table->unsignedInteger('id_libur')->nullable();
             $table->foreign('id_libur')->references('id')->on('libur')->cascadeOnUpdate();
             $table->date('tanggal');
             $table->timestamps();

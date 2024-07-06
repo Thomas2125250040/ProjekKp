@@ -9,6 +9,15 @@
                 <div id="timestamp"></div>
             </div>
         </div>
+        @isset($error)
+        <div class="alert alert-danger d-flex justify-content-between align-items-center mb-5">
+            {{$error}}
+            <a class="btn btn-danger ms-3" href="{{route('absensi.buatSatu')}}">Buat Absensi</a>
+        </div>
+        @endisset
+        @isset($libur)
+        <h3 class="text-danger text-center">{{$libur}}</h3>
+        @endisset
         <div class="text-center mb-3"><?php
                 echo strftime('%A,');
                 echo date(' d-M-Y');?>
@@ -38,7 +47,7 @@
             </table>
         </div>
         <div class="d-flex align-items-end mt-4 flex-column">
-            <button class="btn btn-primary py-2" style="width: 100px;" onclick="saveTable(this)">Kirim</button>
+            <button class="btn btn-primary py-2" style="width: 100px;" onclick="saveTable(this)" @if (isset($libur) or isset($error)) disabled @endif>Kirim</button>
             <div id="keterangan_kirim"></div>
         </div>
     </div>
@@ -192,13 +201,14 @@ let nameEmployee = [];
         element.setAttribute("disabled",'');
         $.ajax({
             type: "post",
-            url: "{{ route('absensi.cache') }}",
-            data: {"data": addedEmployees},
+            url: "{{ route('absensi.simpan-data-masuk') }}",
+            data: {"id_absensi": <?=$id_absensi ?>, "data": addedEmployees},
             success: function(data){
                 element.innerHTML = "Kirim";
                 element.removeAttribute("disabled");
                 const tbody = document.querySelector("table tbody");
                 tbody.innerHTML = "";
+                nameEmployee = [];
                 keterangan.innerHTML = "<div class=\"text-success\">"+ data + "</div>";
             },
             error: function(xhr, status, error) {

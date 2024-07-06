@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Karyawan;
 use App\Models\Absensi;
 use App\Models\HariLibur;
+use App\Models\KaryawanAbsensi;
 use Carbon\Carbon;
 use DateTime;
 use Illuminate\Http\Request;
@@ -18,19 +19,33 @@ class AbsensiController extends Controller
         date_default_timezone_set('Asia/Jakarta');
         $currentDate = now()->toDateString(); // Get the current date in 'Y-m-d' format
         $absensi = Absensi::whereDate('tanggal', $currentDate)->get();
-        if ($absensi->isEmpty()){
-            $libur = HariLibur::whereDate('tanggal_mulai', '<=', $currentDate)
+        $libur = HariLibur::whereDate('tanggal_mulai', '<=', $currentDate)
                     ->whereDate('tanggal_selesai', '>=', $currentDate)
-                    ->get(['id']);
+                    ->get(['id', 'keterangan']);
+        if ($absensi->isEmpty()){
             if (!$libur->isEmpty()) {
                 $absen = new Absensi([
                     'id_libur' => $libur->first()->id,
                     'tanggal' => $currentDate
                 ]);
                 $absen->save();
+                return view('absensi.absenMasuk')->with('libur', $libur->first()->keterangan);
             }
+            return view('absensi.absenMasuk')->with('error', "Tidak ada data absensi untuk hari ini, apakah Anda ingin membuat satu?");
+        } else if ($absensi->first()->id_libur){
+            return view('absensi.absenMasuk')->with('libur', $libur->first()->keterangan);
         }
-        return view('absensi.absenMasuk')->with('error', "Tidak ada data absensi untuk hari ini, apakah Anda ingin membuat satu?");
+        return view('absensi.absenMasuk')->with('id_absensi', $absensi->first()->id);
+    }
+
+    public function buat(){
+        date_default_timezone_set('Asia/Jakarta');
+        $currentDate = now()->toDateString(); // Get the current date in 'Y-m-d' format
+        $absen = new Absensi([
+            'tanggal' => $currentDate
+        ]);
+        $absen->save();
+        return redirect()->route('absensi.masuk');
     }
 
     /**
@@ -73,24 +88,21 @@ class AbsensiController extends Controller
         //
     }
 
-    public function cache(Request $request)
+    public function simpan_masuk(Request $request)
     {
+        $id_absensi = $request->id_absensi;
         $new_data = $request->data;
         if (empty($new_data)) {
             return response()->json("",400);
         }
-        date_default_timezone_set('Asia/Jakarta');
-        $current_time = Carbon::now();
-        $next_midnight = Carbon::tomorrow()->startOfDay();
-        $seconds_until_midnight = (int) abs($next_midnight->diffInSeconds($current_time));
-        $old_data = Cache::get('absen');
-        // If there's no old data, initialize it as an empty array
-        if (is_null($old_data)) {
-            $old_data = [];
+        foreach($new_data as $item){
+            $karyawan_absensi = new KaryawanAbsensi([
+                'id_absensi'=> $id_absensi,
+                'id_karyawan' => $item['id'],
+                'waktu_masuk' => $item['masuk']
+            ]);
+            $karyawan_absensi->save();
         }
-        // Merge old data with new data
-        $merged_data = array_merge($old_data, $new_data);
-        Cache::put('absen', $merged_data, $seconds_until_midnight);
         return "Data berhasil disimpan.";
     }
 
