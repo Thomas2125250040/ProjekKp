@@ -9,7 +9,7 @@ use Thiagoprz\CompositeKey\HasCompositeKey;
 class KaryawanIzin extends Model
 {
     use HasFactory, HasCompositeKey;
-    protected $table = 'karyawan_absensi';
+    protected $table = 'karyawan_izin';
     protected $primaryKey = ['id_karyawan', 'id_absensi'];
     public $incrementing = false;
     protected $fillable = [
