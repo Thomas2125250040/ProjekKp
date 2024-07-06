@@ -55,6 +55,7 @@
 $(document).ready(function () {
         setInterval(timestamp, 1000);
         $('#myTable').DataTable({
+            "order": [[4, 'desc']],
             "createdRow": function(row, data, dataIndex) {
                     $(row).children().eq(0).html(dataIndex + 1);
             }
