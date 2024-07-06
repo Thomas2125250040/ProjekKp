@@ -6,6 +6,7 @@ use App\Models\Karyawan;
 use App\Models\Absensi;
 use App\Models\HariLibur;
 use App\Models\KaryawanAbsensi;
+use App\Models\KaryawanIzin;
 use Carbon\Carbon;
 use DateTime;
 use Illuminate\Http\Request;
@@ -149,27 +150,36 @@ class AbsensiController extends Controller
     }
 
     public function filter(Request $request)
-{
+    {
     $bulan = $request->input('bulan');
     $tahun = $request->input('tahun');
 
     $gaji = DB::select("SELECT karyawan.nama, jabatan.nama as jabatan, gaji.gaji_pokok, gaji.uang_makan, gaji.uang_lembur FROM karyawan, jabatan, gaji WHERE karyawan.id_jabatan = jabatan.id AND jabatan.id = gaji.id_jabatan AND gaji.bulan = ? AND gaji.tahun = ?", [$bulan, $tahun]);
 
     return response()->json($gaji);
-}
+    }
 
 
     public function search()
     {
         $params = request()->query();
         $id_absensi = $params['id'];
+        $nama_masuk = KaryawanAbsensi::with('karyawan')->where('id_absensi', $id_absensi)->get('id_karyawan')
+                    ->map(function($item){
+                        return $item ? $item->karyawan->nama : null;
+                    });
+        $nama_izin = KaryawanIzin::with('karyawan')->where('id_absensi', $id_absensi)->get('id_karyawan')
+                    ->map(function($item){
+                        return $item ? $item->karyawan->nama : null;
+                    });
+        $existedName = $nama_masuk->merge($nama_izin)->filter()->unique();
         $q = $params['q'];
         $data = Karyawan::where('nama', 'like', "%{$q}%")
+            ->whereNotIn('nama', $existedName)
             ->get(['id', 'nama']);
         if (count($data) >= 1) {
             return response()->json(['data' => $data]);
         } else {
-            dd($data);
             return response()->json('--Nama karyawan tidak ditemukan--');
         }
     }

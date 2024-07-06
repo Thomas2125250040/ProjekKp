@@ -18,5 +18,8 @@ class KaryawanAbsensi extends Model
         "waktu_masuk",
         "waktu_keluar"
     ];
-
+    public function karyawan()
+    {
+        return $this->belongsTo(Karyawan::class, 'id_karyawan')->select('id','nama');
+    }
 }
