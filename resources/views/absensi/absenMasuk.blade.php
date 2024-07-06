@@ -36,7 +36,7 @@
             <table class="table table-bordered">
                 <thead>
                     <tr>
-                        <th scope="col">#</th>
+                        <th scope="col">No.</th>
                         <th scope="col">Id</th>
                         <th scope="col">Nama</th>
                         <th scope="col">Waktu Masuk</th>

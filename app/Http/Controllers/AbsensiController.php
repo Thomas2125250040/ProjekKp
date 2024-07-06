@@ -105,9 +105,24 @@ class AbsensiController extends Controller
         return "Data berhasil disimpan";
     }
 
+    public function simpan_keluar(Request $request)
+    {
+        $id_karyawan = $request->id_karyawan;
+        $id_absensi = Cache::get('id_absensi');
+        $karyawan_absensi = KaryawanAbsensi::find([
+            $id_karyawan,
+            $id_absensi
+        ]);
+        $karyawan_absensi->waktu_keluar = $request->waktu_keluar;
+        $karyawan_absensi->save();
+        return "Data berhasil disimpan";
+    }
+
     public function keluar()
     {
-        return view('absensi.absenKeluar', compact('data'));
+        $id_absensi = Cache::get('id_absensi');
+        $data_masuk = KaryawanAbsensi::with('karyawan')->where('id_absensi', $id_absensi)->get();
+        return view('absensi.absenKeluar', ['data_masuk' =>$data_masuk]);
     }
 
     public function izin()
@@ -119,14 +134,14 @@ class AbsensiController extends Controller
         else if (is_null($id_absensi)){
             return view('absensi.absenIzin')->with('error', "Tidak ada data absensi untuk hari ini, apakah Anda ingin membuat satu?");
         }
-        $nama_masuk = KaryawanAbsensi::with('karyawan')->where('id_absensi', $id_absensi)->get('id_karyawan')
+        $nama_masuk = collect(KaryawanAbsensi::with('karyawan')->where('id_absensi', $id_absensi)->get('id_karyawan')
                     ->map(function($item){
                         return $item ? $item->karyawan->nama : null;
-                    });
+                    }));
         $data_izin = KaryawanIzin::with('karyawan')->where('id_absensi', $id_absensi)->get();
-        $nama_izin = $data_izin->map(function($item){
+        $nama_izin = collect($data_izin->map(function($item){
                         return $item ? $item->karyawan->nama : null;
-                    });
+                    }));
         $existedName = $nama_masuk->merge($nama_izin)->filter()->unique();
         $data_alpha = Karyawan::whereNotIn('nama', $existedName)->get(['id', 'nama']);
         return view('absensi.absenIzin', ['alpha' => $data_alpha, 'izin' => $data_izin]);
@@ -162,14 +177,14 @@ class AbsensiController extends Controller
         $q = $params['q'];
         $exist_on_page = collect($params['data'] ?? [])->pluck('nama');
         $id_absensi = Cache::get('id_absensi');
-        $nama_masuk = KaryawanAbsensi::with('karyawan')->where('id_absensi', $id_absensi)->get('id_karyawan', 'nama')
+        $nama_masuk = collect(KaryawanAbsensi::with('karyawan')->where('id_absensi', $id_absensi)->get('id_karyawan', 'nama')
                     ->map(function($item){
                         return $item ? $item->karyawan->nama : null;
-                    })->pluck('nama');
-        $nama_izin = KaryawanIzin::with('karyawan')->where('id_absensi', $id_absensi)->get('id_karyawan', 'nama')
+                    }));
+        $nama_izin = collect(KaryawanIzin::with('karyawan')->where('id_absensi', $id_absensi)->get('id_karyawan', 'nama')
                     ->map(function($item){
                         return $item ? $item->karyawan->nama : null;
-                    })->pluck('nama');
+                    }));
         $existedName = $nama_masuk->merge($nama_izin)->merge($exist_on_page)->filter()->unique();
         $data = Karyawan::where('nama', 'like', "%{$q}%")
             ->whereNotIn('nama', $existedName)

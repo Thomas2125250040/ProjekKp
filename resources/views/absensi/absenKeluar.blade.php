@@ -1,5 +1,6 @@
 @extends('layouts.main')
 @section('content')
+<meta name="csrf-token" content="{{ csrf_token() }}">
 <style>
     .ti.ti-circle-x:hover {
         color: rgb(250, 137, 107);
@@ -23,29 +24,27 @@
             <table class="table table-hover mt-4" id="myTable">
                 <thead>
                     <tr>
-                        <th scope="col">#</th>
+                        <th scope="col">No.</th>
+                        <th scope="col">Id</th>
                         <th scope="col">Nama</th>
                         <th scope="col">Waktu Masuk</th>
                         <th scope="col">Waktu Keluar</th>
-                        <th scope="col">Status</th>
-                        <th scope="col">Aksi</th>
+                        <th scope="col">#</th>
                     </tr>
                 </thead>
                 <tbody>
-                @forelse ($data as $index => $row)
-                    <tr>
-                        <td>{{ $index + 1 }}</td>
-                        <td>{{ $row['nama'] }}</td>
-                        <td>{{ $row['masuk'] }}</td>
-                        <td class="waktuKeluar"><div class="btn btn-danger fs-1 p-2 py-1" onclick="setJamKeluar(this)">Tambah</div></td>
-                        <td class="status">-</td>
-                        <td><i class="ti ti-circle-x fs-6" onclick="delWaktuKeluar(this)"></i></td>
-                    </tr>
-                @empty
-                    <tr>
-                        <td colspan="6">Silahkan Absen Masuk terlebih dahulu.</td>
-                    </tr>
-                @endforelse
+                    @foreach ($data_masuk as $row)
+                        <tr>
+                            <td></td>
+                            <td>{{ $row->id_karyawan }}</td>
+                            <td>{{ $row->karyawan->nama }}</td>
+                            <td>{{ $row->waktu_masuk }}</td>
+                            <td>@isset($row->waktu_keluar) {{$row->waktu_keluar}}
+                                @else <div class="btn btn-danger fs-1 p-2 py-1" onclick="setJamKeluar(this)">Tambah</div>
+                                @endisset</td>
+                            <td>-</td>
+                        </tr>
+                    @endforeach
                 </tbody>
             </table>
     </div>
@@ -55,7 +54,11 @@
 <script>
 $(document).ready(function () {
         setInterval(timestamp, 1000);
-        $('#myTable').DataTable();
+        $('#myTable').DataTable({
+            "createdRow": function(row, data, dataIndex) {
+                    $(row).children().eq(0).html(dataIndex + 1);
+            }
+        });
 });
 function timestamp() {
     $.ajax({
@@ -76,13 +79,6 @@ function updateRowNumbers() {
         tbody.rows[i].cells[0].textContent = i + 1;
     }
 }
-function delWaktuKeluar(element) {
-    const parent = element.parentNode.parentNode;
-    const waktuKeluarCell = parent.querySelector('.waktuKeluar div');
-    waktuKeluarCell.innerHTML = "Tambah";
-    waktuKeluarCell.classList.remove("btn-success", "disabled");
-    waktuKeluarCell.classList.add("btn-danger");
-}
 function setJamKeluar(element) {
     const timestamp = document.getElementById("timestamp").innerHTML;
     if (timestamp.trim() === "") {
@@ -90,12 +86,23 @@ function setJamKeluar(element) {
         return;
     }
     element.innerHTML = timestamp;
-    element.classList.add("disabled");
-    element.classList.remove("btn-danger");
-    element.classList.add("btn-success");
-}
-function simpan() {
-    
+    element.className = '';
+    const parent = element.closest('tr');
+    const id_karyawan = parent.cells[1].textContent.trim();
+    console.log(id_karyawan);
+    const statusKirim = parent.cells[5];
+    statusKirim.innerHTML = "<div class='spinner-border spinner-border-sm'></div>"
+    $.ajax({
+        type: "post",
+        url: "{{ route('absensi.simpan-data-keluar') }}",
+        data: {"id_karyawan": id_karyawan, "waktu_keluar": timestamp},
+        success: function(data){
+            statusKirim.innerHTML = "<i class='ti ti-check text-success'></i>";
+        },
+        error: function(xhr, status, error) {
+            statusKirim.innerHTML = "<i class='ti ti-x text-danger'>" + error +"</i>";
+        }
+    });
 }
 </script>
 @endsection
