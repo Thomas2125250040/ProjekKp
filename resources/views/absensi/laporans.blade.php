@@ -251,6 +251,12 @@
                 @endforeach
             </tbody>
         </table>
+        <div>
+            <div>
+                <a href="{{ route('print.pdf', ['bulan' => request('bulan'), 'tahun' => request('tahun')]) }}" class="btn btn-success">Cetak Laporan PDF</a>
+
+            </div>
+        </div>
     </div>
 </div>
 
