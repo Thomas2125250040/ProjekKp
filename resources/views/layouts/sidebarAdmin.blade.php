@@ -106,11 +106,11 @@
                 </li>
                 <li class="sidebar-item">
                     <a class="sidebar-link
-                    {{Route::is('jam-kerja.*') ? 'active' : ''}}"" href="{{ url('jam-kerja') }}" aria-expanded="false">
+                    {{Route::is('log-harian.*') ? 'active' : ''}}" href="{{ url('log-harian') }}" aria-expanded="false">
                         <span>
-                            <i class="ti ti-clock"></i>
+                            <i class="ti ti-report"></i>
                         </span>
-                        <span class="hide-menu">Jam Kerja</span>
+                        <span class="hide-menu">Log Harian</span>
                     </a>
                 </li>
                 <li class="nav-small-cap">
