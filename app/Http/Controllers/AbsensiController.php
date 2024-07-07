@@ -22,9 +22,22 @@ class AbsensiController extends Controller
             return view('absensi.absenMasuk')->with('libur', $keterangan);
         }
         else if (is_null($id_absensi)){
-            return view('absensi.absenMasuk')->with('error', "Tidak ada data absensi untuk hari ini, apakah Anda ingin membuat satu?");
+            if($this->cek_buka_absensi()){
+                return view('absensi.absenMasuk')->with('error', "Tidak ada data absensi untuk hari ini, apakah Anda ingin membuat satu?");
+            };
+            return view('absensi.absenMasuk')->with('tutup', "Absensi sudah ditutup.");
         }
         return view('absensi.absenMasuk');
+    }
+
+    private function cek_buka_absensi(){
+        date_default_timezone_set('Asia/Jakarta');
+        $currentDate = now()->toDateString();
+        $absen = Absensi::where('tanggal', $currentDate)->get();
+        if ($absen->isEmpty()){
+            return true;
+        }
+        return false;
     }
 
     private function cek_libur()
@@ -118,9 +131,42 @@ class AbsensiController extends Controller
         return "Data berhasil disimpan";
     }
 
+    public function tutup_absensi() {
+        $id_absensi = Cache::get('id_absensi');
+        $nama_masuk = collect(KaryawanAbsensi::with('karyawan')->where('id_absensi', $id_absensi)->get('id_karyawan')
+        ->map(function($item){
+            return $item ? $item->karyawan->nama : null;
+        }));
+        $data_izin = KaryawanIzin::with('karyawan')->where('id_absensi', $id_absensi)->get();
+        $nama_izin = collect($data_izin->map(function($item){
+            return $item ? $item->karyawan->nama : null;
+        }));
+        $existedName = $nama_masuk->merge($nama_izin)->filter()->unique();
+        $data_alpha = Karyawan::whereNotIn('nama', $existedName)->get(['id', 'nama']);
+        foreach($data_alpha as $item){
+            $karyawanAlpha = new KaryawanIzin([
+                'id_absensi' => $id_absensi,
+                'id_karyawan' => $item->id,
+                'izin' => 0
+            ]);
+            $karyawanAlpha->save();
+        }
+        Cache::forget('id_absensi');
+        return redirect()->route('absensi.keluar');
+    }
+
     public function keluar()
     {
         $id_absensi = Cache::get('id_absensi');
+        if($keterangan = $this->cek_libur()){
+            return view('absensi.absenKeluar')->with('libur', $keterangan);
+        }
+        else if (is_null($id_absensi)){
+            if($this->cek_buka_absensi()){
+                return view('absensi.absenKeluar')->with('error', "Tidak ada data absensi untuk hari ini, apakah Anda ingin membuat satu?");
+            };
+            return view('absensi.absenKeluar')->with('tutup', "Absensi sudah ditutup.");
+        }
         $data_masuk = KaryawanAbsensi::with('karyawan')->where('id_absensi', $id_absensi)->get();
         return view('absensi.absenKeluar', ['data_masuk' =>$data_masuk]);
     }
@@ -132,7 +178,10 @@ class AbsensiController extends Controller
             return view('absensi.absenIzin')->with('libur', $keterangan);
         }
         else if (is_null($id_absensi)){
-            return view('absensi.absenIzin')->with('error', "Tidak ada data absensi untuk hari ini, apakah Anda ingin membuat satu?");
+            if($this->cek_buka_absensi()){
+                return view('absensi.absenIzin')->with('error', "Tidak ada data absensi untuk hari ini, apakah Anda ingin membuat satu?");
+            };
+            return view('absensi.absenIzin')->with('tutup', "Absensi sudah ditutup.");
         }
         $nama_masuk = collect(KaryawanAbsensi::with('karyawan')->where('id_absensi', $id_absensi)->get('id_karyawan')
                     ->map(function($item){

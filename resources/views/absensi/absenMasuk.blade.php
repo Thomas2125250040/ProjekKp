@@ -3,7 +3,7 @@
 <meta name="csrf-token" content="{{ csrf_token() }}">
 <div class="card">
     <div class="card-body">
-        <div class="d-flex align-items-baseline mb-1">
+        <div class="d-flex align-items-baseline mb-3">
             <div class="card-title fw-semibold flex-grow-1">Absen Masuk</div>
             <div class="card-title fs-3">
                 <div id="timestamp"></div>
@@ -17,6 +17,11 @@
         @endisset
         @isset($libur)
             <h3 class="text-danger text-center">{{$libur}}</h3>
+        @endisset
+        @isset($tutup)
+            <div class="alert alert-danger mb-4">
+                {{$tutup}}
+            </div>
         @endisset
         <div class="text-center mb-3"><?php
                 echo strftime('%A,');

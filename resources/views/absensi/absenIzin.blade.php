@@ -3,11 +3,11 @@
 <meta name="csrf-token" content="{{ csrf_token() }}">
 <div class="card">
     <div class="card-body">
-        <div class="d-flex mb-1">
+        <div class="d-flex mb-3">
             <div class="card-title fw-semibold flex-grow-1">Absen Izin</div>
         </div>
         @isset($error)
-            <div class="alert alert-danger d-flex justify-content-between align-items-center">
+            <div class="alert alert-danger d-flex justify-content-between align-items-center mb-4">
                 {{$error}}
                 <a class="btn btn-danger ms-3" href="{{route('absensi.buatSatu')}}">Buat Absensi</a>
             </div>
@@ -15,7 +15,12 @@
         @isset($libur)
             <h3 class="text-danger text-center">{{$libur}}</h3>
         @endisset
-        <div class="d-flex align-items-center justify-content-between flex-sm-wrap">
+        @isset($tutup)
+            <div class="alert alert-danger mb-4">
+                {{$tutup}}
+            </div>
+        @endisset
+        <div class="d-flex justify-content-center">
             <div class="mb-3"><?php
                 echo strftime('%A,');
                 echo date(' d-M-Y');?>
