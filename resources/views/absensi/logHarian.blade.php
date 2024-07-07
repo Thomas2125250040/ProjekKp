@@ -10,10 +10,12 @@
             <div class="card-title fw-semibold flex-grow-1">Log Harian</div>
         </div>
         <div class="d-flex mb-4">
-            <select class="me-3 selectpicker" data-show-subtext="true" data-live-search="true">
-                @foreach($karyawan as $row)
-                <option data-subtext="{{$row->jabatan->nama}}">{{$row->nama}}</option>
-                @endforeach
+            <select class="me-3 selectpicker" data-show-subtext="true" data-live-search="true" id="karyawanSelect">
+                @isset($karyawan)
+                    @foreach($karyawan as $row)
+                    <option data-subtext="{{$row->jabatan->nama}}">{{$row->nama}}</option>
+                    @endforeach
+                @endisset
                 <span class="caret"></div>
             </select>
             <div style="width:250px;">
@@ -39,27 +41,50 @@
                 </tr>
             </thead>
             <tbody>
-                <tr>
-                    <th scope="row">1</th>
-                    <td>23-06-2024</td>
-                    <td>08:00:23</td>
-                    <td>17:01:20</td>
-                    <td>-</td>
-                </tr>
-                <tr class="bg-danger text-white">
-                    <th scope="row">3</th>
-                    <td>25-06-2024</td>
-                    <td>-</td>
-                    <td>-</td>
-                    <td>Alpha</td>
-                </tr>
-                <tr class="bg-light-primary">
-                    <th scope="row">4</th>
-                    <td>26-06-2024</td>
-                    <td>I</td>
-                    <td>I</td>
-                    <td>Sakit perut karena kebanyakan makan pedas</td>
-                </tr>
+                @isset($logMasuk)
+                    @foreach($logMasuk as $masuk)
+                    <tr>
+                        <th scope="row">1</th>
+                        <td>{{$masuk['tanggal']}}</td>
+                        <td>{{$masuk['waktu_masuk']}}</td>
+                        <td>{{$masuk['waktu_keluar']}}</td>
+                        <td>-</td>
+                    </tr>
+                    @endforeach
+                @endisset
+                @isset($logIzin)
+                    @foreach($logIzin as $izin)
+                    <tr class="bg-light-primary">
+                        <th scope="row"></th>
+                        <td>{{$izin['tanggal']}}</td>
+                        <td>I</td>
+                        <td>I</td>
+                        <td>{{$izin['keterangan_izin']}}</td>
+                    </tr>
+                    @endforeach
+                @endisset
+                @isset($logAlpha)
+                    @foreach($logAlpha as $alpha)
+                    <tr class="bg-danger text-white">
+                        <th scope="row"></th>
+                        <td>{{$alpha['tanggal']}}</td>
+                        <td>-</td>
+                        <td>-</td>
+                        <td>Alpha</td>
+                    </tr>
+                    @endforeach
+                @endisset
+                @isset($logLibur)
+                    @foreach($logLibur as $libur)
+                    <tr class="bg-danger text-white">
+                        <th scope="row"></th>
+                        <td>{{$libur['tanggal']}}</td>
+                        <td>-</td>
+                        <td>-</td>
+                        <td>{{$libur['keterangan_libur']}}</td>
+                    </tr>
+                    @endforeach
+                @endisset
             </tbody>
         </table>
     </div>
@@ -78,6 +103,7 @@ $(function() {
     $('#myTable').DataTable();
     function cb(start, end) {
         $('#reportrange span').html(start.format('MMMM D, YYYY') + ' - ' + end.format('MMMM D, YYYY'));
+        updateTable();
     }
 
     $('#reportrange').daterangepicker({
@@ -94,6 +120,42 @@ $(function() {
     }, cb);
 
     cb(start, end);
+
+    $('#karyawanSelect').on('change', function() {
+        updateTable();
+    });
+
+    function updateTable() {
+        var nama = $('#karyawanSelect').val();
+        var dateRange = $('#reportrange').data('daterangepicker');
+        var startDate = dateRange.startDate.format('YYYY-MM-DD');
+        var endDate = dateRange.endDate.format('YYYY-MM-DD');
+
+        $.ajax({
+            url: '{{ route("logharian") }}',
+            method: 'GET',
+            data: {
+                nama: nama,
+                start: startDate,
+                end: endDate
+            },
+            success: function(data) {
+                table.clear().draw();
+                data.forEach(function(row, index) {
+                    table.row.add([
+                        index + 1,
+                        row.tanggal,
+                        row.waktu_masuk,
+                        row.waktu_keluar,
+                        row.keterangan
+                    ]).draw(false);
+                });
+            },
+            error: function(xhr) {
+                console.error(xhr.responseText);
+            }
+        });
+    }
 });
 $(window).on('load', function() {
     $('span.caret').css('border-top', '0');

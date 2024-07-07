@@ -55,15 +55,15 @@ Route::post('/gaji/filter', [AbsensiController::class, 'filter'])->name('gaji.fi
         Route::resource('karyawan', KaryawanController::class);
         Route::resource('jabatan', JabatanController::class);
         Route::resource('hari-libur', HariLiburController::class);
+        Route::get('search', [AbsensiController::class, 'search'])->name('absensi.search-karyawan');
         Route::get('absensi/masuk', [AbsensiController::class, 'masuk'])->name('absensi.masuk');
         Route::get('absensi/izin', [AbsensiController::class, 'izin'])->name('absensi.izin');
         Route::get('absensi/keluar', [AbsensiController::class, 'keluar'])->name('absensi.keluar');
-        Route::get('search', [AbsensiController::class, 'search'])->name('absensi.search-karyawan');
+        Route::get('absensi/buat', [AbsensiController::class, 'buat'])->name('absensi.buatSatu');
         Route::post('save/masuk', [AbsensiController::class, 'simpan_masuk'])->name('absensi.simpan-data-masuk');
         Route::post('save/izin', [AbsensiController::class, 'simpan_izin'])->name('absensi.simpan-data-izin');
         Route::post('save/keluar', [AbsensiController::class, 'simpan_keluar'])->name('absensi.simpan-data-keluar');
         Route::get('save/tutup', [AbsensiController::class, 'tutup_absensi'])->name('absensi.tutup-absensi');
-        Route::get('absensi/buat', [AbsensiController::class, 'buat'])->name('absensi.buatSatu');
     });
 
     // Route untuk Director

@@ -415,9 +415,72 @@ ORDER BY
 
     public function logHarian()
     {
+        $params = request()->query();
+        $nama = $params['nama'] ?? null;
+        $start_date = $params['start'] ?? null;
+        $end_date = $params['end'] ?? null;
         $karyawan = Karyawan::with('jabatan')->get(['id', 'nama', 'id_jabatan']);
-        return view('absensi.logHarian', compact('karyawan'));
+
+        // If any required parameter is missing, return the view without querying the database
+        if (is_null($nama) || is_null($start_date) || is_null($end_date)) {
+            return view('absensi.logHarian', compact('karyawan'));
+        }
+
+        // Retrieve the ID of the selected karyawan
+        $karyawanData = Karyawan::where('nama', $nama)->first();
+        if (!$karyawanData) {
+            // Handle the case where the karyawan is not found
+            return view('absensi.logHarian', compact('karyawan'))->withErrors(['error' => 'Karyawan not found']);
+        }
+        $id_karyawan = $karyawanData->id;
+
+        // Fetch the absensi records within the specified date range
+        $kumpulan_id_absensi = Absensi::whereBetween('tanggal', [$start_date, $end_date])->get();
+
+        $logMasuk = [];
+        $logAlpha = [];
+        $logIzin  = [];
+        $logLibur = [];
+
+        foreach ($kumpulan_id_absensi as $item) {
+            if (is_null($item->id_libur)) {
+                // Check for izin
+                $absensiIzin = KaryawanIzin::where('id_karyawan', $id_karyawan)->where('id_absensi', $item->id)->first();
+                if ($absensiIzin) {
+                    $logIzin[] = [
+                        'tanggal' => $item->tanggal,
+                        'keterangan_izin' => $absensiIzin->keterangan,
+                    ];
+                    continue;
+                }
+
+                // Check for absensi
+                $absensiMasuk = KaryawanAbsensi::where('id_karyawan', $id_karyawan)->where('id_absensi', $item->id)->first();
+                if ($absensiMasuk) {
+                    $logMasuk[] = [
+                        'tanggal' => $item->tanggal,
+                        'waktu_masuk' => $absensiMasuk->waktu_masuk,
+                        'waktu_keluar' => $absensiMasuk->waktu_keluar,
+                    ];
+                    continue;
+                }
+
+                // If no izin or absensi, mark as alpha
+                $logAlpha[] = [
+                    'tanggal' => $item->tanggal,
+                ];
+            } else {
+                // Log as libur
+                $libur = HariLibur::find($item->id_libur);
+                $logLibur[] = [
+                    'tanggal' => $item->tanggal,
+                    'keterangan_libur' => $libur->keterangan,
+                ];
+            }
+        }
+        return view('absensi.logHarian', compact('karyawan', 'logAlpha', 'logIzin', 'logLibur', 'logMasuk'));
     }
+
 
 // public function generatePDF(Request $request)
 // {
