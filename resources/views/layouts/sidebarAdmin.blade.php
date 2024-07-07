@@ -59,7 +59,8 @@
                     <span class="hide-menu">Beranda</span>
                 </li>
                 <li class="sidebar-item">
-                    <a class="sidebar-link" href="{{ url('laporan') }}" aria-expanded="false">
+                    <a class="sidebar-link
+                    {{Route::is('laporan.*') ? 'active' : ''}}" href="{{ url('laporan') }}" aria-expanded="false">
                         <span>
                             <i class="ti ti-brand-google-analytics"></i>
                         </span>
@@ -67,7 +68,8 @@
                     </a>
                 </li>
                 <li class="sidebar-item">
-                    <a class="sidebar-link" href="{{ route('karyawan.index') }}" aria-expanded="false">
+                    <a class="sidebar-link
+                    {{Route::is('karyawan.*') ? 'active' : ''}}" href="{{ route('karyawan.index') }}" aria-expanded="false">
                         <span>
                             <i class="ti ti-users"></i>
                         </span>
@@ -76,7 +78,8 @@
                 </li>
 
                 <li class="sidebar-item">
-                    <a class="sidebar-link" href="{{ url('jabatan') }}" aria-expanded="false">
+                    <a class="sidebar-link
+                    {{Route::is('jabatan.*') ? 'active' : ''}}" href="{{ url('jabatan') }}" aria-expanded="false">
                         <span>
                             <i class="ti ti-affiliate"></i>
                         </span>
@@ -84,7 +87,8 @@
                     </a>
                 </li>
                 <li class="sidebar-item">
-                    <a class="sidebar-link" href="{{ url('hari-libur') }}" aria-expanded="false">
+                    <a class="sidebar-link
+                    {{Route::is('hari-libur.*') ? 'active' : ''}}" href="{{ url('hari-libur') }}" aria-expanded="false">
                         <span>
                             <i class="ti ti-calendar-event"></i>
                         </span>
@@ -92,11 +96,21 @@
                     </a>
                 </li>
                 <li class="sidebar-item">
-                    <a class="sidebar-link" href="{{ url('gaji') }}" aria-expanded="false">
+                    <a class="sidebar-link
+                    {{Route::is('gaji.*') ? 'active' : ''}}" href="{{ url('gaji') }}" aria-expanded="false">
                         <span>
                             <i class="ti ti-cash"></i>
                         </span>
                         <span class="hide-menu">Gaji</span>
+                    </a>
+                </li>
+                <li class="sidebar-item">
+                    <a class="sidebar-link
+                    {{Route::is('jam-kerja.*') ? 'active' : ''}}"" href="{{ url('jam-kerja') }}" aria-expanded="false">
+                        <span>
+                            <i class="ti ti-clock"></i>
+                        </span>
+                        <span class="hide-menu">Jam Kerja</span>
                     </a>
                 </li>
                 <li class="nav-small-cap">
@@ -105,7 +119,8 @@
                 </li>
 
                 <li class="sidebar-item">
-                    <a class="sidebar-link" href="{{ route('users.index') }}" aria-expanded="false">
+                    <a class="sidebar-link
+                    {{Route::is('users.*') ? 'active' : ''}}" href="{{ route('users.index') }}" aria-expanded="false">
                         <span>
                             <i class="ti ti-key"></i>
                         </span>
