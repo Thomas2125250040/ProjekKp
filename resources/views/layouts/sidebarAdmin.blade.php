@@ -60,7 +60,7 @@
                 </li>
                 <li class="sidebar-item">
                     <a class="sidebar-link
-                    {{Route::is('laporan.*') ? 'active' : ''}}" href="{{ url('laporan') }}" aria-expanded="false">
+                    {{Route::is('laporans.*') ? 'active' : ''}}" href="{{ url('laporans') }}" aria-expanded="false">
                         <span>
                             <i class="ti ti-brand-google-analytics"></i>
                         </span>
