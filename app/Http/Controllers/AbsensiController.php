@@ -68,7 +68,6 @@ class AbsensiController extends Controller
         return null;
     }
 
-
     public function buat()
     {
         date_default_timezone_set('Asia/Jakarta');
@@ -81,8 +80,11 @@ class AbsensiController extends Controller
         return redirect()->route('absensi.masuk');
     }
 
+    
     public function editAbsensi()
     {
+        // $absensi = DB::select("select xxx from xx where xx");
+        // return view('absensi.absenEdit', ['absensi' => $absensi]);
         return view('absensi.absenEdit');
     }
 

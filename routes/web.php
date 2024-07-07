@@ -64,7 +64,7 @@ Route::middleware([checkHakAkses::class])->group(function () {
 
     // Route untuk Director
     Route::middleware([CheckDirector::class])->group(function () {
-        Route::get('absensi/ubah', [AbsensiController::class, 'absensiEdit'])->name('absensi.edit');
+        Route::get('absensi/ubah', [AbsensiController::class, 'editAbsensi'])->name('absensi.edit');
     });
 
     // Route untuk General Manager
