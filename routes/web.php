@@ -34,7 +34,12 @@ Route::middleware([checkHakAkses::class])->group(function () {
     // Route::post('/laporans/filter', [AbsensiController::class, 'laporans'])->name('laporans.filter');
     Route::get('/laporans', [AbsensiController::class, 'laporans'])->name('laporans');
 Route::post('/laporans/filter', [AbsensiController::class, 'laporansFilter'])->name('laporans.filter');
+// Route::get('/print-pdf', [AbsensiController::class, 'generatePDF'])->name('print.pdf');
+
+Route::get('/cetak', [AbsensiController::class, 'showReport'])->name('report.show');
 Route::get('/print-pdf', [AbsensiController::class, 'generatePDF'])->name('print.pdf');
+
+
     Route::get('log-harian', [AbsensiController::class, 'logharian'])->name("logharian");
 
     Route::middleware([CheckAdminDirector::class])->group(function () {

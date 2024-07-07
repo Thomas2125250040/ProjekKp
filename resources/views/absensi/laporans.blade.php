@@ -41,7 +41,7 @@
             </thead>
             <tbody id="gaji-table-body">
                 @foreach($laporan as $key => $g) --}}
-                    <tr>
+                    {{-- <tr> --}}
                         {{-- <td>{{ $key + 1 }}</td> --}}
                         {{-- <td>{{ $g->nama_karyawan }}</td>
                         <td>{{ $g->jumlah_hadir }}</td>
@@ -253,7 +253,9 @@
         </table>
         <div>
             <div>
-                <a href="{{ route('print.pdf', ['bulan' => request('bulan'), 'tahun' => request('tahun')]) }}" class="btn btn-success">Cetak Laporan PDF</a>
+                {{-- <a href="{{ route('print.pdf', ['bulan' => $bulan, 'tahun' => $tahun]) }}" class="btn btn-success">Cetak Laporan PDF</a> --}}
+                
+                    <a href="#" id="print-pdf-btn" class="btn btn-success">Cetak Laporan PDF</a>
 
             </div>
         </div>
@@ -293,6 +295,13 @@
             });
         });
     });
+
+    $('#print-pdf-btn').click(function() {
+            var bulan = $('#bulan').val();
+            var tahun = $('#tahun').val();
+            var url = '{{ route("print.pdf") }}' + '?bulan=' + bulan + '&tahun=' + tahun;
+            window.location.href = url;
+        });
 </script>
 @endsection
 @section('extra_scripts')
