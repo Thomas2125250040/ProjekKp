@@ -103,7 +103,6 @@ $(function() {
     $('#myTable').DataTable();
     function cb(start, end) {
         $('#reportrange span').html(start.format('MMMM D, YYYY') + ' - ' + end.format('MMMM D, YYYY'));
-        updateTable();
     }
 
     $('#reportrange').daterangepicker({
@@ -125,36 +124,17 @@ $(function() {
         updateTable();
     });
 
+    $('#reportrange').on('apply.daterangepicker', function(ev, picker) {
+        updateTable();
+    });
+
     function updateTable() {
         var nama = $('#karyawanSelect').val();
         var dateRange = $('#reportrange').data('daterangepicker');
         var startDate = dateRange.startDate.format('YYYY-MM-DD');
         var endDate = dateRange.endDate.format('YYYY-MM-DD');
-
-        $.ajax({
-            url: '{{ route("logharian") }}',
-            method: 'GET',
-            data: {
-                nama: nama,
-                start: startDate,
-                end: endDate
-            },
-            success: function(data) {
-                table.clear().draw();
-                data.forEach(function(row, index) {
-                    table.row.add([
-                        index + 1,
-                        row.tanggal,
-                        row.waktu_masuk,
-                        row.waktu_keluar,
-                        row.keterangan
-                    ]).draw(false);
-                });
-            },
-            error: function(xhr) {
-                console.error(xhr.responseText);
-            }
-        });
+        var url = '{{ route("logharian") }}' + '?nama=' + encodeURIComponent(nama) + '&start=' + encodeURIComponent(startDate) + '&end=' + encodeURIComponent(endDate);
+        window.location.href = url;
     }
 });
 $(window).on('load', function() {
