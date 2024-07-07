@@ -17,6 +17,20 @@
                 <div id="timestamp"></div>
             </div>
         </div>
+        @isset($error)
+            <div class="alert alert-danger d-flex justify-content-between align-items-center mb-4">
+                {{$error}}
+                <a class="btn btn-danger ms-3" href="{{route('absensi.buatSatu')}}">Buat Absensi</a>
+            </div>
+        @endisset
+        @isset($libur)
+            <h3 class="text-danger text-center">{{$libur}}</h3>
+        @endisset
+        @isset($tutup)
+            <div class="alert alert-danger mb-4">
+                {{$tutup}}
+            </div>
+        @endisset
         <div class="text-center mb-3"><?php
                 echo strftime('%A,');
                 echo date(' d-M-Y');?>
@@ -33,6 +47,7 @@
                     </tr>
                 </thead>
                 <tbody>
+                @isset($data_masuk)
                     @foreach ($data_masuk as $row)
                         <tr>
                             <td></td>
@@ -45,8 +60,12 @@
                             <td>-</td>
                         </tr>
                     @endforeach
+                @endisset
                 </tbody>
             </table>
+            <div class="d-flex justify-content-end mt-4">
+                <a href="{{route('absensi.tutup-absensi')}}" class="btn btn-danger" onclick="tutupAbsensi(this)">Tutup absensi</a>
+            </div>
     </div>
 </div>
 @endsection
@@ -104,6 +123,10 @@ function setJamKeluar(element) {
             statusKirim.innerHTML = "<i class='ti ti-x text-danger'>" + error +"</i>";
         }
     });
+}
+function tutupAbsensi(element){
+    element.innerHTML = "<div class=\"spinner-border spinner-border-sm\" role=\"status\"></div>";
+    element.setAttribute("disabled",'');
 }
 </script>
 @endsection
