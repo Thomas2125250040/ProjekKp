@@ -4,7 +4,6 @@
         <div class="card-body">
             <div class="d-flex mb-3">
                 <div class="card-title fw-semibold flex-grow-1">Laporan Absensi</div>
-                <a href="{{url('log-harian')}}" class="btn btn-warning">Log Harian</a>
             </div>
             <div class="mb-3 d-flex align-items-center justify-content-between">
                 <div class="col-lg-4 col-sm-3">

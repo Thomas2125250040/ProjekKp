@@ -427,7 +427,12 @@ ORDER BY
                 ];
             }
         }
-        return view('absensi.logHarian', compact('karyawan', 'logAlpha', 'logIzin', 'logLibur', 'logMasuk'));
+        return response()->json([
+            'logMasuk'=> $logMasuk,
+            'logIzin'=> $logIzin,
+            'logAlpha'=> $logAlpha,
+            'logLibur'=> $logLibur
+        ]);
     }
 
     public function generatePDF(Request $request)
