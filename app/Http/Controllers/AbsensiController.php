@@ -152,6 +152,171 @@ class AbsensiController extends Controller
         return view('absensi.laporan');
     }
 
+    // public function laporans(){
+    //     $laporan = DB::select("SELECT k.nama AS nama_karyawan, COUNT(DISTINCT CASE WHEN a.id IS NOT NULL THEN ka.id_absensi END) AS jumlah_hadir, SUM(CASE WHEN ai.id IS NOT NULL AND ki.izin = 1 THEN 1 ELSE 0 END) AS jumlah_izin, SUM(CASE WHEN ai.id IS NOT NULL AND ki.izin = 0 THEN 1 ELSE 0 END) AS jumlah_alpha FROM karyawan k LEFT JOIN karyawan_absensi ka ON k.id = ka.id_karyawan LEFT JOIN absensi a ON ka.id_absensi = a.id AND MONTH(a.tanggal) = 07 AND YEAR(a.tanggal) = 2024 LEFT JOIN karyawan_izin ki ON k.id = ki.id_karyawan LEFT JOIN absensi ai ON ki.id_absensi = ai.id AND MONTH(ai.tanggal) = 07 AND YEAR(ai.tanggal) = 2024 GROUP BY k.nama ORDER BY k.nama; ");
+
+    //     return view("absensi.laporans" , ["laporan" => $laporan]);
+    // }
+
+    // public function laporans(Request $request) {
+    //     $bulan = $request->input('bulan', date('m'));  // Default to current month if not provided
+    //     $tahun = $request->input('tahun', date('Y'));  // Default to current year if not provided
+    
+    //     $laporan = DB::select("
+    //         SELECT k.nama AS nama_karyawan, 
+    //             COUNT(DISTINCT CASE WHEN a.id IS NOT NULL THEN ka.id_absensi END) AS jumlah_hadir, 
+    //             SUM(CASE WHEN ai.id IS NOT NULL AND ki.izin = 1 THEN 1 ELSE 0 END) AS jumlah_izin, 
+    //             SUM(CASE WHEN ai.id IS NOT NULL AND ki.izin = 0 THEN 1 ELSE 0 END) AS jumlah_alpha 
+    //         FROM karyawan k 
+    //         LEFT JOIN karyawan_absensi ka ON k.id = ka.id_karyawan 
+    //         LEFT JOIN absensi a ON ka.id_absensi = a.id AND MONTH(a.tanggal) = ? AND YEAR(a.tanggal) = ? 
+    //         LEFT JOIN karyawan_izin ki ON k.id = ki.id_karyawan 
+    //         LEFT JOIN absensi ai ON ki.id_absensi = ai.id AND MONTH(ai.tanggal) = ? AND YEAR(ai.tanggal) = ? 
+    //         GROUP BY k.nama 
+    //         HAVING jumlah_hadir > 0 OR jumlah_izin > 0 OR jumlah_alpha > 0 
+    //         ORDER BY k.nama
+    //     ", [$bulan, $tahun, $bulan, $tahun]);
+    
+    //     return view("absensi.laporans", ["laporan" => $laporan]);
+    // }
+    public function laporans()
+{
+    // $laporan = DB::select("
+    //     SELECT karyawan.nama AS nama_karyawan, 
+    //         COUNT(DISTINCT CASE WHEN absensi.id IS NOT NULL THEN karyawan_absensi.id_absensi END) AS jumlah_hadir, 
+    //         SUM(CASE WHEN absensi_izin.id IS NOT NULL AND karyawan_izin.izin = 1 THEN 1 ELSE 0 END) AS jumlah_izin, 
+    //         SUM(CASE WHEN absensi_izin.id IS NOT NULL AND karyawan_izin.izin = 0 THEN 1 ELSE 0 END) AS jumlah_alpha 
+    //     FROM karyawan 
+    //     LEFT JOIN karyawan_absensi ON karyawan.id = karyawan_absensi.id_karyawan 
+    //     LEFT JOIN absensi ON karyawan_absensi.id_absensi = absensi.id 
+    //         AND MONTH(absensi.tanggal) = ? 
+    //         AND YEAR(absensi.tanggal) = ? 
+    //     LEFT JOIN karyawan_izin ON karyawan.id = karyawan_izin.id_karyawan 
+    //     LEFT JOIN absensi absensi_izin ON karyawan_izin.id_absensi = absensi_izin.id 
+    //         AND MONTH(absensi_izin.tanggal) = ? 
+    //         AND YEAR(absensi_izin.tanggal) = ? 
+    //     GROUP BY karyawan.nama 
+    //     ORDER BY karyawan.nama
+    // ", ['01', date('Y'), '01', date('Y')]);
+
+    $laporan = DB::select("SELECT 
+    karyawan.nama AS nama_karyawan,
+    COALESCE(hadir.jumlah_hadir, 0) AS jumlah_hadir,
+    COALESCE(izin.jumlah_izin, 0) AS jumlah_izin,
+    COALESCE(alpha.jumlah_alpha, 0) AS jumlah_alpha
+FROM 
+    karyawan
+LEFT JOIN (
+    SELECT 
+        karyawan_absensi.id_karyawan, 
+        COUNT(DISTINCT karyawan_absensi.id_absensi) AS jumlah_hadir
+    FROM 
+        karyawan_absensi
+    LEFT JOIN 
+        absensi ON karyawan_absensi.id_absensi = absensi.id 
+    WHERE 
+        MONTH(absensi.tanggal) = ? AND YEAR(absensi.tanggal) = ?
+    GROUP BY 
+        karyawan_absensi.id_karyawan
+) AS hadir ON karyawan.id = hadir.id_karyawan
+LEFT JOIN (
+    SELECT 
+        karyawan_izin.id_karyawan, 
+        COUNT(*) AS jumlah_izin
+    FROM 
+        karyawan_izin
+    LEFT JOIN 
+        absensi ON karyawan_izin.id_absensi = absensi.id
+    WHERE 
+        karyawan_izin.izin = 1 
+        AND MONTH(absensi.tanggal) = ? 
+        AND YEAR(absensi.tanggal) = ?
+    GROUP BY 
+        karyawan_izin.id_karyawan
+) AS izin ON karyawan.id = izin.id_karyawan
+LEFT JOIN (
+    SELECT 
+        karyawan_izin.id_karyawan, 
+        COUNT(*) AS jumlah_alpha
+    FROM 
+        karyawan_izin
+    LEFT JOIN 
+        absensi ON karyawan_izin.id_absensi = absensi.id
+    WHERE 
+        karyawan_izin.izin = 0 
+        AND MONTH(absensi.tanggal) = ?
+        AND YEAR(absensi.tanggal) = ?
+    GROUP BY 
+        karyawan_izin.id_karyawan
+) AS alpha ON karyawan.id = alpha.id_karyawan
+ORDER BY 
+    karyawan.nama;",['01', date('Y'),'01', date('Y'),'01', date('Y')]);
+
+    return view('absensi.laporans', compact('laporan'));
+}
+
+public function laporansFilter(Request $request)
+{
+    $bulan = $request->input('bulan');
+    $tahun = $request->input('tahun');
+
+    $laporan = DB::select("SELECT 
+    karyawan.nama AS nama_karyawan,
+    COALESCE(hadir.jumlah_hadir, 0) AS jumlah_hadir,
+    COALESCE(izin.jumlah_izin, 0) AS jumlah_izin,
+    COALESCE(alpha.jumlah_alpha, 0) AS jumlah_alpha
+FROM 
+    karyawan
+LEFT JOIN (
+    SELECT 
+        karyawan_absensi.id_karyawan, 
+        COUNT(DISTINCT karyawan_absensi.id_absensi) AS jumlah_hadir
+    FROM 
+        karyawan_absensi
+    LEFT JOIN 
+        absensi ON karyawan_absensi.id_absensi = absensi.id 
+    WHERE 
+        MONTH(absensi.tanggal) = ? AND YEAR(absensi.tanggal) = ?
+    GROUP BY 
+        karyawan_absensi.id_karyawan
+) AS hadir ON karyawan.id = hadir.id_karyawan
+LEFT JOIN (
+    SELECT 
+        karyawan_izin.id_karyawan, 
+        COUNT(*) AS jumlah_izin
+    FROM 
+        karyawan_izin
+    LEFT JOIN 
+        absensi ON karyawan_izin.id_absensi = absensi.id
+    WHERE 
+        karyawan_izin.izin = 1 
+        AND MONTH(absensi.tanggal) = ? 
+        AND YEAR(absensi.tanggal) = ?
+    GROUP BY 
+        karyawan_izin.id_karyawan
+) AS izin ON karyawan.id = izin.id_karyawan
+LEFT JOIN (
+    SELECT 
+        karyawan_izin.id_karyawan, 
+        COUNT(*) AS jumlah_alpha
+    FROM 
+        karyawan_izin
+    LEFT JOIN 
+        absensi ON karyawan_izin.id_absensi = absensi.id
+    WHERE 
+        karyawan_izin.izin = 0 
+        AND MONTH(absensi.tanggal) = ?
+        AND YEAR(absensi.tanggal) = ?
+    GROUP BY 
+        karyawan_izin.id_karyawan
+) AS alpha ON karyawan.id = alpha.id_karyawan
+ORDER BY 
+    karyawan.nama;", [$bulan, $tahun, $bulan, $tahun,$bulan, $tahun]);
+
+    return response()->json($laporan);
+}
+
+
 
     public function gaji()
     {

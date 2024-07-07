@@ -24,7 +24,12 @@ Route::middleware([checkHakAkses::class])->group(function () {
     Route::get('/error', function () {
         return view('user.error');
     });
-    Route::get('laporan', [AbsensiController::class, 'laporan'])->name("laporan");
+    // Route::get('laporan', [AbsensiController::class, 'laporan'])->name("laporan");
+    // Route::get('laporans', [AbsensiController::class, 'laporans'])->name("laporans");
+    // Route::post('/laporans/filter', [AbsensiController::class, 'laporans'])->name('laporans.filter');
+    Route::get('/laporans', [AbsensiController::class, 'laporans'])->name('laporans');
+Route::post('/laporans/filter', [AbsensiController::class, 'laporansFilter'])->name('laporans.filter');
+
     Route::get('log-harian', [AbsensiController::class, 'logharian'])->name("logharian");
 
     Route::middleware([CheckAdminDirector::class])->group(function () {
