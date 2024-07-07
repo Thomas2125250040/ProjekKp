@@ -1,5 +1,4 @@
 @extends('layouts.main')
-
 @section('content')
 <!-- Stylesheets -->
 <link href="//netdna.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css" rel="stylesheet">
@@ -9,24 +8,27 @@
     <div class="card-body">
         <div class="d-flex mb-4">
             <div class="card-title fw-semibold flex-grow-1">Log Harian</div>
-            <div class="col-lg-3 col-sm-4">
-                <div id="reportrange" style="background: #fff; cursor: pointer; padding: 5px 10px; border: 1px solid #ccc; width: 100%">
-                    <i class="ti ti-calendar"></i>&nbsp;
-                    <span></span> <i class="fa fa-caret-down"></i>
+        </div>
+        <div class="d-flex mb-4">
+            <select class="me-3 selectpicker" data-show-subtext="true" data-live-search="true">
+                @foreach($karyawan as $row)
+                <option data-subtext="{{$row->jabatan->nama}}">{{$row->nama}}</option>
+                @endforeach
+                <span class="caret"></div>
+            </select>
+            <div style="width:250px;">
+                <div id="reportrange" style="background: #fff; cursor: pointer; padding: 6px 12px; border: 1px solid #ccc; width: 100%" class="d-flex align-items-center justify-content-around">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" class="icon icon-tabler icons-tabler-filled icon-tabler-calendar">
+                        <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                        <path d="M16 2a1 1 0 0 1 .993 .883l.007 .117v1h1a3 3 0 0 1 2.995 2.824l.005 .176v12a3 3 0 0 1 -2.824 2.995l-.176 .005h-12a3 3 0 0 1 -2.995 -2.824l-.005 -.176v-12a3 3 0 0 1 2.824 -2.995l.176 -.005h1v-1a1 1 0 0 1 1.993 -.117l.007 .117v1h6v-1a1 1 0 0 1 1 -1zm3 7h-14v9.625c0 .705 .386 1.286 .883 1.366l.117 .009h12c.513 0 .936 -.53 .993 -1.215l.007 -.16v-9.625z" />
+                        <path d="M12 12a1 1 0 0 1 .993 .883l.007 .117v3a1 1 0 0 1 -1.993 .117l-.007 -.117v-2a1 1 0 0 1 -.117 -1.993l.117 -.007h1z" />
+                    </svg>
+                        <span></span>&nbsp;
+                    <div class="caret"></div>
                 </div>
             </div>
         </div>
-        <div class="row-fluid">
-            <select class="selectpicker" data-show-subtext="true" data-live-search="true">
-                <option data-subtext="Rep California">Tom Foolery</option>
-                <option data-subtext="Sen California">Bill Gordon</option>
-                <option data-subtext="Sen Massachusetts">Elizabeth Warren</option>
-                <option data-subtext="Rep Alabama">Mario Flores</option>
-                <option data-subtext="Rep Alaska">Don Young</option>
-                <option data-subtext="Rep California" disabled="disabled">Marvin Martinez</option>
-            </select>
-        </div>
-        <table class="table">
+        <table class="table" id="myTable">
             <thead>
                 <tr>
                     <th scope="col">#</th>
@@ -40,13 +42,6 @@
                 <tr>
                     <th scope="row">1</th>
                     <td>23-06-2024</td>
-                    <td>08:00:23</td>
-                    <td>17:01:20</td>
-                    <td>-</td>
-                </tr>
-                <tr>
-                    <th scope="row">2</th>
-                    <td>24-06-2024</td>
                     <td>08:00:23</td>
                     <td>17:01:20</td>
                     <td>-</td>
@@ -65,13 +60,6 @@
                     <td>I</td>
                     <td>Sakit perut karena kebanyakan makan pedas</td>
                 </tr>
-                <tr>
-                    <th scope="row">5</th>
-                    <td>27-06-2024</td>
-                    <td>08:00:23</td>
-                    <td>17:01:20</td>
-                    <td>-</td>
-                </tr>
             </tbody>
         </table>
     </div>
@@ -87,7 +75,7 @@
 $(function() {
     var start = moment().subtract(29, 'days');
     var end = moment();
-
+    $('#myTable').DataTable();
     function cb(start, end) {
         $('#reportrange span').html(start.format('MMMM D, YYYY') + ' - ' + end.format('MMMM D, YYYY'));
     }
@@ -106,6 +94,10 @@ $(function() {
     }, cb);
 
     cb(start, end);
+});
+$(window).on('load', function() {
+    $('span.caret').css('border-top', '0');
+    $('button.dropdown-toggle.selectpicker').css('border-radius', 0);
 });
 </script>
 @endsection

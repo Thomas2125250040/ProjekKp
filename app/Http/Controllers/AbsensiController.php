@@ -415,7 +415,8 @@ ORDER BY
 
     public function logHarian()
     {
-        return view('absensi.logHarian');
+        $karyawan = Karyawan::with('jabatan')->get(['id', 'nama', 'id_jabatan']);
+        return view('absensi.logHarian', compact('karyawan'));
     }
 
 // public function generatePDF(Request $request)

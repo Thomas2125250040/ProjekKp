@@ -23,4 +23,8 @@ class Karyawan extends Model
         "agama",
         "no_telp"
     ];
+    public function jabatan()
+    {
+        return $this->belongsTo(Jabatan::class, 'id_jabatan')->select(['id', 'nama']);
+    }
 }
