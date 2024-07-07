@@ -3,6 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\Karyawan;
+use Dompdf\Dompdf;
+use Dompdf\Options;
+
 use App\Models\Absensi;
 use App\Models\HariLibur;
 use App\Models\KaryawanAbsensi;
@@ -414,4 +417,237 @@ ORDER BY
     {
         return view('absensi.logHarian');
     }
+
+// public function generatePDF(Request $request)
+// {
+//     // Fetch data to be used in the PDF (if needed)
+
+//     // Setup Dompdf
+//     // $pdf = new Dompdf();
+//     // $pdf->loadHtml(view('absensi.halamanCetakLaporan'));
+
+//     // // Render PDF (optional settings)
+//     // $pdf->setPaper('A4', 'portrait');
+//     // $pdf->render();
+
+//     // // Output the generated PDF (inline or download)
+//     // return $pdf->stream('laporan_pengguna.pdf');
+
+//     $bulan = $request->input('bulan');
+//     $tahun = $request->input('tahun');
+
+//     // Fetch data to be used in the PDF
+//     $laporan = DB::select("SELECT 
+//     karyawan.nama AS nama_karyawan,
+//     COALESCE(hadir.jumlah_hadir, 0) AS jumlah_hadir,
+//     COALESCE(izin.jumlah_izin, 0) AS jumlah_izin,
+//     COALESCE(alpha.jumlah_alpha, 0) AS jumlah_alpha
+// FROM 
+//     karyawan
+// LEFT JOIN (
+//     SELECT 
+//         karyawan_absensi.id_karyawan, 
+//         COUNT(DISTINCT karyawan_absensi.id_absensi) AS jumlah_hadir
+//     FROM 
+//         karyawan_absensi
+//     LEFT JOIN 
+//         absensi ON karyawan_absensi.id_absensi = absensi.id 
+//     WHERE 
+//         MONTH(absensi.tanggal) = ? AND YEAR(absensi.tanggal) = ?
+//     GROUP BY 
+//         karyawan_absensi.id_karyawan
+// ) AS hadir ON karyawan.id = hadir.id_karyawan
+// LEFT JOIN (
+//     SELECT 
+//         karyawan_izin.id_karyawan, 
+//         COUNT(*) AS jumlah_izin
+//     FROM 
+//         karyawan_izin
+//     LEFT JOIN 
+//         absensi ON karyawan_izin.id_absensi = absensi.id
+//     WHERE 
+//         karyawan_izin.izin = 1 
+//         AND MONTH(absensi.tanggal) = ? 
+//         AND YEAR(absensi.tanggal) = ?
+//     GROUP BY 
+//         karyawan_izin.id_karyawan
+// ) AS izin ON karyawan.id = izin.id_karyawan
+// LEFT JOIN (
+//     SELECT 
+//         karyawan_izin.id_karyawan, 
+//         COUNT(*) AS jumlah_alpha
+//     FROM 
+//         karyawan_izin
+//     LEFT JOIN 
+//         absensi ON karyawan_izin.id_absensi = absensi.id
+//     WHERE 
+//         karyawan_izin.izin = 0 
+//         AND MONTH(absensi.tanggal) = ?
+//         AND YEAR(absensi.tanggal) = ?
+//     GROUP BY 
+//         karyawan_izin.id_karyawan
+// ) AS alpha ON karyawan.id = alpha.id_karyawan
+// ORDER BY 
+//     karyawan.nama;", [$bulan, $tahun, $bulan, $tahun,$bulan, $tahun]);
+
+//     $data = [
+//         'bulan' => $bulan,
+//         'tahun' => $tahun,
+//         'laporan' => $laporan
+//     ];
+
+//     // Setup Dompdf
+//     $pdf = new Dompdf();
+//     $pdf->loadHtml(view('absensi.halamanCetakLaporan', $data));
+
+//     // Render PDF (optional settings)
+//     $pdf->setPaper('A4', 'portrait');
+//     $pdf->render();
+
+//     // Output the generated PDF (inline or download)
+//     return $pdf->stream('laporan_pengguna.pdf');
+//}
+public function showReport(Request $request)
+{
+    $bulan = $request->input('bulan');
+    $tahun = $request->input('tahun');
+
+    // Fetch data to be used in the report
+    $laporan = DB::select("SELECT 
+    karyawan.nama AS nama_karyawan,
+    COALESCE(hadir.jumlah_hadir, 0) AS jumlah_hadir,
+    COALESCE(izin.jumlah_izin, 0) AS jumlah_izin,
+    COALESCE(alpha.jumlah_alpha, 0) AS jumlah_alpha
+FROM 
+    karyawan
+LEFT JOIN (
+    SELECT 
+        karyawan_absensi.id_karyawan, 
+        COUNT(DISTINCT karyawan_absensi.id_absensi) AS jumlah_hadir
+    FROM 
+        karyawan_absensi
+    LEFT JOIN 
+        absensi ON karyawan_absensi.id_absensi = absensi.id 
+    WHERE 
+        MONTH(absensi.tanggal) = ? AND YEAR(absensi.tanggal) = ?
+    GROUP BY 
+        karyawan_absensi.id_karyawan
+) AS hadir ON karyawan.id = hadir.id_karyawan
+LEFT JOIN (
+    SELECT 
+        karyawan_izin.id_karyawan, 
+        COUNT(*) AS jumlah_izin
+    FROM 
+        karyawan_izin
+    LEFT JOIN 
+        absensi ON karyawan_izin.id_absensi = absensi.id
+    WHERE 
+        karyawan_izin.izin = 1 
+        AND MONTH(absensi.tanggal) = ? 
+        AND YEAR(absensi.tanggal) = ?
+    GROUP BY 
+        karyawan_izin.id_karyawan
+) AS izin ON karyawan.id = izin.id_karyawan
+LEFT JOIN (
+    SELECT 
+        karyawan_izin.id_karyawan, 
+        COUNT(*) AS jumlah_alpha
+    FROM 
+        karyawan_izin
+    LEFT JOIN 
+        absensi ON karyawan_izin.id_absensi = absensi.id
+    WHERE 
+        karyawan_izin.izin = 0 
+        AND MONTH(absensi.tanggal) = ?
+        AND YEAR(absensi.tanggal) = ?
+    GROUP BY 
+        karyawan_izin.id_karyawan
+) AS alpha ON karyawan.id = alpha.id_karyawan
+ORDER BY 
+    karyawan.nama;", [$bulan, $tahun, $bulan, $tahun,$bulan, $tahun]);
+
+    return view('absensi.halamanCetakLaporan', [
+        'bulan' => $bulan,
+        'tahun' => $tahun,
+        'laporan' => $laporan
+    ]);
+}
+
+public function generatePDF(Request $request)
+{
+    $bulan = $request->input('bulan');
+    $tahun = $request->input('tahun');
+
+    // Dapatkan data laporan berdasarkan bulan dan tahun
+    $laporan = DB::select("SELECT 
+        karyawan.nama AS nama_karyawan,
+        COALESCE(hadir.jumlah_hadir, 0) AS jumlah_hadir,
+        COALESCE(izin.jumlah_izin, 0) AS jumlah_izin,
+        COALESCE(alpha.jumlah_alpha, 0) AS jumlah_alpha
+    FROM 
+        karyawan
+    LEFT JOIN (
+        SELECT 
+            karyawan_absensi.id_karyawan, 
+            COUNT(DISTINCT karyawan_absensi.id_absensi) AS jumlah_hadir
+        FROM 
+            karyawan_absensi
+        LEFT JOIN 
+            absensi ON karyawan_absensi.id_absensi = absensi.id 
+        WHERE 
+            MONTH(absensi.tanggal) = ? AND YEAR(absensi.tanggal) = ?
+        GROUP BY 
+            karyawan_absensi.id_karyawan
+    ) AS hadir ON karyawan.id = hadir.id_karyawan
+    LEFT JOIN (
+        SELECT 
+            karyawan_izin.id_karyawan, 
+            COUNT(*) AS jumlah_izin
+        FROM 
+            karyawan_izin
+        LEFT JOIN 
+            absensi ON karyawan_izin.id_absensi = absensi.id
+        WHERE 
+            karyawan_izin.izin = 1 
+            AND MONTH(absensi.tanggal) = ? 
+            AND YEAR(absensi.tanggal) = ?
+        GROUP BY 
+            karyawan_izin.id_karyawan
+    ) AS izin ON karyawan.id = izin.id_karyawan
+    LEFT JOIN (
+        SELECT 
+            karyawan_izin.id_karyawan, 
+            COUNT(*) AS jumlah_alpha
+        FROM 
+            karyawan_izin
+        LEFT JOIN 
+            absensi ON karyawan_izin.id_absensi = absensi.id
+        WHERE 
+            karyawan_izin.izin = 0 
+            AND MONTH(absensi.tanggal) = ? 
+            AND YEAR(absensi.tanggal) = ?
+        GROUP BY 
+            karyawan_izin.id_karyawan
+    ) AS alpha ON karyawan.id = alpha.id_karyawan
+    ORDER BY 
+        karyawan.nama;", [$bulan, $tahun, $bulan, $tahun, $bulan, $tahun]);
+
+    $data = [
+        'laporan' => $laporan,
+        'bulan' => $bulan,
+        'tahun' => $tahun,
+        'header' => 'CV. ANUGRAH ABADI',
+        'title' => 'Laporan Absensi Karyawan'
+    ];
+
+    // Load the view and pass data
+    $view = view('absensi.halamanCetakLaporan', $data)->render();
+
+    // Generate PDF
+    $dompdf = new Dompdf();
+    $dompdf->loadHtml($view);
+    $dompdf->setPaper('A4', 'landscape');
+    $dompdf->render();
+    $dompdf->stream('laporan_absensi.pdf');
+}
 }

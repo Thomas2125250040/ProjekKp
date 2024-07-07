@@ -14,6 +14,11 @@ use App\Http\Controllers\RegisterController;
 use App\Http\Middleware\checkAdminDirector;
 use Illuminate\Support\Facades\Route;
 
+Route::get("/cetak", function(){
+    return view('absensi.halamanCetakLaporan');
+});
+
+
 Route::middleware([antiLoginLagi::class])->group(function () {
     Route::get('/', [LoginController::class, 'index'])->name('login-page');
     Route::post('/', [LoginController::class, 'login'])->name('login');
@@ -29,6 +34,11 @@ Route::middleware([checkHakAkses::class])->group(function () {
     // Route::post('/laporans/filter', [AbsensiController::class, 'laporans'])->name('laporans.filter');
     Route::get('/laporans', [AbsensiController::class, 'laporans'])->name('laporans');
 Route::post('/laporans/filter', [AbsensiController::class, 'laporansFilter'])->name('laporans.filter');
+// Route::get('/print-pdf', [AbsensiController::class, 'generatePDF'])->name('print.pdf');
+
+Route::get('/cetak', [AbsensiController::class, 'showReport'])->name('report.show');
+Route::get('/print-pdf', [AbsensiController::class, 'generatePDF'])->name('print.pdf');
+
 
     Route::get('log-harian', [AbsensiController::class, 'logharian'])->name("logharian");
 
