@@ -41,46 +41,6 @@
                 </tr>
             </thead>
             <tbody>
-                @isset($logMasuk)
-                    @foreach($logMasuk as $masuk)
-                    <tr>
-                        <td>{{$masuk['tanggal']}}</td>
-                        <td>{{$masuk['waktu_masuk']}}</td>
-                        <td>{{$masuk['waktu_keluar']}}</td>
-                        <td>-</td>
-                    </tr>
-                    @endforeach
-                @endisset
-                @isset($logIzin)
-                    @foreach($logIzin as $izin)
-                    <tr class="bg-secondary">
-                        <td>{{$izin['tanggal']}}</td>
-                        <td>-</td>
-                        <td>-</td>
-                        <td>{{$izin['keterangan_izin']}}</td>
-                    </tr>
-                    @endforeach
-                @endisset
-                @isset($logAlpha)
-                    @foreach($logAlpha as $alpha)
-                    <tr class="bg-danger text-white">
-                        <td>{{$alpha['tanggal']}}</td>
-                        <td>-</td>
-                        <td>-</td>
-                        <td>Alpha</td>
-                    </tr>
-                    @endforeach
-                @endisset
-                @isset($logLibur)
-                    @foreach($logLibur as $libur)
-                    <tr>
-                        <td>{{$libur['tanggal']}}</td>
-                        <td>-</td>
-                        <td>-</td>
-                        <td>{{$libur['keterangan_libur']}}</td>
-                    </tr>
-                    @endforeach
-                @endisset
             </tbody>
         </table>
     </div>
@@ -182,7 +142,10 @@ $(function() {
                     );
                     table.row.add(newRow).draw();
                 });
-            }
+            },
+            error: function(xhr, status, error) {
+                alert(error);
+            },
         });
     }
 
