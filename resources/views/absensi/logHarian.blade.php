@@ -33,7 +33,6 @@
         <table class="table" id="myTable">
             <thead>
                 <tr>
-                    <th scope="col">#</th>
                     <th scope="col">Tanggal</th>
                     <th scope="col">Waktu Masuk</th>
                     <th scope="col">Waktu Keluar</th>
@@ -44,7 +43,6 @@
                 @isset($logMasuk)
                     @foreach($logMasuk as $masuk)
                     <tr>
-                        <th scope="row">1</th>
                         <td>{{$masuk['tanggal']}}</td>
                         <td>{{$masuk['waktu_masuk']}}</td>
                         <td>{{$masuk['waktu_keluar']}}</td>
@@ -55,10 +53,9 @@
                 @isset($logIzin)
                     @foreach($logIzin as $izin)
                     <tr class="bg-light-primary">
-                        <th scope="row"></th>
                         <td>{{$izin['tanggal']}}</td>
-                        <td>I</td>
-                        <td>I</td>
+                        <td>-</td>
+                        <td>-</td>
                         <td>{{$izin['keterangan_izin']}}</td>
                     </tr>
                     @endforeach
@@ -66,7 +63,6 @@
                 @isset($logAlpha)
                     @foreach($logAlpha as $alpha)
                     <tr class="bg-danger text-white">
-                        <th scope="row"></th>
                         <td>{{$alpha['tanggal']}}</td>
                         <td>-</td>
                         <td>-</td>
@@ -77,7 +73,6 @@
                 @isset($logLibur)
                     @foreach($logLibur as $libur)
                     <tr class="bg-danger text-white">
-                        <th scope="row"></th>
                         <td>{{$libur['tanggal']}}</td>
                         <td>-</td>
                         <td>-</td>
@@ -90,7 +85,6 @@
     </div>
 </div>
 @endsection
-
 @section('extra_scripts')
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
 <script src="//cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.6.3/js/bootstrap-select.min.js"></script>
@@ -100,7 +94,9 @@
 $(function() {
     var start = moment().subtract(29, 'days');
     var end = moment();
-    $('#myTable').DataTable();
+    $('#myTable').DataTable({
+        "order": [[0, 'desc']]
+    });
     function cb(start, end) {
         $('#reportrange span').html(start.format('MMMM D, YYYY') + ' - ' + end.format('MMMM D, YYYY'));
     }
