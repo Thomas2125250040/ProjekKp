@@ -31,6 +31,31 @@
                 </li>
 
                 <li class="sidebar-item">
+                    <a class="sidebar-link" href="{{ route('absensi.masuk') }}" aria-expanded="false">
+                        <span>
+                            <i class="ti ti-transfer-in"></i>
+                        </span>
+                        <span class="hide-menu">Masuk</span>
+                    </a>
+                </li>
+                <li class="sidebar-item">
+                    <a class="sidebar-link" href="{{ route('absensi.keluar') }}" aria-expanded="false">
+                        <span>
+                            <i class="ti ti-transfer-out"></i>
+                        </span>
+                        <span class="hide-menu">Keluar</span>
+                    </a>
+                </li>
+                <li class="sidebar-item">
+                    <a class="sidebar-link" href="{{ route('absensi.izin') }}" aria-expanded="false">
+                        <span>
+                            <i class="ti ti-license-off"></i>
+                        </span>
+                        <span class="hide-menu">Izin</span>
+                    </a>
+                </li>
+
+                <li class="sidebar-item">
                     <a class="sidebar-link" href="{{ url('absensi/ubah') }}" aria-expanded="false">
                         <span>
                             <i class="ti ti-edit"></i>
@@ -48,6 +73,35 @@
                             <i class="ti ti-brand-google-analytics"></i>
                         </span>
                         <span class="hide-menu">Laporan</span>
+                    </a>
+                </li>
+
+                <li class="sidebar-item">
+                    <a class="sidebar-link
+                    {{Route::is('karyawan.*') ? 'active' : ''}}" href="{{ route('karyawan.index') }}" aria-expanded="false">
+                        <span>
+                            <i class="ti ti-users"></i>
+                        </span>
+                        <span class="hide-menu">Karyawan</span>
+                    </a>
+                </li>
+
+                <li class="sidebar-item">
+                    <a class="sidebar-link
+                    {{Route::is('jabatan.*') ? 'active' : ''}}" href="{{ url('jabatan') }}" aria-expanded="false">
+                        <span>
+                            <i class="ti ti-affiliate"></i>
+                        </span>
+                        <span class="hide-menu">Jabatan</span>
+                    </a>
+                </li>
+                <li class="sidebar-item">
+                    <a class="sidebar-link
+                    {{Route::is('hari-libur.*') ? 'active' : ''}}" href="{{ url('hari-libur') }}" aria-expanded="false">
+                        <span>
+                            <i class="ti ti-calendar-event"></i>
+                        </span>
+                        <span class="hide-menu">Hari Libur</span>
                     </a>
                 </li>
 
@@ -72,15 +126,6 @@
                         <span class="hide-menu">Hak Akses</span>
                     </a>
                 </li>
-
-                {{-- <li class="sidebar-item">
-                    <a class="sidebar-link" href="{{ url('#') }}" aria-expanded="false">
-                        <span>
-                            <i class="ti ti-settings"></i>
-                        </span>
-                        <span class="hide-menu">Pengaturan</span>
-                    </a>
-                </li> --}}
 
                 <li class="sidebar-item mb-5">
                     <a class="sidebar-link" href="{{ route('logout') }}" aria-expanded="false">

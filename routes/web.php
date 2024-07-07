@@ -14,10 +14,9 @@ use App\Http\Controllers\RegisterController;
 use App\Http\Middleware\checkAdminDirector;
 use Illuminate\Support\Facades\Route;
 
-Route::get("/cetak", function(){
+Route::get("/cetak", function () {
     return view('absensi.halamanCetakLaporan');
 });
-
 
 Route::middleware([antiLoginLagi::class])->group(function () {
     Route::get('/', [LoginController::class, 'index'])->name('login-page');
@@ -29,29 +28,21 @@ Route::middleware([checkHakAkses::class])->group(function () {
     Route::get('/error', function () {
         return view('user.error');
     });
-    // Route::get('laporan', [AbsensiController::class, 'laporan'])->name("laporan");
-    // Route::get('laporans', [AbsensiController::class, 'laporans'])->name("laporans");
-    // Route::post('/laporans/filter', [AbsensiController::class, 'laporans'])->name('laporans.filter');
-    Route::get('/laporans', [AbsensiController::class, 'laporans'])->name('laporans');
-Route::post('/laporans/filter', [AbsensiController::class, 'laporansFilter'])->name('laporans.filter');
-// Route::get('/print-pdf', [AbsensiController::class, 'generatePDF'])->name('print.pdf');
 
-Route::get('/cetak', [AbsensiController::class, 'showReport'])->name('report.show');
-Route::get('/print-pdf', [AbsensiController::class, 'generatePDF'])->name('print.pdf');
+    Route::get('/laporan', [AbsensiController::class, 'laporan'])->name('laporan');
+    Route::post('/laporan/filter', [AbsensiController::class, 'laporanFilter'])->name('laporan.filter');
 
-
+    // Route::get('/cetak', [AbsensiController::class, 'showReport'])->name('report.show');
+    Route::get('/print-pdf', [AbsensiController::class, 'generatePDF'])->name('print.pdf');
     Route::get('log-harian', [AbsensiController::class, 'logharian'])->name("logharian");
 
     Route::middleware([CheckAdminDirector::class])->group(function () {
         Route::get('/gaji', [AbsensiController::class, 'index'])->name('gaji.index');
-Route::post('/gaji/filter', [AbsensiController::class, 'filter'])->name('gaji.filter');Route::get('gaji', [AbsensiController::class, 'gaji'])->name('gaji');
+        Route::post('/gaji/filter', [AbsensiController::class, 'filter'])->name('gaji.filter');
+        Route::get('gaji', [AbsensiController::class, 'gaji'])->name('gaji');
         Route::get('register', [LoginController::class, 'register'])->name('register');
         Route::post('register', [LoginController::class, 'store'])->name('save');
         Route::resource('users', RegisterController::class);
-    });
-
-    // Route untuk Admin
-    Route::middleware([CheckAdmin::class])->group(function () {
         Route::resource('karyawan', KaryawanController::class);
         Route::resource('jabatan', JabatanController::class);
         Route::resource('hari-libur', HariLiburController::class);
@@ -66,6 +57,11 @@ Route::post('/gaji/filter', [AbsensiController::class, 'filter'])->name('gaji.fi
         Route::get('save/tutup', [AbsensiController::class, 'tutup_absensi'])->name('absensi.tutup-absensi');
     });
 
+    // Route untuk Admin
+    Route::middleware([CheckAdmin::class])->group(function () {
+
+    });
+
     // Route untuk Director
     Route::middleware([CheckDirector::class])->group(function () {
         Route::get('absensi/ubah', [AbsensiController::class, 'absensiEdit'])->name('absensi.edit');
@@ -76,7 +72,7 @@ Route::post('/gaji/filter', [AbsensiController::class, 'filter'])->name('gaji.fi
 
     });
 
-    Route::get('test', function() {
+    Route::get('test', function () {
         return view('test');
     });
 });
