@@ -8,6 +8,7 @@
     <div class="card-body">
         <div class="d-flex mb-4">
             <div class="card-title fw-semibold flex-grow-1">Log Harian</div>
+            <a href="{{url('laporan')}}" class="btn btn-primary">Kembali</a>
         </div>
         <div class="d-flex mb-4">
             <select class="me-3 selectpicker" data-show-subtext="true" data-live-search="true" id="karyawanSelect">
