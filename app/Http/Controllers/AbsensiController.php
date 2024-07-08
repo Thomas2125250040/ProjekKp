@@ -332,9 +332,10 @@ ORDER BY
         $awal_bulan = Carbon::create($tahun, $bulan)->startOfMonth();
         $akhir_bulan = Carbon::create($tahun, $bulan)->endOfMonth();
         $kumpulan_id_absensi = Absensi::whereBetween('tanggal', [$awal_bulan, $akhir_bulan])->get();
-        if ($kumpulan_id_absensi){
-            return response()->noCOntent();
+        if($kumpulan_id_absensi->isEmpty()){
+            return response()->noContent();
         }
+        dd($kumpulan_id_absensi);
     }
 
     public function filter(Request $request)

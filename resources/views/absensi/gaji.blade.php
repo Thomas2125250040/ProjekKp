@@ -91,7 +91,7 @@
 $(document).ready(function() {
     const table = $('#myTable').DataTable();
     $('#cari').click(function(){
-        const btnCari = $(this).html("<div class='spinner-border spinner-border-sm'></div>").attr('disabled', '');
+        // const btnCari = $(this).html("<div class='spinner-border spinner-border-sm'></div>").attr('disabled', '');
         var bulan = $('#bulan').val();
         var tahun = $('#tahun').val();
 
@@ -104,7 +104,7 @@ $(document).ready(function() {
                 tahun: tahun
             },
             success: function(response, status, xhr) {
-                btnCari.html("Cari").removeAttr('disabled');
+                // btnCari.html("Cari").removeAttr('disabled');
                 if(xhr.status == 204){
                     table.clear().draw();
                 }
