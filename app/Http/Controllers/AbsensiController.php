@@ -86,9 +86,18 @@ class AbsensiController extends Controller
 
     public function editAbsensi()
     {
-        // $absensi = DB::select("select xxx from xx where xx");
-        // return view('absensi.absenEdit', ['absensi' => $absensi]);
-        return view('absensi.absenEdit');
+        $id_absensi = Cache::get('id_absensi');
+        if ($keterangan = $this->cek_libur()) {
+            return view('absensi.edit')->with('libur', $keterangan);
+        } else if (is_null($id_absensi)) {
+            if ($this->cek_buka_absensi()) {
+                return view('absensi.edit')->with('error', "Tidak ada data absensi untuk hari ini, apakah Anda ingin membuat satu?");
+            }
+            return view('absensi.edit')->with('tutup', "Absensi sudah ditutup.");
+        }
+        $masuk = KaryawanAbsensi::with('karyawan')->where('id_absensi', $id_absensi)->get();
+        $izin = KaryawanIzin::with('karyawan')->where('id_absensi', $id_absensi)->get();
+        return view('absensi.edit', compact(['masuk', 'izin']));
     }
 
     public function simpan_masuk(Request $request)
