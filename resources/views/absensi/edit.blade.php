@@ -1,5 +1,10 @@
 @extends('layouts.main')
 @section('content')
+<style>
+  .status-kirim:hover {
+    color: rgb(93, 135, 255);
+  }
+</style>
 <div class="card">
     <div class="card-body">
         <div class="d-flex mb-3">
@@ -27,6 +32,7 @@
                 <th scope="col">Waktu Masuk</th>
                 <th scope="col">Waktu Keluar</th>
                 <th scope="col">Keterangan</th>
+                <th scope="col">Aksi</th>
               </tr>
             </thead>
             <tbody>
@@ -38,6 +44,7 @@
                   <td>{{$item->waktu_masuk}}</td>
                   <td>{{$item->waktu_keluar}}</td>
                   <td></td>
+                  <td><i class="ti ti-edit status-kirim" onclick="editRow(this)"></i></td>
                 </tr>
                 @endforeach
               @endisset
@@ -49,6 +56,7 @@
                   <td>-</td>
                   <td>-</td>
                   <td>{{$item->keterangan}}</td>
+                  <td><i class="ti ti-edit status-kirim" onclick="editRow(this)"></i></td>
                 </tr>
                 @endforeach
               @endisset
