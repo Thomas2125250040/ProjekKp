@@ -173,6 +173,7 @@ $(function() {
                 <input type="hidden" name="end" id="cetakEnd">
                 <button type="submit" class="btn btn-primary">Cetak</button>
             </form>
+           
         </div>
         <div class="d-flex mb-4">
             <select class="me-3 selectpicker" data-show-subtext="true" data-live-search="true" id="karyawanSelect">

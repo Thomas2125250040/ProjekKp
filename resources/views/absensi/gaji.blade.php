@@ -95,11 +95,17 @@ $(document).ready(function() {
                         $("<td>").text(item.id),
                         $("<td>").text(item.nama),
                         $("<td>").text(item.jabatan),
-                        $("<td>").text(item.gaji_pokok),
-                        $("<td>").html(`<span class="data">${totalMasuk}</span><span class="bayaran">${uangMakan}</span>`),
-                        $("<td>").html(`<span class="data">${totalLembur}</span><span class="bayaran">${uangLembur}</span>`),
-                        $("<td>").html(`<span class="data">${totalTelat}</span><span class="bayaran">${dendaTelat}</span>`),
-                        $("<td>").text(total)
+                        //$("<td>").text(item.gaji_pokok),
+                        //$("<td>").html(`<span class="data">${totalMasuk}</span><span class="bayaran">${uangMakan}</span>`),
+                        //$("<td>").html(`<span class="data">${totalLembur}</span><span class="bayaran">${uangLembur}</span>`),
+                       // $("<td>").html(`<span class="data">${totalTelat}</span><span class="bayaran">${dendaTelat}</span>`),
+                        //$("<td>").text(total)
+                            $("<td>").html(formatRupiah(item.gaji_pokok)),
+                        $("<td>").html(`<span class="data">${totalMasuk}</span><span class="bayaran">${formatRupiah(uangMakan)}</span>`),
+                        $("<td>").html(`<span class="data">${totalLembur}</span><span class="bayaran">${formatRupiah(uangLembur)}</span>`),
+                        // $("<td>").html(`<span class="data">${totalTelat}</span><span class="bayaran">${formatRupiah(dendaTelat)}</span>`),
+                            $("<td>").html(formatDenda(dendaTelat, totalTelat)),
+                        $("<td>").html(formatRupiah(total))
                     );
                     table.row.add(newRow).draw();
                 });
@@ -127,5 +133,15 @@ $(document).ready(function() {
         });
     });
 });
+function formatRupiah(angka) {
+        const format = angka.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+        return 'Rp. ' + format;
+    }
+
+    function formatDenda(denda, totalTelat) {
+        const formattedDenda = formatRupiah(denda);
+        return `<span class="data">${totalTelat}</span><span class="bayaran text-danger">- ${formattedDenda}</span>`;
+    }
 </script>
+
 @endsection

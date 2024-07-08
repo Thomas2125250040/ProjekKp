@@ -38,6 +38,7 @@ Route::middleware([checkHakAkses::class])->group(function () {
     Route::get('/print-pdf', [AbsensiController::class, 'generatePDF'])->name('print.pdf');
     Route::get('log-harian', [AbsensiController::class, 'logharian'])->name("logharian");
 
+
     Route::middleware([CheckAdminDirector::class])->group(function () {
         Route::get('/gaji', [AbsensiController::class, 'index'])->name('gaji.index');
         Route::post('/gaji/filter', [AbsensiController::class, 'filter'])->name('gaji.filter');

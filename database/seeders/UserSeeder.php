@@ -17,7 +17,7 @@ class UserSeeder extends Seeder
             [
                 'id_karyawan' => "001",
                 'username' => "123",
-                'hak_akses' => "Admin",
+                'hak_akses' => "Director",
                 'password' => Hash::make(123456)
             ],
             [
@@ -29,7 +29,7 @@ class UserSeeder extends Seeder
             [
                 'id_karyawan' => "003",
                 'username' => "12345",
-                'hak_akses' => "Director",
+                'hak_akses' => "Admin",
                 'password' => Hash::make(123456)
             ],
         ]);

@@ -29,9 +29,11 @@
                         <tr>
                             <td>{{ $row->id }}</td>
                             <td>{{ $row->nama }}</td>
-                            <td>{{ $row->gaji_pokok }}</td>
-                            <td>{{ $row->uang_makan }}</td>
-                            <td>{{ $row->uang_lembur }}</td>
+                            <td>Rp. {{ number_format($row->gaji_pokok, 0, ',', '.') }}</td>
+                            {{-- <td>{{ $row->uang_makan }}</td> --}}
+                            <td>Rp. {{ number_format($row->uang_makan, 0, ',', '.') }}</td>
+                            {{-- <td>{{ $row->uang_lembur }}</td> --}}
+                            <td>Rp. {{ number_format($row->uang_lembur, 0, ',', '.') }}</td>
                             <td>
                                 <form method="POST" action="{{ route('jabatan.destroy', $row->id) }}">
                                     @csrf
