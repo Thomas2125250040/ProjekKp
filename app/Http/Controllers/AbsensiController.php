@@ -11,6 +11,7 @@ use App\Models\KaryawanIzin;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Cache;
+use Carbon\Carbon;
 
 class AbsensiController extends Controller
 {
@@ -322,9 +323,18 @@ ORDER BY
 
     public function gaji()
     {
-        $gaji = DB::select("SELECT karyawan.nama, jabatan.nama as jabatan, gaji.gaji_pokok, gaji.uang_makan, gaji.uang_lembur FROM karyawan, jabatan, gaji WHERE karyawan.id_jabatan = jabatan.id AND jabatan.id = gaji.id_jabatan AND gaji.bulan = ? AND gaji.tahun = ?", ['01', date('Y')]);
-
-        return view('absensi.gaji', compact('gaji'));
+        $params = request()->query();
+        $bulan = $params['bulan'] ?? null;
+        $tahun = $params['tahun'] ?? null;
+        if (is_null($bulan) || is_null($tahun)){
+            return view('absensi.gaji');
+        }
+        $awal_bulan = Carbon::create($tahun, $bulan)->startOfMonth();
+        $akhir_bulan = Carbon::create($tahun, $bulan)->endOfMonth();
+        $kumpulan_id_absensi = Absensi::whereBetween('tanggal', [$awal_bulan, $akhir_bulan])->get();
+        if ($kumpulan_id_absensi){
+            return response()->noCOntent();
+        }
     }
 
     public function filter(Request $request)

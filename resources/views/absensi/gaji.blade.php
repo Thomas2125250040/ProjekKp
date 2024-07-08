@@ -13,7 +13,7 @@
         <div class="d-flex align-items-center justify-content-between mb-3">
             <div class="col-lg-4 col-sm-3">
                 <div class="input-group d-flex">
-                    <select class="form-select" name="bulan">
+                    <select class="form-select" name="bulan" id="bulan">
                         <option value="01">Januari</option>
                         <option value="02">Februari</option>
                         <option value="03">Maret</option>
@@ -27,8 +27,8 @@
                         <option value="11">November</option>
                         <option value="Konghucu">Desember</option>
                     </select>
-                    <input type="number" class="form-control" value="2024"/>
-                    <button class="btn btn-primary" id="filter-btn">Cari</button>
+                    <input type="number" class="form-control" value="2024" id="tahun"/>
+                    <button class="btn btn-primary" id="cari">Cari</button>
                 </div>
             </div>
             <div class="form-check form-switch">
@@ -89,7 +89,31 @@
 @section('extra_scripts')
 <script>
 $(document).ready(function() {
-    $('#myTable').DataTable();
+    const table = $('#myTable').DataTable();
+    $('#cari').click(function(){
+        const btnCari = $(this).html("<div class='spinner-border spinner-border-sm'></div>").attr('disabled', '');
+        var bulan = $('#bulan').val();
+        var tahun = $('#tahun').val();
+
+        // You can make an AJAX call here to fetch data based on bulan and tahun
+        $.ajax({
+            type: 'GET',
+            url: '{{route("gaji")}}',
+            data: {
+                bulan: bulan,
+                tahun: tahun
+            },
+            success: function(response, status, xhr) {
+                btnCari.html("Cari").removeAttr('disabled');
+                if(xhr.status == 204){
+                    table.clear().draw();
+                }
+            },
+            error: function(xhr, status) {
+                console.error(xhr);
+            }
+        });
+    });
 });
 </script>
 @endsection
