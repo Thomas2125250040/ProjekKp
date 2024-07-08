@@ -83,7 +83,7 @@ class AbsensiController extends Controller
         return redirect()->route('absensi.masuk');
     }
 
-    
+
     public function editAbsensi()
     {
         // $absensi = DB::select("select xxx from xx where xx");
@@ -159,7 +159,7 @@ class AbsensiController extends Controller
             $karyawanAlpha->save();
         }
         $keluar = KaryawanAbsensi::where('id_absensi', $id_absensi)->whereNull('waktu_keluar')->get();
-        foreach ($keluar as $item){
+        foreach ($keluar as $item) {
             $item->waktu_keluar = '17:00:00';
             $item->save();
         }
@@ -333,27 +333,27 @@ ORDER BY
         $params = request()->query();
         $bulan = $params['bulan'] ?? null;
         $tahun = $params['tahun'] ?? null;
-        if (is_null($bulan) || is_null($tahun)){
+        if (is_null($bulan) || is_null($tahun)) {
             return view('absensi.gaji');
         }
         $awal_bulan = Carbon::create($tahun, $bulan)->startOfMonth();
         $akhir_bulan = Carbon::create($tahun, $bulan)->endOfMonth();
         $kumpulan_id_absensi = Absensi::whereBetween('tanggal', [$awal_bulan, $akhir_bulan])->whereNull('id_libur')->get();
-        if($kumpulan_id_absensi->isEmpty()){
+        if ($kumpulan_id_absensi->isEmpty()) {
             return response()->noContent();
         }
         $array_hariKerja = [];
         $kumpulan_karyawan = Karyawan::all();
-        foreach ($kumpulan_karyawan as $karyawan){
+        foreach ($kumpulan_karyawan as $karyawan) {
             $hariKerja = 0;
             $lembur = 0;
             $terlambat = 0;
-            foreach ($kumpulan_id_absensi as $absensi){
+            foreach ($kumpulan_id_absensi as $absensi) {
                 $karyawanAbsen = KaryawanAbsensi::find([
                     $karyawan->id,
                     $absensi->id
                 ]);
-                if ($karyawanAbsen){
+                if ($karyawanAbsen) {
                     $hariKerja++;
                     $waktu_keluar = Carbon::parse($karyawanAbsen->waktu_keluar);
                     $time1700 = Carbon::createFromTime(17, 0, 0);
@@ -382,7 +382,7 @@ ORDER BY
             ];
         }
         return response()->json($array_hariKerja);
-            
+
     }
 
     public function filter(Request $request)
@@ -486,10 +486,10 @@ ORDER BY
             }
         }
         return response()->json([
-            'logMasuk'=> $logMasuk,
-            'logIzin'=> $logIzin,
-            'logAlpha'=> $logAlpha,
-            'logLibur'=> $logLibur
+            'logMasuk' => $logMasuk,
+            'logIzin' => $logIzin,
+            'logAlpha' => $logAlpha,
+            'logLibur' => $logLibur
         ]);
     }
 
@@ -572,69 +572,70 @@ ORDER BY
     }
 
     public function cetak(Request $request)
-{
-    $nama = $request->input('nama');
-    $start = Carbon::parse($request->input('start'))->startOfDay();
-    $end = Carbon::parse($request->input('end'))->endOfDay();
+    {
+        $nama = $request->input('nama');
+        $start = Carbon::parse($request->input('start'))->startOfDay();
+        $end = Carbon::parse($request->input('end'))->endOfDay();
 
-    $karyawan = Karyawan::where('nama', $nama)->first();
-    if (!$karyawan) {
-        return redirect()->back()->withErrors(['error' => 'Karyawan not found']);
-    }
-    $id_karyawan = $karyawan->id;
-
-    $kumpulan_id_absensi = Absensi::whereBetween('tanggal', [$start, $end])->get();
-
-    $logMasuk = [];
-    $logAlpha = [];
-    $logIzin = [];
-    $logLibur = [];
-
-    foreach ($kumpulan_id_absensi as $item) {
-        if (is_null($item->id_libur)) {
-            // Check for izin
-            $absensiIzin = KaryawanIzin::where('id_karyawan', $id_karyawan)->where('id_absensi', $item->id)->first();
-            if ($absensiIzin) {
-                $logIzin[] = [
-                    'tanggal' => $item->tanggal,
-                    'keterangan_izin' => $absensiIzin->keterangan,
-                ];
-                continue;
-            }
-
-            // Check for absensi
-            $absensiMasuk = KaryawanAbsensi::where('id_karyawan', $id_karyawan)->where('id_absensi', $item->id)->first();
-            if ($absensiMasuk) {
-                $logMasuk[] = [
-                    'tanggal' => $item->tanggal,
-                    'waktu_masuk' => $absensiMasuk->waktu_masuk,
-                    'waktu_keluar' => $absensiMasuk->waktu_keluar,
-                ];
-                continue;
-            }
-
-            // If no izin or absensi, mark as alpha
-            $logAlpha[] = [
-                'tanggal' => $item->tanggal,
-            ];
-        } else {
-            // Log as libur
-            $libur = HariLibur::find($item->id_libur);
-            $logLibur[] = [
-                'tanggal' => $item->tanggal,
-                'keterangan_libur' => $libur->keterangan,
-            ];
+        $karyawan = Karyawan::where('nama', $nama)->first();
+        if (!$karyawan) {
+            return redirect()->back()->withErrors(['error' => 'Karyawan not found']);
         }
+        $id_karyawan = $karyawan->id;
+
+        $kumpulan_id_absensi = Absensi::whereBetween('tanggal', [$start, $end])->get();
+
+        $logMasuk = [];
+        $logAlpha = [];
+        $logIzin = [];
+        $logLibur = [];
+
+        foreach ($kumpulan_id_absensi as $item) {
+            if (is_null($item->id_libur)) {
+                // Check for izin
+                $absensiIzin = KaryawanIzin::where('id_karyawan', $id_karyawan)->where('id_absensi', $item->id)->first();
+                if ($absensiIzin) {
+                    $logIzin[] = [
+                        'tanggal' => $item->tanggal,
+                        'keterangan_izin' => $absensiIzin->keterangan,
+                    ];
+                    continue;
+                }
+
+                // Check for absensi
+                $absensiMasuk = KaryawanAbsensi::where('id_karyawan', $id_karyawan)->where('id_absensi', $item->id)->first();
+                if ($absensiMasuk) {
+                    $logMasuk[] = [
+                        'tanggal' => $item->tanggal,
+                        'waktu_masuk' => $absensiMasuk->waktu_masuk,
+                        'waktu_keluar' => $absensiMasuk->waktu_keluar,
+                    ];
+                    continue;
+                }
+
+                // If no izin or absensi, mark as alpha
+                $logAlpha[] = [
+                    'tanggal' => $item->tanggal,
+                ];
+            } else {
+                // Log as libur
+                $libur = HariLibur::find($item->id_libur);
+                $logLibur[] = [
+                    'tanggal' => $item->tanggal,
+                    'keterangan_libur' => $libur->keterangan,
+                ];
+            }
+        }
+
+        $html = view('absensi.logharian_pdf', compact('logMasuk', 'logAlpha', 'logIzin', 'logLibur'))->render();
+
+        $options = new Options();
+        $options->set('isHtml5ParserEnabled', true);
+        $dompdf = new Dompdf($options);
+        $dompdf->loadHtml($html);
+        $dompdf->setPaper('A4', 'landscape');
+        $dompdf->render();
+        return $dompdf->stream('laporan_log_harian.pdf');
     }
 
-    $html = view('absensi.logharian_pdf', compact('logMasuk', 'logAlpha', 'logIzin', 'logLibur'))->render();
-
-    $options = new Options();
-    $options->set('isHtml5ParserEnabled', true);
-    $dompdf = new Dompdf($options);
-    $dompdf->loadHtml($html);
-    $dompdf->setPaper('A4', 'landscape');
-    $dompdf->render();
-    return $dompdf->stream('laporan_log_harian.pdf');
-}
 }
