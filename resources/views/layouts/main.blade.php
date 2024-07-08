@@ -8,6 +8,11 @@
     <link rel="shortcut icon" type="image/png" href="{{ asset('assets/images/logos/favicon.png') }}" />
     <link rel="stylesheet" href="{{ asset('assets/css/styles.min.css') }}" />
     <link rel="stylesheet" href="https://cdn.datatables.net/2.0.8/css/dataTables.dataTables.css" />
+    <style>
+        .card-title {
+            font-family: "Helvetica Neue", Helvetica, Arial, sans-serif
+        }
+    </style>
 </head>
 
 <body>
