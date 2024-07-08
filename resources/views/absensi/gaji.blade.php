@@ -10,7 +10,7 @@
         <div class="d-flex mb-3">
             <div class="card-title fw-semibold flex-grow-1">Gaji Karyawan</div>
         </div>
-        <div class="d-flex align-items-center justify-content-between">
+        <div class="d-flex align-items-center justify-content-between mb-3">
             <div class="col-lg-4 col-sm-3">
                 <div class="input-group d-flex">
                     <select class="form-select" name="bulan">
@@ -36,11 +36,11 @@
                 <label class="form-check-label" for="flexSwitchCheckDefault">Beralih ke jam kerja</label>
             </div>
         </div>
-        <table class="table table-striped mt-4" id="myTable">
+        <table class="table table-striped" id="myTable">
             <?php $no=1; ?>
             <thead>
                 <tr>
-                    <th scope="col">#</th>
+                    <th scope="col">Id</th>
                     <th scope="col">Nama</th>
                     <th scope="col">Jabatan</th>
                     <th scope="col">Gaji Pokok</th>
@@ -87,5 +87,9 @@
 </div>
 @endsection
 @section('extra_scripts')
-<script src="https://gitcdn.github.io/bootstrap-toggle/2.2.2/js/bootstrap-toggle.min.js"></script>
+<script>
+$(document).ready(function() {
+    $('#myTable').DataTable();
+});
+</script>
 @endsection
