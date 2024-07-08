@@ -51,36 +51,6 @@
                 </tr>
             </thead>
             <tbody>
-                <tr>
-                    <td>1</td>
-                    <td>Thomas Setiawan</td>
-                    <td>Direktur</td>
-                    <td>50.000.000</td>
-                    <td>2.600.000</td>
-                    <td>10.000.000</td>
-                    <td>(10.000)</td>
-                    <td>62.600.000</td>
-                </tr>
-                <tr>
-                    <td>2</td>
-                    <td>Cindy Tri Sella</td>
-                    <td>Manajer</td>
-                    <td>14.000.000</td>
-                    <td>1.300.000</td>
-                    <td>4.000.000</td>
-                    <td>(10.000)</td>
-                    <td>19.300.000</td>
-                </tr>
-                <tr>
-                    <td>3</td>
-                    <td>Nicholas</td>
-                    <td>Admin</td>
-                    <td>4.000.000</td>
-                    <td>1.300.000</td>
-                    <td>700.000</td>
-                    <td>(10.000)</td>
-                    <td>6.000.000</td>
-                </tr>
             </tbody>
         </table>
     </div>
@@ -91,7 +61,7 @@
 $(document).ready(function() {
     const table = $('#myTable').DataTable();
     $('#cari').click(function(){
-        // const btnCari = $(this).html("<div class='spinner-border spinner-border-sm'></div>").attr('disabled', '');
+        const btnCari = $(this).html("<div class='spinner-border spinner-border-sm'></div>").attr('disabled', '');
         var bulan = $('#bulan').val();
         var tahun = $('#tahun').val();
 
@@ -104,13 +74,55 @@ $(document).ready(function() {
                 tahun: tahun
             },
             success: function(response, status, xhr) {
-                // btnCari.html("Cari").removeAttr('disabled');
+                btnCari.html("Cari").removeAttr('disabled');
+                table.clear();
                 if(xhr.status == 204){
                     table.clear().draw();
+                    return;
+                }
+                response.forEach(function(item){
+                    const totalMasuk = item.total_masuk + " hari";
+                    const uangMakan = item.total_masuk * item.uang_makan;
+                    const totalLembur = item.total_lembur + " jam";
+                    const uangLembur = item.total_lembur * item.uang_lembur;
+                    const totalTelat = item.total_telat + " hari";
+                    const dendaTelat = item.denda_telat * item.total_telat;
+
+                    const total = item.gaji_pokok + uangMakan + uangLembur - dendaTelat;
+
+                    const newRow = $("<tr>");
+                    newRow.append(
+                        $("<td>").text(item.id),
+                        $("<td>").text(item.nama),
+                        $("<td>").text(item.jabatan),
+                        $("<td>").text(item.gaji_pokok),
+                        $("<td>").html(`<span class="data">${totalMasuk}</span><span class="bayaran">${uangMakan}</span>`),
+                        $("<td>").html(`<span class="data">${totalLembur}</span><span class="bayaran">${uangLembur}</span>`),
+                        $("<td>").html(`<span class="data">${totalTelat}</span><span class="bayaran">${dendaTelat}</span>`),
+                        $("<td>").text(total)
+                    );
+                    table.row.add(newRow).draw();
+                });
+                if ($('#flexSwitchCheckDefault').is(':checked')) {
+                    $('span.data').show();
+                    $('span.bayaran').hide();
+                } else {
+                    $('span.data').hide();
+                    $('span.bayaran').show();
                 }
             },
             error: function(xhr, status) {
+                btnCari.html("Cari").removeAttr('disabled');
                 console.error(xhr);
+            }
+        });
+        $('#flexSwitchCheckDefault').change(function() {
+            if ($(this).is(':checked')) {
+                $('span.data').show();
+                $('span.bayaran').hide();
+            } else {
+                $('span.data').hide();
+                $('span.bayaran').show();
             }
         });
     });

@@ -25,6 +25,6 @@ class Karyawan extends Model
     ];
     public function jabatan()
     {
-        return $this->belongsTo(Jabatan::class, 'id_jabatan')->select(['id', 'nama']);
+        return $this->belongsTo(Jabatan::class, 'id_jabatan');
     }
 }

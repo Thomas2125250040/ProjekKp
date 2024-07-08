@@ -333,11 +333,51 @@ ORDER BY
         }
         $awal_bulan = Carbon::create($tahun, $bulan)->startOfMonth();
         $akhir_bulan = Carbon::create($tahun, $bulan)->endOfMonth();
-        $kumpulan_id_absensi = Absensi::whereBetween('tanggal', [$awal_bulan, $akhir_bulan])->get();
+        $kumpulan_id_absensi = Absensi::whereBetween('tanggal', [$awal_bulan, $akhir_bulan])->whereNull('id_libur')->get();
         if($kumpulan_id_absensi->isEmpty()){
             return response()->noContent();
         }
-        dd($kumpulan_id_absensi);
+        $array_hariKerja = [];
+        $kumpulan_karyawan = Karyawan::all();
+        foreach ($kumpulan_karyawan as $karyawan){
+            $hariKerja = 0;
+            $lembur = 0;
+            $terlambat = 0;
+            foreach ($kumpulan_id_absensi as $absensi){
+                $karyawanAbsen = KaryawanAbsensi::find([
+                    $karyawan->id,
+                    $absensi->id
+                ]);
+                if ($karyawanAbsen){
+                    $hariKerja++;
+                    $waktu_keluar = Carbon::parse($karyawanAbsen->waktu_keluar);
+                    $time1700 = Carbon::createFromTime(17, 0, 0);
+                    if ($waktu_keluar->greaterThan($time1700)) {
+                        $lembur += 1;
+                    }
+                    $waktuMasuk = Carbon::parse($karyawanAbsen->waktu_masuk);
+                    $time0800 = Carbon::createFromTime(8, 0, 0);
+                    if ($waktuMasuk->greaterThan($time0800)) {
+                        $terlambat += 1;
+                    }
+                }
+            }
+            $dendaTelat = Cache::get('denda_telat', 50000);
+            $array_hariKerja[] = [
+                'id' => $karyawan->id,
+                'nama' => $karyawan->nama,
+                'jabatan' => $karyawan->jabatan->nama,
+                'gaji_pokok' => $karyawan->jabatan->gaji_pokok,
+                'uang_makan' => $karyawan->jabatan->uang_makan,
+                'uang_lembur' => $karyawan->jabatan->uang_lembur,
+                'denda_telat' => $dendaTelat,
+                'total_masuk' => $hariKerja,
+                'total_telat' => $terlambat,
+                'total_lembur' => $lembur
+            ];
+        }
+        return response()->json($array_hariKerja);
+            
     }
 
     public function filter(Request $request)
