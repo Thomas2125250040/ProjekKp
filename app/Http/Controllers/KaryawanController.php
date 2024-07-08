@@ -104,6 +104,11 @@ class KaryawanController extends Controller
             $nama_file = $karyawan->foto;
         }
 
+        if ($karyawan->id == session('id_karyawan')) {
+            // Update session foto hanya jika pengguna sedang mengubah foto mereka sendiri
+            session(['foto' => $nama_file]);
+        }
+
         $karyawan->update([
             'id' => $request->id,
             'id_jabatan' => $request->id_jabatan,
