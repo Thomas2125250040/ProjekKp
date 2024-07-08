@@ -1,5 +1,7 @@
 @extends('layouts.main')
+@section('exclude_jquery', '')
 @section('content')
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.css" />
 <style>
   .status-kirim:hover {
     color: rgb(93, 135, 255);
@@ -228,5 +230,6 @@ window.counter = 0;
 function addOne() {
 return ++window.counter;
 }
+
 </script>
 @endsection
