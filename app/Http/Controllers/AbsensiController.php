@@ -17,6 +17,55 @@ use Dompdf\Options;
 
 class AbsensiController extends Controller
 {
+    public function edit_delete($id){
+        $id_absensi = Cache::get('id_absensi');
+        $data_absensi = KaryawanAbsensi::find([
+            $id, $id_absensi
+        ]);
+        if($data_absensi){
+            $data_absensi->delete();
+            return response()->json(["message" => "Data masuk berhasil dihapus"]);
+        }
+        $data_izin = KaryawanIzin::find([
+            $id, $id_absensi
+        ]);
+        if($data_izin){
+            $data_izin->delete();
+            return response()->json(["message" => "Data izin berhasil dihapus"]);
+        }
+        return response()->json(["message" => "Data tidak ditemukan"]);
+    }
+
+    public function edit_update(Request $request){
+        $id_absensi = Cache::get('id_absensi');
+        $id_karyawan = $request[0];
+        $nama = $request[1];
+        $masuk = $request[2];
+        $keluar = $request[3];
+        $keterangan = $request[4];
+        if (is_null($keterangan)){
+            $karyawan_izin = KaryawanIzin::find([
+                $id_karyawan, $id_absensi
+            ]);
+            if ($karyawan_izin){
+                $karyawan_izin->delete();
+            }
+            $karyawan = KaryawanAbsensi::find([
+                $id_karyawan, $id_absensi
+            ]);
+            $karyawan->waktu_masuk = $masuk;
+            $karyawan->waktu_keluar = $keluar;
+            $karyawan->save();
+            return response()->json(['message' => 'Berhasil update data masuk karyawan']);
+        }
+        $izin = KaryawanIzin::find([
+            $id_karyawan, $id_absensi
+        ]);
+        $izin->keterangan = $keterangan;
+        $izin->save();
+        return response()->json(['message' => 'Berhasil update izin karyawan']);
+    }
+
     public function masuk()
     {
         $id_absensi = Cache::get('id_absensi');

@@ -1,6 +1,7 @@
 @extends('layouts.main')
 @section('exclude_jquery', '')
 @section('content')
+<meta name="csrf-token" content="{{ csrf_token() }}">
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.css" />
 <style>
   .status-kirim:hover {
@@ -26,7 +27,7 @@
                 {{$tutup}}
             </div>
         @endisset
-        <table cellpadding="0" cellspacing="0" border="0" class="dataTable table table-striped" id="example">
+        <table cellpadding="0" cellspacing="0" border="0" class="dataTable table table-striped" id="myTable">
             <thead>
               <tr>
                 <th scope="col">Id</th>
@@ -107,6 +108,11 @@
 <script src="../assets/js/dataTables.altEditor.free.js" ></script>
 <script>
 $(document).ready(function() {
+$.ajaxSetup({
+  headers: {
+    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+  }
+});
 var columnDefs = [{
   title: "Id",
   type: "readonly"
@@ -118,39 +124,68 @@ var columnDefs = [{
   name: "nama"
 }, {
   title: "Waktu masuk",
-  required: true,
-  type: "time"
+  type: "text"
 }, {
   title: "Waktu keluar",
-  type: "time"
+  type: "text"
 }, {
   title: "Keterangan",
   type: "text"
 }];
 
-var myTable;
-
-myTable = $('#example').DataTable({
-  "sPaginationType": "full_numbers",
-  columns: columnDefs,
-  dom: 'Bfrtip',      
-  select: 'single',
-  responsive: true,
-  altEditor: true,     
-  buttons: [{
-    text: 'Add',
-    name: 'add'       
-  },
-  {
-    extend: 'selected',
-    text: 'Edit',
-    name: 'edit'        
-  },
-  {
-    extend: 'selected', 
-    text: 'Delete',
-    name: 'delete'    
-  }]});
+var myTable = $('#myTable').DataTable({
+        "sPaginationType": "full_numbers",
+        // ajax: {
+        //     url : '',
+        //     // our data is an array of objects, in the root node instead of /data node, so we need 'dataSrc' parameter
+        //     dataSrc : ''
+        // },
+        columns: columnDefs,
+        dom: 'Bfrtip',        // Needs button container
+        select: 'single',
+        responsive: true,
+        altEditor: true,     // Enable altEditor
+        buttons: [
+            {
+                extend: 'selected', // Bind to Selected row
+                text: 'Edit',
+                name: 'edit'        // do not change name
+            },
+            {
+                extend: 'selected', // Bind to Selected row
+                text: 'Delete',
+                name: 'delete'      // do not change name
+            }
+        ],
+        onDeleteRow: function(datatable, rowdata, success, error) {
+            $.ajax({
+                url: "/delete-absensi/" + rowdata[0][0],
+                type: 'DELETE',
+                success: function (json){
+                  alert(json.message);
+                  myTable.row('.selected').remove().draw(false);
+                },
+                error: function(xhr, status, error){
+                  alert(error);
+                }
+            });
+        },
+        onEditRow: function(datatable, rowdata, success, error) {
+            $.ajax({
+                url: "{{route('edit.update')}}",
+                type: 'PUT',
+                data: rowdata,
+                success: function(json){
+                    alert(json.message);
+                    var rowIndex = myTable.row('.selected').index();
+                    myTable.row(rowIndex).data(rowdata).draw(false);
+                },
+                error: function(xhr, status, error){
+                    alert(error);
+                }
+            });                 
+        }
+    });
 });
 </script>
 @endsection
