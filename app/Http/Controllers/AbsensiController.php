@@ -583,7 +583,9 @@ ORDER BY
         }
         $id_karyawan = $karyawan->id;
 
-        $kumpulan_id_absensi = Absensi::whereBetween('tanggal', [$start, $end])->get();
+        $kumpulan_id_absensi = Absensi::whereBetween('tanggal', [$start, $end])
+            ->orderBy('tanggal', 'asc') // Urutkan berdasarkan tanggal
+            ->get();
 
         $logMasuk = [];
         $logAlpha = [];
@@ -627,7 +629,14 @@ ORDER BY
             }
         }
 
-        $html = view('absensi.logharian_pdf', compact('logMasuk', 'logAlpha', 'logIzin', 'logLibur'))->render();
+        // Gabungkan semua data log menjadi satu array dan urutkan berdasarkan tanggal
+        $combinedLogs = array_merge($logAlpha, $logIzin, $logMasuk, $logLibur);
+        usort($combinedLogs, function ($a, $b) {
+            return strtotime($a['tanggal']) - strtotime($b['tanggal']);
+        });
+
+        // Render view PDF dengan data yang sudah diurutkan
+        $html = view('absensi.logharian_pdf', compact('combinedLogs', 'nama'))->render();
 
         $options = new Options();
         $options->set('isHtml5ParserEnabled', true);
