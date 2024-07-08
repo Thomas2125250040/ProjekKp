@@ -324,7 +324,7 @@ ORDER BY
     {
         $gaji = DB::select("SELECT karyawan.nama, jabatan.nama as jabatan, gaji.gaji_pokok, gaji.uang_makan, gaji.uang_lembur FROM karyawan, jabatan, gaji WHERE karyawan.id_jabatan = jabatan.id AND jabatan.id = gaji.id_jabatan AND gaji.bulan = ? AND gaji.tahun = ?", ['01', date('Y')]);
 
-        return view('absensi.gajis', compact('gaji'));
+        return view('absensi.gaji', compact('gaji'));
     }
 
     public function filter(Request $request)
