@@ -220,7 +220,7 @@ class AbsensiController extends Controller
     public function laporan()
     {
         $laporan = DB::select("SELECT 
-    karyawan.nama AS nama_karyawan,
+    karyawan.id, karyawan.nama AS nama_karyawan,
     COALESCE(hadir.jumlah_hadir, 0) AS jumlah_hadir,
     COALESCE(izin.jumlah_izin, 0) AS jumlah_izin,
     COALESCE(alpha.jumlah_alpha, 0) AS jumlah_alpha
@@ -281,7 +281,7 @@ ORDER BY
         $tahun = $request->input('tahun');
 
         $laporan = DB::select("SELECT 
-    karyawan.nama AS nama_karyawan,
+    karyawan.id, karyawan.nama AS nama_karyawan,
     COALESCE(hadir.jumlah_hadir, 0) AS jumlah_hadir,
     COALESCE(izin.jumlah_izin, 0) AS jumlah_izin,
     COALESCE(alpha.jumlah_alpha, 0) AS jumlah_alpha
@@ -509,7 +509,7 @@ ORDER BY
 
         // Dapatkan data laporan berdasarkan bulan dan tahun
         $laporan = DB::select("SELECT 
-        karyawan.nama AS nama_karyawan,
+        karyawan.id, karyawan.nama AS nama_karyawan,
         COALESCE(hadir.jumlah_hadir, 0) AS jumlah_hadir,
         COALESCE(izin.jumlah_izin, 0) AS jumlah_izin,
         COALESCE(alpha.jumlah_alpha, 0) AS jumlah_alpha
@@ -559,7 +559,7 @@ ORDER BY
             karyawan_izin.id_karyawan
     ) AS alpha ON karyawan.id = alpha.id_karyawan
     ORDER BY 
-        karyawan.nama;", [$bulan, $tahun, $bulan, $tahun, $bulan, $tahun]);
+        karyawan.id;", [$bulan, $tahun, $bulan, $tahun, $bulan, $tahun]);
 
         $data = [
             'laporan' => $laporan,
@@ -579,6 +579,7 @@ ORDER BY
         $dompdf->render();
         $dompdf->stream('laporan_absensi.pdf');
     }
+
 
     public function cetak(Request $request)
     {
@@ -657,3 +658,5 @@ ORDER BY
     }
 
 }
+
+   
