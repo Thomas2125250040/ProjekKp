@@ -3,9 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
+use App\Models\Karyawan;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Auth;
 
 class RegisterController extends Controller
 {
@@ -76,12 +78,30 @@ class RegisterController extends Controller
     /**
      * Remove the specified resource from storage.
      */
+
     public function destroy($id_karyawan)
     {
-        $users = User::findOrFail($id_karyawan);
-        $users->delete();
-
-        return redirect()->route('users.index')->with('success', 'Username "' . $users->username . '" berhasil dihapus.');
+        // Ambil id karyawan dari session pengguna yang sedang login
+        $loggedInIdKaryawan = session('id_karyawan');
+    
+        // Ambil data user berdasarkan id_karyawan
+        $user = User::where('id_karyawan', $id_karyawan)->firstOrFail();
+    
+        // Pengecekan apakah pengguna sedang mencoba menghapus data dirinya sendiri
+        if ($user->id_karyawan == $loggedInIdKaryawan) {
+            // Hapus data karyawan
+            $user->delete();
+    
+            // Logout user (hapus session)
+            session()->flush(); // Hapus semua data sesi
+    
+            // Redirect ke halaman login dengan pesan sukses
+            return redirect()->route('login')->with('success', 'Username Anda telah dihapus. Silahkan gunakan akun lain.');
+        }
+    
+        // Hapus data karyawan
+        $user->delete();
+    
+        return redirect("users")->with("success", 'Username berhasil dihapus.'); 
     }
-
 }

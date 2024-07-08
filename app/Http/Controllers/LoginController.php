@@ -29,12 +29,12 @@ class LoginController extends Controller
 
       $user = DB::table('users')
          ->join('karyawan', 'users.id_karyawan', '=', 'karyawan.id')
-         ->select('users.*', 'karyawan.nama', 'karyawan.foto')
+         ->select('users.*', 'karyawan.id', 'karyawan.nama', 'karyawan.foto')
          ->where('users.username', $username)
          ->first();
 
       if ($user && Hash::check($password, $user->password)) {
-
+         session(['id_karyawan' => $user->id_karyawan]);
          session(['hak_akses' => $user->hak_akses]);
          session(['username' => $user->username]);
          session(['nama' => $user->nama]);
