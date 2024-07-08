@@ -36,12 +36,15 @@ class KaryawanController extends Controller
             'alamat' => 'required',
             'foto' => 'nullable|file|image',
             'agama' => 'required',
-            'no_telp' => 'required',
+            'no_telp' => 'required|unique:karyawan,no_telp',
         ]);
 
-        $ext = $request->foto->getClientOriginalExtension();
-        $nama_file = "foto-" . time() . "." . $ext;
-        $path = $request->foto->storeAs('public', $nama_file);
+        $nama_file = null;
+        if ($request->hasFile('foto')) {
+            $ext = $request->foto->getClientOriginalExtension();
+            $nama_file = "foto-" . time() . "." . $ext;
+            $path = $request->foto->storeAs('public', $nama_file);
+        }
 
         $karyawan = new Karyawan([
             'id' => $request->id,
@@ -115,7 +118,7 @@ class KaryawanController extends Controller
             'no_telp' => $request->no_telp,
         ]);
 
-        session(['foto' => $karyawan->foto]);
+        // session(['foto' => $karyawan->foto]);
 
         return redirect()->route('karyawan.index')->with('success', 'Biodata "' . $request->nama . '" berhasil diperbarui.');
     }

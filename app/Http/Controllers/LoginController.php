@@ -54,11 +54,6 @@ class LoginController extends Controller
 
    }
 
-   // public function showListOfUsername()
-   // {
-   //    return view('user.index');
-   // }
-
    public function logout()
    {
       Auth::logout();

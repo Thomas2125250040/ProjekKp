@@ -36,7 +36,7 @@ class RegisterController extends Controller
         ]);
 
         $users->save();
-        return redirect('user')->with('success', 'Username "' . $users->username . '" berhasil ditambahkan.');
+        return redirect('users')->with('success', 'Username "' . $users->username . '" berhasil ditambahkan.');
     }
 
     /**
@@ -44,7 +44,8 @@ class RegisterController extends Controller
      */
     public function create()
     {
-        return view('user.register');
+        $users = DB::select('select * from karyawan');
+        return view('user.register', ["users" => $users]);
     }
 
     /**

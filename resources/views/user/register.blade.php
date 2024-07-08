@@ -8,12 +8,22 @@
                     <div class="card-body">
                         <form method="POST" action="{{ route('users.store') }}">
                             @csrf
-                            <div class="mb-4">
-                                <label for="id_karyawan" class="form-label">Id Karyawan</label>
-                                <input type="text" class="form-control" id="id_karyawan" name="id_karyawan" required
-                                    value="{{ old('id_karyawan') }}">
+                            <div class="mb-4" id="fieldset">
+                                <label for="id" class="form-label">Id Karyawan</label>
+                                <select id="id_karyawan" name="id_karyawan" class="form-select">
+                                    @forelse ($users as $row)
+                                        <option value="{{ $row->id }}">{{ $row->id }} - {{ $row->nama }}
+                                        </option>
+                                    @empty
+                                        <option disabled>--Tidak ada data karyawan--</option>
+                                        <script>
+                                            let fieldset = document.getElementById('fieldset');
+                                            fieldset.classList.add('disabled');
+                                        </script>
+                                    @endforelse
+                                </select>
                                 @error('id_karyawan')
-                                    <label for="kode" class="text-danger">{{ $message }}</label>
+                                    <div class="text-danger">{{ $message }}</div>
                                 @enderror
                             </div>
 
