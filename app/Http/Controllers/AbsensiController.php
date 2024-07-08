@@ -12,6 +12,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Cache;
 use Carbon\Carbon;
+use Dompdf\Options;
+
 
 class AbsensiController extends Controller
 {
@@ -523,4 +525,71 @@ ORDER BY
         $dompdf->render();
         $dompdf->stream('laporan_absensi.pdf');
     }
+
+    public function cetak(Request $request)
+{
+    $nama = $request->input('nama');
+    $start = Carbon::parse($request->input('start'))->startOfDay();
+    $end = Carbon::parse($request->input('end'))->endOfDay();
+
+    $karyawan = Karyawan::where('nama', $nama)->first();
+    if (!$karyawan) {
+        return redirect()->back()->withErrors(['error' => 'Karyawan not found']);
+    }
+    $id_karyawan = $karyawan->id;
+
+    $kumpulan_id_absensi = Absensi::whereBetween('tanggal', [$start, $end])->get();
+
+    $logMasuk = [];
+    $logAlpha = [];
+    $logIzin = [];
+    $logLibur = [];
+
+    foreach ($kumpulan_id_absensi as $item) {
+        if (is_null($item->id_libur)) {
+            // Check for izin
+            $absensiIzin = KaryawanIzin::where('id_karyawan', $id_karyawan)->where('id_absensi', $item->id)->first();
+            if ($absensiIzin) {
+                $logIzin[] = [
+                    'tanggal' => $item->tanggal,
+                    'keterangan_izin' => $absensiIzin->keterangan,
+                ];
+                continue;
+            }
+
+            // Check for absensi
+            $absensiMasuk = KaryawanAbsensi::where('id_karyawan', $id_karyawan)->where('id_absensi', $item->id)->first();
+            if ($absensiMasuk) {
+                $logMasuk[] = [
+                    'tanggal' => $item->tanggal,
+                    'waktu_masuk' => $absensiMasuk->waktu_masuk,
+                    'waktu_keluar' => $absensiMasuk->waktu_keluar,
+                ];
+                continue;
+            }
+
+            // If no izin or absensi, mark as alpha
+            $logAlpha[] = [
+                'tanggal' => $item->tanggal,
+            ];
+        } else {
+            // Log as libur
+            $libur = HariLibur::find($item->id_libur);
+            $logLibur[] = [
+                'tanggal' => $item->tanggal,
+                'keterangan_libur' => $libur->keterangan,
+            ];
+        }
+    }
+
+    $html = view('absensi.logharian_pdf', compact('logMasuk', 'logAlpha', 'logIzin', 'logLibur'))->render();
+
+    $options = new Options();
+    $options->set('isHtml5ParserEnabled', true);
+    $dompdf = new Dompdf($options);
+    $dompdf->loadHtml($html);
+    $dompdf->setPaper('A4', 'landscape');
+    $dompdf->render();
+    return $dompdf->stream('laporan_log_harian.pdf');
+}
 }

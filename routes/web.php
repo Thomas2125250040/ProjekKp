@@ -14,9 +14,11 @@ use App\Http\Controllers\RegisterController;
 use App\Http\Middleware\checkAdminDirector;
 use Illuminate\Support\Facades\Route;
 
-Route::get("/cetak", function () {
-    return view('absensi.halamanCetakLaporan');
-});
+// Route::get("/cetak", function () {
+//     return view('absensi.halamanCetakLaporan');
+// });
+
+Route::get('cetak', [AbsensiController::class, 'cetak'])->name('cetak');
 
 Route::middleware([antiLoginLagi::class])->group(function () {
     Route::get('/', [LoginController::class, 'index'])->name('login-page');
