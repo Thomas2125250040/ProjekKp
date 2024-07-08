@@ -40,6 +40,7 @@
     <table>
         <thead>
             <tr>
+                <th>#</th>
                 <th>Nama</th>
                 <th>Jumlah Hadir</th>
                 <th>Jumlah Izin</th>
@@ -49,6 +50,7 @@
         <tbody>
             @foreach($laporan as $item)
                 <tr>
+                    <td>{{ $item->id }}</td>
                     <td>{{ $item->nama_karyawan }}</td>
                     <td>{{ $item->jumlah_hadir }}</td>
                     <td>{{ $item->jumlah_izin }}</td>

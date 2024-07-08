@@ -12,7 +12,7 @@
                 <input type="hidden" name="nama" id="cetakNama">
                 <input type="hidden" name="start" id="cetakStart">
                 <input type="hidden" name="end" id="cetakEnd">
-                <button type="submit" class="btn btn-primary">Cetak</button>
+                <button type="submit" class="btn btn-warning">Cetak Log Harian</button>
             </form>
            
         </div>

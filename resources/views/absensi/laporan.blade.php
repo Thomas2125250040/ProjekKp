@@ -4,6 +4,7 @@
         <div class="card-body">
             <div class="d-flex mb-3">
                 <div class="card-title fw-semibold flex-grow-1">Laporan Absensi</div>
+                <a href="#" id="print-pdf-btn" class="btn btn-success">Cetak Laporan PDF</a>
             </div>
             <div class="mb-3 d-flex align-items-center justify-content-between">
                 <div class="col-lg-4 col-sm-3">
@@ -27,12 +28,10 @@
                     </div>
                 </div>
             </div>
-            <table class="table table-striped mt-4">
-
-                {{-- tolong benerin thomas, aneh ini tabelnyo --}}
-                {{-- <table id="myTable" class="display"> --}}
+            <table class="table table-striped mt-4" id="myTable">
                 <thead>
                     <tr>
+                        <th scope="col">#</th>
                         <th scope="col">Nama</th>
                         <th scope="col">Jumlah Hadir</th>
                         <th scope="col">Jumlah Izin</th>
@@ -42,6 +41,7 @@
                 <tbody id="laporan-table-body">
                     @foreach ($laporan as $key => $g)
                         <tr>
+                            <td>{{ $g->id }}</td>
                             <td>{{ $g->nama_karyawan }}</td>
                             <td>{{ $g->jumlah_hadir }}</td>
                             <td>{{ $g->jumlah_izin }}</td>
@@ -50,17 +50,15 @@
                     @endforeach
                 </tbody>
             </table>
-            <div>
-                <div>
-                    <a href="#" id="print-pdf-btn" class="btn btn-success">Cetak Laporan PDF</a>
-                </div>
-            </div>
         </div>
     </div>
 
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.datatables.net/1.11.3/js/jquery.dataTables.min.js"></script>
     <script>
         $(document).ready(function() {
+            var table = $('#myTable').DataTable();
+
             $('#filter-btn').click(function() {
                 var bulan = $('#bulan').val();
                 var tahun = $('#tahun').val();
@@ -74,29 +72,26 @@
                         tahun: tahun
                     },
                     success: function(response) {
-                        var tbody = $('#laporan-table-body');
-                        tbody.empty();
-
-                        $.each(response, function(index, laporan) {
-                            tbody.append(
-                                '<tr>' +
-                                '<td>' + laporan.nama_karyawan + '</td>' +
-                                '<td>' + laporan.jumlah_hadir + '</td>' +
-                                '<td>' + laporan.jumlah_izin + '</td>' +
-                                '<td>' + laporan.jumlah_alpha + '</td>' +
-                                '</tr>'
-                            );
+                        table.clear().draw(); // Clear existing table data
+                        response.forEach(function(laporan) {
+                            table.row.add([
+                                laporan.id,
+                                laporan.nama_karyawan,
+                                laporan.jumlah_hadir,
+                                laporan.jumlah_izin,
+                                laporan.jumlah_alpha
+                            ]).draw();
                         });
                     }
                 });
             });
-        });
 
-        $('#print-pdf-btn').click(function() {
-            var bulan = $('#bulan').val();
-            var tahun = $('#tahun').val();
-            var url = '{{ route('print.pdf') }}' + '?bulan=' + bulan + '&tahun=' + tahun;
-            window.location.href = url;
+            $('#print-pdf-btn').click(function() {
+                var bulan = $('#bulan').val();
+                var tahun = $('#tahun').val();
+                var url = '{{ route('print.pdf') }}' + '?bulan=' + bulan + '&tahun=' + tahun;
+                window.location.href = url;
+            });
         });
     </script>
 @endsection
