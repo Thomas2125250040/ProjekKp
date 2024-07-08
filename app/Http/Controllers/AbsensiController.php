@@ -158,6 +158,11 @@ class AbsensiController extends Controller
             ]);
             $karyawanAlpha->save();
         }
+        $keluar = KaryawanAbsensi::where('id_absensi', $id_absensi)->whereIsNull('waktu_keluar')->get();
+        foreach ($keluar as $item){
+            $item->waktu_keluar = '17:00:00';
+            $item->save();
+        }
         Cache::forget('id_absensi');
         return redirect()->route('absensi.keluar');
     }
