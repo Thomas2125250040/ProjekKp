@@ -139,7 +139,7 @@ let addedEmployees = [];
 
     function timestamp() {
         $.ajax({
-            url: 'http://127.0.0.1:8000//timestamp.php',
+            url: '/timestamp.php',
             success: function (data) {
                 $('#timestamp').html(data);
             },
