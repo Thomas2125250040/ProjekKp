@@ -15,16 +15,11 @@ use Carbon\Carbon;
 
 class AbsensiController extends Controller
 {
-<<<<<<< Updated upstream
-    public function edit_delete($id)
-    {
-=======
     public function revisi(){
         return view('director.revisi');
     }
 
     public function edit_delete($id){
->>>>>>> Stashed changes
         $id_absensi = Cache::get('id_absensi');
         $data_absensi = KaryawanAbsensi::find([
             $id,
@@ -50,17 +45,10 @@ class AbsensiController extends Controller
         $id_absensi = Cache::get('id_absensi');
         $id_karyawan = $request[0];
         $nama = $request[1];
-<<<<<<< Updated upstream
-        $masuk = $request[2];
-        $keluar = $request[3];
-        $keterangan = $request[4];
-        if (is_null($keterangan)) {
-=======
         $masuk = $request["waktu-masuk"];
         $keluar = $request["waktu-keluar"];
         $keterangan = $request["keterangan"];
         if (is_null($keterangan)){
->>>>>>> Stashed changes
             $karyawan_izin = KaryawanIzin::find([
                 $id_karyawan,
                 $id_absensi
