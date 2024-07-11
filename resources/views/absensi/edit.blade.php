@@ -123,14 +123,43 @@ var columnDefs = [{
   unique: true,
   name: "nama"
 }, {
+  data: "waktu-masuk",
   title: "Waktu masuk",
-  type: "text"
+  pattern: "^([01][0-9]|2[0-3]):([0-5][0-9]):([0-5][0-9])$",
+  type: "text",
+  editorOnChange: function(event, altEditor){
+    if($(event.currentTarget).val() === '' && $(altEditor.modal_selector).find("#waktu-keluar").val() === ''){
+      $(altEditor.modal_selector).find("#keterangan").removeAttr('disabled').attr('required', 'true');
+    } else {
+      $(altEditor.modal_selector).find("#keterangan").attr('disabled', '').removeAttr('required');
+    }
+  }
 }, {
+  data: "waktu-keluar",
   title: "Waktu keluar",
-  type: "text"
+  pattern: "^([01][0-9]|2[0-3]):([0-5][0-9]):([0-5][0-9])$",
+  type: "text",
+  editorOnChange: function(event, altEditor){
+    if($(event.currentTarget).val() === '' && $(altEditor.modal_selector).find("#waktu-masuk").val() === ''){
+      $(altEditor.modal_selector).find("#keterangan").removeAttr('disabled').attr('required', 'true');
+    } else {
+      $(altEditor.modal_selector).find("#keterangan").attr('disabled', '').removeAttr('required');
+    }
+  }
 }, {
+  data: "keterangan",
   title: "Keterangan",
-  type: "text"
+  type: "text",
+  editorOnChange: function(event, altEditor){
+    if($(event.currentTarget).val() === ''){
+      $(altEditor.modal_selector).find("#waktu-masuk").removeAttr('disabled').attr('required', 'true');
+      $(altEditor.modal_selector).find("#waktu-keluar").removeAttr('disabled').attr('required', 'true');
+    } else {
+      $(altEditor.modal_selector).find("#waktu-masuk").attr('disabled', '').removeAttr('required');
+      $(altEditor.modal_selector).find("#waktu-keluar").attr('disabled', '').removeAttr('required');
+      $(event.currentTarget).removeAttr('disabled').attr('required', 'true');
+    }
+  }
 }];
 
 var myTable = $('#myTable').DataTable({

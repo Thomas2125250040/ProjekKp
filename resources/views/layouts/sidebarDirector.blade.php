@@ -29,7 +29,6 @@
                     <i class="ti ti-dots nav-small-cap-icon fs-4"></i>
                     <span class="hide-menu">Absensi</span>
                 </li>
-
                 <li class="sidebar-item">
                     <a class="sidebar-link" href="{{ route('absensi.masuk') }}" aria-expanded="false">
                         <span>
@@ -54,28 +53,28 @@
                         <span class="hide-menu">Izin</span>
                     </a>
                 </li>
-
                 <li class="sidebar-item">
-                    <a class="sidebar-link" href="{{ url('absensi/ubah') }}" aria-expanded="false">
+                    <a class="sidebar-link" href="{{ route('revisi') }}" aria-expanded="false">
                         <span>
-                            <i class="ti ti-edit"></i>
+                            <i class="ti ti-clock-edit"></i>
                         </span>
-                        <span class="hide-menu">Ubah</span>
+                        <span class="hide-menu">Revisi</span>
                     </a>
                 </li>
+
                 <li class="nav-small-cap">
                     <i class="ti ti-dots nav-small-cap-icon fs-4"></i>
                     <span class="hide-menu">Beranda</span>
                 </li>
                 <li class="sidebar-item">
-                    <a class="sidebar-link" href="{{ url('laporan') }}" aria-expanded="false">
+                    <a class="sidebar-link
+                    {{Route::is('laporans.*') ? 'active' : ''}}" href="{{ url('laporan') }}" aria-expanded="false">
                         <span>
                             <i class="ti ti-brand-google-analytics"></i>
                         </span>
                         <span class="hide-menu">Laporan</span>
                     </a>
                 </li>
-
                 <li class="sidebar-item">
                     <a class="sidebar-link
                     {{Route::is('karyawan.*') ? 'active' : ''}}" href="{{ route('karyawan.index') }}" aria-expanded="false">
@@ -104,15 +103,25 @@
                         <span class="hide-menu">Hari Libur</span>
                     </a>
                 </li>
-
                 <li class="sidebar-item">
-                    <a class="sidebar-link" href="{{ url('gaji') }}" aria-expanded="false">
+                    <a class="sidebar-link
+                    {{Route::is('gaji.*') ? 'active' : ''}}" href="{{ url('gaji') }}" aria-expanded="false">
                         <span>
                             <i class="ti ti-cash"></i>
                         </span>
                         <span class="hide-menu">Gaji</span>
                     </a>
                 </li>
+                {{-- <li class="sidebar-item">
+                    <a class="sidebar-link
+                    {{Route::is('log-harian.*') ? 'active' : ''}}" href="{{ url('log-harian') }}" aria-expanded="false">
+                        <span>
+                            <i class="ti ti-report"></i>
+                        </span>
+                        <span class="hide-menu">Log Harian</span>
+                    </a>
+                </li> --}}
+
                 <li class="sidebar-item">
                     <a class="sidebar-link" href="{{ url('log-harian') }}" aria-expanded="false">
                         <span>
@@ -121,19 +130,30 @@
                         <span class="hide-menu">Log Harian</span>
                     </a>
                 </li>
+                
                 <li class="nav-small-cap">
                     <i class="ti ti-dots nav-small-cap-icon fs-4"></i>
                     <span class="hide-menu">Akun</span>
                 </li>
 
                 <li class="sidebar-item">
-                    <a class="sidebar-link" href="{{ route('users.index') }}" aria-expanded="false">
+                    <a class="sidebar-link
+                    {{Route::is('users.*') ? 'active' : ''}}" href="{{ route('users.index') }}" aria-expanded="false">
                         <span>
                             <i class="ti ti-key"></i>
                         </span>
                         <span class="hide-menu">Hak Akses</span>
                     </a>
                 </li>
+
+                {{-- <li class="sidebar-item">
+                    <a class="sidebar-link" href="{{ url('#') }}" aria-expanded="false">
+                        <span>
+                            <i class="ti ti-settings"></i>
+                        </span>
+                        <span class="hide-menu">Pengaturan</span>
+                    </a>
+                </li> --}}
 
                 <li class="sidebar-item mb-5">
                     <a class="sidebar-link" href="{{ route('logout') }}" aria-expanded="false">

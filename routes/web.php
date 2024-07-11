@@ -52,6 +52,9 @@ Route::middleware([checkHakAkses::class])->group(function () {
         Route::post('save/izin', [AbsensiController::class, 'simpan_izin'])->name('absensi.simpan-data-izin');
         Route::post('save/keluar', [AbsensiController::class, 'simpan_keluar'])->name('absensi.simpan-data-keluar');
         Route::get('save/tutup', [AbsensiController::class, 'tutup_absensi'])->name('absensi.tutup-absensi');
+        Route::get('absensi/ubah', [AbsensiController::class, 'editAbsensi'])->name('absensi.edit');
+        Route::put('edit-absensi', [AbsensiController::class, 'edit_update'])->name('edit.update');
+        Route::delete('delete-absensi/{id_karyawan}', [AbsensiController::class, 'edit_delete'])->name('edit.delete');
     });
 
     // Route untuk Admin
@@ -61,9 +64,7 @@ Route::middleware([checkHakAkses::class])->group(function () {
 
     // Route untuk Director
     Route::middleware([CheckDirector::class])->group(function () {
-        Route::get('absensi/ubah', [AbsensiController::class, 'editAbsensi'])->name('absensi.edit');
-        Route::put('edit-absensi', [AbsensiController::class, 'edit_update'])->name('edit.update');
-        Route::delete('delete-absensi/{id_karyawan}', [AbsensiController::class, 'edit_delete'])->name('edit.delete');
+        Route::get('revisi', [AbsensiController::class, 'revisi'])->name('revisi');
     });
 
     // Route untuk General Manager
