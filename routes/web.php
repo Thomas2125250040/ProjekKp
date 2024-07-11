@@ -3,7 +3,7 @@
 use App\Http\Controllers\AbsensiController;
 use App\Http\Controllers\HariLiburController;
 use App\Http\Controllers\KaryawanController;
-use App\Http\Controllers\JabatanController;
+use App\Http\Controllers\jabatanController;
 use App\Http\Controllers\LoginController;
 use App\Http\Middleware\checkHakAkses;
 use App\Http\Middleware\checkDirector;
@@ -41,7 +41,7 @@ Route::middleware([checkHakAkses::class])->group(function () {
         Route::post('register', [LoginController::class, 'store'])->name('save');
         Route::resource('users', RegisterController::class);
         Route::resource('karyawan', KaryawanController::class);
-        Route::resource('jabatan', JabatanController::class);
+        Route::resource('jabatan', jabatanController::class);
         Route::resource('hari-libur', HariLiburController::class);
         Route::get('search', [AbsensiController::class, 'search'])->name('absensi.search-karyawan');
         Route::get('absensi/masuk', [AbsensiController::class, 'masuk'])->name('absensi.masuk');

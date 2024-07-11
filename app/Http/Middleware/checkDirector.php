@@ -4,7 +4,7 @@ namespace App\Http\Middleware;
 
 use Closure;
 
-class CheckDirector
+class checkDirector
 {
     public function handle($request, Closure $next)
     {
