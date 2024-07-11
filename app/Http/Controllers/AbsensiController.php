@@ -12,46 +12,50 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Cache;
 use Carbon\Carbon;
-use Dompdf\Options;
-
 
 class AbsensiController extends Controller
 {
-    public function edit_delete($id){
+    public function edit_delete($id)
+    {
         $id_absensi = Cache::get('id_absensi');
         $data_absensi = KaryawanAbsensi::find([
-            $id, $id_absensi
+            $id,
+            $id_absensi
         ]);
-        if($data_absensi){
+        if ($data_absensi) {
             $data_absensi->delete();
             return response()->json(["message" => "Data masuk berhasil dihapus"]);
         }
         $data_izin = KaryawanIzin::find([
-            $id, $id_absensi
+            $id,
+            $id_absensi
         ]);
-        if($data_izin){
+        if ($data_izin) {
             $data_izin->delete();
             return response()->json(["message" => "Data izin berhasil dihapus"]);
         }
         return response()->json(["message" => "Data tidak ditemukan"]);
     }
 
-    public function edit_update(Request $request){
+    public function edit_update(Request $request)
+    {
         $id_absensi = Cache::get('id_absensi');
         $id_karyawan = $request[0];
         $nama = $request[1];
         $masuk = $request[2];
         $keluar = $request[3];
         $keterangan = $request[4];
-        if (is_null($keterangan)){
+        if (is_null($keterangan)) {
             $karyawan_izin = KaryawanIzin::find([
-                $id_karyawan, $id_absensi
+                $id_karyawan,
+                $id_absensi
             ]);
-            if ($karyawan_izin){
+            if ($karyawan_izin) {
                 $karyawan_izin->delete();
             }
             $karyawan = KaryawanAbsensi::find([
-                $id_karyawan, $id_absensi
+                $id_karyawan,
+                $id_absensi
             ]);
             $karyawan->waktu_masuk = $masuk;
             $karyawan->waktu_keluar = $keluar;
@@ -59,7 +63,8 @@ class AbsensiController extends Controller
             return response()->json(['message' => 'Berhasil update data masuk karyawan']);
         }
         $izin = KaryawanIzin::find([
-            $id_karyawan, $id_absensi
+            $id_karyawan,
+            $id_absensi
         ]);
         $izin->keterangan = $keterangan;
         $izin->save();
@@ -269,57 +274,89 @@ class AbsensiController extends Controller
     public function laporan()
     {
         $laporan = DB::select("SELECT 
-    karyawan.id, karyawan.nama AS nama_karyawan,
-    COALESCE(hadir.jumlah_hadir, 0) AS jumlah_hadir,
-    COALESCE(izin.jumlah_izin, 0) AS jumlah_izin,
-    COALESCE(alpha.jumlah_alpha, 0) AS jumlah_alpha
-FROM 
-    karyawan
-LEFT JOIN (
-    SELECT 
-        karyawan_absensi.id_karyawan, 
-        COUNT(DISTINCT karyawan_absensi.id_absensi) AS jumlah_hadir
+        karyawan.id, karyawan.nama AS nama_karyawan,
+        COALESCE(hadir.jumlah_hadir, 0) AS jumlah_hadir,
+        COALESCE(izin.jumlah_izin, 0) AS jumlah_izin,
+        COALESCE(alpha.jumlah_alpha, 0) AS jumlah_alpha,
+        COALESCE(terlambat.total_telat, 0) AS total_telat,
+        COALESCE(lembur.total_lembur, 0) AS total_lembur
     FROM 
-        karyawan_absensi
-    LEFT JOIN 
-        absensi ON karyawan_absensi.id_absensi = absensi.id 
-    WHERE 
-        MONTH(absensi.tanggal) = ? AND YEAR(absensi.tanggal) = ?
-    GROUP BY 
-        karyawan_absensi.id_karyawan
-) AS hadir ON karyawan.id = hadir.id_karyawan
-LEFT JOIN (
-    SELECT 
-        karyawan_izin.id_karyawan, 
-        COUNT(*) AS jumlah_izin
-    FROM 
-        karyawan_izin
-    LEFT JOIN 
-        absensi ON karyawan_izin.id_absensi = absensi.id
-    WHERE 
-        karyawan_izin.izin = 1 
-        AND MONTH(absensi.tanggal) = ? 
-        AND YEAR(absensi.tanggal) = ?
-    GROUP BY 
-        karyawan_izin.id_karyawan
-) AS izin ON karyawan.id = izin.id_karyawan
-LEFT JOIN (
-    SELECT 
-        karyawan_izin.id_karyawan, 
-        COUNT(*) AS jumlah_alpha
-    FROM 
-        karyawan_izin
-    LEFT JOIN 
-        absensi ON karyawan_izin.id_absensi = absensi.id
-    WHERE 
-        karyawan_izin.izin = 0 
-        AND MONTH(absensi.tanggal) = ?
-        AND YEAR(absensi.tanggal) = ?
-    GROUP BY 
-        karyawan_izin.id_karyawan
-) AS alpha ON karyawan.id = alpha.id_karyawan
-ORDER BY 
-    karyawan.nama;", ['01', date('Y'), '01', date('Y'), '01', date('Y')]);
+        karyawan
+    LEFT JOIN (
+        SELECT 
+            karyawan_absensi.id_karyawan, 
+            COUNT(DISTINCT karyawan_absensi.id_absensi) AS jumlah_hadir
+        FROM 
+            karyawan_absensi
+        LEFT JOIN 
+            absensi ON karyawan_absensi.id_absensi = absensi.id 
+        WHERE 
+            MONTH(absensi.tanggal) = ? AND YEAR(absensi.tanggal) = ?
+        GROUP BY 
+            karyawan_absensi.id_karyawan
+    ) AS hadir ON karyawan.id = hadir.id_karyawan
+    LEFT JOIN (
+        SELECT 
+            karyawan_izin.id_karyawan, 
+            COUNT(*) AS jumlah_izin
+        FROM 
+            karyawan_izin
+        LEFT JOIN 
+            absensi ON karyawan_izin.id_absensi = absensi.id
+        WHERE 
+            karyawan_izin.izin = 1 
+            AND MONTH(absensi.tanggal) = ? 
+            AND YEAR(absensi.tanggal) = ?
+        GROUP BY 
+            karyawan_izin.id_karyawan
+    ) AS izin ON karyawan.id = izin.id_karyawan
+    LEFT JOIN (
+        SELECT 
+            karyawan_izin.id_karyawan, 
+            COUNT(*) AS jumlah_alpha
+        FROM 
+            karyawan_izin
+        LEFT JOIN 
+            absensi ON karyawan_izin.id_absensi = absensi.id
+        WHERE 
+            karyawan_izin.izin = 0 
+            AND MONTH(absensi.tanggal) = ? 
+            AND YEAR(absensi.tanggal) = ?
+        GROUP BY 
+            karyawan_izin.id_karyawan
+    ) AS alpha ON karyawan.id = alpha.id_karyawan
+    LEFT JOIN (
+        SELECT 
+            karyawan_absensi.id_karyawan, 
+            SUM(GREATEST(HOUR(waktu_keluar) - 17, 0)) AS total_lembur
+        FROM 
+            karyawan_absensi
+        LEFT JOIN 
+            absensi ON karyawan_absensi.id_absensi = absensi.id 
+        WHERE 
+            HOUR(waktu_keluar) > 17
+            AND MONTH(absensi.tanggal) = ? 
+            AND YEAR(absensi.tanggal) = ?
+        GROUP BY 
+            karyawan_absensi.id_karyawan
+    ) AS lembur ON karyawan.id = lembur.id_karyawan
+    LEFT JOIN (
+        SELECT 
+            karyawan_absensi.id_karyawan, 
+            COUNT(*) AS total_telat
+        FROM 
+            karyawan_absensi
+        LEFT JOIN 
+            absensi ON karyawan_absensi.id_absensi = absensi.id 
+        WHERE 
+            TIME(waktu_masuk) > '08:00:00'
+            AND MONTH(absensi.tanggal) = ? 
+            AND YEAR(absensi.tanggal) = ?
+        GROUP BY 
+            karyawan_absensi.id_karyawan
+    ) AS terlambat ON karyawan.id = terlambat.id_karyawan
+    ORDER BY 
+        karyawan.nama;", ['01', date('Y'), '01', date('Y'), '01', date('Y'), '01', date('Y'), '01', date('Y')]);
 
         return view('absensi.laporan', compact('laporan'));
     }
@@ -330,61 +367,92 @@ ORDER BY
         $tahun = $request->input('tahun');
 
         $laporan = DB::select("SELECT 
-    karyawan.id, karyawan.nama AS nama_karyawan,
-    COALESCE(hadir.jumlah_hadir, 0) AS jumlah_hadir,
-    COALESCE(izin.jumlah_izin, 0) AS jumlah_izin,
-    COALESCE(alpha.jumlah_alpha, 0) AS jumlah_alpha
-FROM 
-    karyawan
-LEFT JOIN (
-    SELECT 
-        karyawan_absensi.id_karyawan, 
-        COUNT(DISTINCT karyawan_absensi.id_absensi) AS jumlah_hadir
+        karyawan.id, karyawan.nama AS nama_karyawan,
+        COALESCE(hadir.jumlah_hadir, 0) AS jumlah_hadir,
+        COALESCE(izin.jumlah_izin, 0) AS jumlah_izin,
+        COALESCE(alpha.jumlah_alpha, 0) AS jumlah_alpha,
+        COALESCE(terlambat.total_telat, 0) AS total_telat,
+        COALESCE(lembur.total_lembur, 0) AS total_lembur
     FROM 
-        karyawan_absensi
-    LEFT JOIN 
-        absensi ON karyawan_absensi.id_absensi = absensi.id 
-    WHERE 
-        MONTH(absensi.tanggal) = ? AND YEAR(absensi.tanggal) = ?
-    GROUP BY 
-        karyawan_absensi.id_karyawan
-) AS hadir ON karyawan.id = hadir.id_karyawan
-LEFT JOIN (
-    SELECT 
-        karyawan_izin.id_karyawan, 
-        COUNT(*) AS jumlah_izin
-    FROM 
-        karyawan_izin
-    LEFT JOIN 
-        absensi ON karyawan_izin.id_absensi = absensi.id
-    WHERE 
-        karyawan_izin.izin = 1 
-        AND MONTH(absensi.tanggal) = ? 
-        AND YEAR(absensi.tanggal) = ?
-    GROUP BY 
-        karyawan_izin.id_karyawan
-) AS izin ON karyawan.id = izin.id_karyawan
-LEFT JOIN (
-    SELECT 
-        karyawan_izin.id_karyawan, 
-        COUNT(*) AS jumlah_alpha
-    FROM 
-        karyawan_izin
-    LEFT JOIN 
-        absensi ON karyawan_izin.id_absensi = absensi.id
-    WHERE 
-        karyawan_izin.izin = 0 
-        AND MONTH(absensi.tanggal) = ?
-        AND YEAR(absensi.tanggal) = ?
-    GROUP BY 
-        karyawan_izin.id_karyawan
-) AS alpha ON karyawan.id = alpha.id_karyawan
-ORDER BY 
-    karyawan.nama;", [$bulan, $tahun, $bulan, $tahun, $bulan, $tahun]);
+        karyawan
+    LEFT JOIN (
+        SELECT 
+            karyawan_absensi.id_karyawan, 
+            COUNT(DISTINCT karyawan_absensi.id_absensi) AS jumlah_hadir
+        FROM 
+            karyawan_absensi
+        LEFT JOIN 
+            absensi ON karyawan_absensi.id_absensi = absensi.id 
+        WHERE 
+            MONTH(absensi.tanggal) = ? AND YEAR(absensi.tanggal) = ?
+        GROUP BY 
+            karyawan_absensi.id_karyawan
+    ) AS hadir ON karyawan.id = hadir.id_karyawan
+    LEFT JOIN (
+        SELECT 
+            karyawan_izin.id_karyawan, 
+            COUNT(*) AS jumlah_izin
+        FROM 
+            karyawan_izin
+        LEFT JOIN 
+            absensi ON karyawan_izin.id_absensi = absensi.id
+        WHERE 
+            karyawan_izin.izin = 1 
+            AND MONTH(absensi.tanggal) = ? 
+            AND YEAR(absensi.tanggal) = ?
+        GROUP BY 
+            karyawan_izin.id_karyawan
+    ) AS izin ON karyawan.id = izin.id_karyawan
+    LEFT JOIN (
+        SELECT 
+            karyawan_izin.id_karyawan, 
+            COUNT(*) AS jumlah_alpha
+        FROM 
+            karyawan_izin
+        LEFT JOIN 
+            absensi ON karyawan_izin.id_absensi = absensi.id
+        WHERE 
+            karyawan_izin.izin = 0 
+            AND MONTH(absensi.tanggal) = ? 
+            AND YEAR(absensi.tanggal) = ?
+        GROUP BY 
+            karyawan_izin.id_karyawan
+    ) AS alpha ON karyawan.id = alpha.id_karyawan
+    LEFT JOIN (
+        SELECT 
+            karyawan_absensi.id_karyawan, 
+            SUM(GREATEST(HOUR(waktu_keluar) - 17, 0)) AS total_lembur
+        FROM 
+            karyawan_absensi
+        LEFT JOIN 
+            absensi ON karyawan_absensi.id_absensi = absensi.id 
+        WHERE 
+            HOUR(waktu_keluar) > 17
+            AND MONTH(absensi.tanggal) = ? 
+            AND YEAR(absensi.tanggal) = ?
+        GROUP BY 
+            karyawan_absensi.id_karyawan
+    ) AS lembur ON karyawan.id = lembur.id_karyawan
+    LEFT JOIN (
+        SELECT 
+            karyawan_absensi.id_karyawan, 
+            COUNT(*) AS total_telat
+        FROM 
+            karyawan_absensi
+        LEFT JOIN 
+            absensi ON karyawan_absensi.id_absensi = absensi.id 
+        WHERE 
+            TIME(waktu_masuk) > '08:00:00'
+            AND MONTH(absensi.tanggal) = ? 
+            AND YEAR(absensi.tanggal) = ?
+        GROUP BY 
+            karyawan_absensi.id_karyawan
+    ) AS terlambat ON karyawan.id = terlambat.id_karyawan
+    ORDER BY 
+        karyawan.nama;", [$bulan, $tahun, $bulan, $tahun, $bulan, $tahun, $bulan, $tahun, $bulan, $tahun]);
 
         return response()->json($laporan);
     }
-
 
     public function gaji()
     {
@@ -556,12 +624,34 @@ ORDER BY
         $bulan = $request->input('bulan');
         $tahun = $request->input('tahun');
 
-        // Dapatkan data laporan berdasarkan bulan dan tahun
+        // Convert month number to month name
+        $monthNames = [
+            '01' => 'Januari',
+            '02' => 'Februari',
+            '03' => 'Maret',
+            '04' => 'April',
+            '05' => 'Mei',
+            '06' => 'Juni',
+            '07' => 'Juli',
+            '08' => 'Agustus',
+            '09' => 'September',
+            '10' => 'Oktober',
+            '11' => 'November',
+            '12' => 'Desember'
+        ];
+        $monthName = $monthNames[$bulan];
+
+        // Get current timestamp
+        $currentTimestamp = Carbon::now('Asia/Jakarta')->translatedFormat('d F Y, H:i:s \W\I\B');
+
+        // Fetch report data based on month and year
         $laporan = DB::select("SELECT 
         karyawan.id, karyawan.nama AS nama_karyawan,
         COALESCE(hadir.jumlah_hadir, 0) AS jumlah_hadir,
         COALESCE(izin.jumlah_izin, 0) AS jumlah_izin,
-        COALESCE(alpha.jumlah_alpha, 0) AS jumlah_alpha
+        COALESCE(alpha.jumlah_alpha, 0) AS jumlah_alpha,
+        COALESCE(terlambat.total_telat, 0) AS total_telat,
+        COALESCE(lembur.total_lembur, 0) AS total_lembur
     FROM 
         karyawan
     LEFT JOIN (
@@ -607,13 +697,45 @@ ORDER BY
         GROUP BY 
             karyawan_izin.id_karyawan
     ) AS alpha ON karyawan.id = alpha.id_karyawan
+    LEFT JOIN (
+        SELECT 
+            karyawan_absensi.id_karyawan, 
+            SUM(GREATEST(HOUR(waktu_keluar) - 17, 0)) AS total_lembur
+        FROM 
+            karyawan_absensi
+        LEFT JOIN 
+            absensi ON karyawan_absensi.id_absensi = absensi.id 
+        WHERE 
+            HOUR(waktu_keluar) > 17
+            AND MONTH(absensi.tanggal) = ? 
+            AND YEAR(absensi.tanggal) = ?
+        GROUP BY 
+            karyawan_absensi.id_karyawan
+    ) AS lembur ON karyawan.id = lembur.id_karyawan
+    LEFT JOIN (
+        SELECT 
+            karyawan_absensi.id_karyawan, 
+            COUNT(*) AS total_telat
+        FROM 
+            karyawan_absensi
+        LEFT JOIN 
+            absensi ON karyawan_absensi.id_absensi = absensi.id 
+        WHERE 
+            TIME(waktu_masuk) > '08:00:00'
+            AND MONTH(absensi.tanggal) = ? 
+            AND YEAR(absensi.tanggal) = ?
+        GROUP BY 
+            karyawan_absensi.id_karyawan
+    ) AS terlambat ON karyawan.id = terlambat.id_karyawan
     ORDER BY 
-        karyawan.id;", [$bulan, $tahun, $bulan, $tahun, $bulan, $tahun]);
+        karyawan.id;", [$bulan, $tahun, $bulan, $tahun, $bulan, $tahun, $bulan, $tahun, $bulan, $tahun]);
 
         $data = [
             'laporan' => $laporan,
             'bulan' => $bulan,
             'tahun' => $tahun,
+            'monthName' => $monthName,
+            'currentTimestamp' => $currentTimestamp,
             'header' => 'CV. ANUGRAH ABADI',
             'title' => 'Laporan Absensi Karyawan'
         ];
@@ -629,83 +751,5 @@ ORDER BY
         $dompdf->stream('laporan_absensi.pdf');
     }
 
-
-    public function cetak(Request $request)
-    {
-        $nama = $request->input('nama');
-        $start = Carbon::parse($request->input('start'))->startOfDay();
-        $end = Carbon::parse($request->input('end'))->endOfDay();
-
-        $karyawan = Karyawan::where('nama', $nama)->first();
-        if (!$karyawan) {
-            return redirect()->back()->withErrors(['error' => 'Karyawan not found']);
-        }
-        $id_karyawan = $karyawan->id;
-
-        $kumpulan_id_absensi = Absensi::whereBetween('tanggal', [$start, $end])
-            ->orderBy('tanggal', 'asc') // Urutkan berdasarkan tanggal
-            ->get();
-
-        $logMasuk = [];
-        $logAlpha = [];
-        $logIzin = [];
-        $logLibur = [];
-
-        foreach ($kumpulan_id_absensi as $item) {
-            if (is_null($item->id_libur)) {
-                // Check for izin
-                $absensiIzin = KaryawanIzin::where('id_karyawan', $id_karyawan)->where('id_absensi', $item->id)->first();
-                if ($absensiIzin) {
-                    $logIzin[] = [
-                        'tanggal' => $item->tanggal,
-                        'keterangan_izin' => $absensiIzin->keterangan,
-                    ];
-                    continue;
-                }
-
-                // Check for absensi
-                $absensiMasuk = KaryawanAbsensi::where('id_karyawan', $id_karyawan)->where('id_absensi', $item->id)->first();
-                if ($absensiMasuk) {
-                    $logMasuk[] = [
-                        'tanggal' => $item->tanggal,
-                        'waktu_masuk' => $absensiMasuk->waktu_masuk,
-                        'waktu_keluar' => $absensiMasuk->waktu_keluar,
-                    ];
-                    continue;
-                }
-
-                // If no izin or absensi, mark as alpha
-                $logAlpha[] = [
-                    'tanggal' => $item->tanggal,
-                ];
-            } else {
-                // Log as libur
-                $libur = HariLibur::find($item->id_libur);
-                $logLibur[] = [
-                    'tanggal' => $item->tanggal,
-                    'keterangan_libur' => $libur->keterangan,
-                ];
-            }
-        }
-
-        // Gabungkan semua data log menjadi satu array dan urutkan berdasarkan tanggal
-        $combinedLogs = array_merge($logAlpha, $logIzin, $logMasuk, $logLibur);
-        usort($combinedLogs, function ($a, $b) {
-            return strtotime($a['tanggal']) - strtotime($b['tanggal']);
-        });
-
-        // Render view PDF dengan data yang sudah diurutkan
-        $html = view('absensi.logharian_pdf', compact('combinedLogs', 'nama'))->render();
-
-        $options = new Options();
-        $options->set('isHtml5ParserEnabled', true);
-        $dompdf = new Dompdf($options);
-        $dompdf->loadHtml($html);
-        $dompdf->setPaper('A4', 'landscape');
-        $dompdf->render();
-        return $dompdf->stream('laporan_log_harian.pdf');
-    }
-
 }
 
-   
