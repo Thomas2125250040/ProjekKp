@@ -116,7 +116,22 @@ $(function() {
                 text: 'Edit',
                 name: 'edit'       
             }
-        ]
+        ],
+        onEditRow: function(datatable, rowdata, success, error) {
+            $.ajax({
+                url: "{{route('update-revisi')}}",
+                type: 'PUT',
+                data: rowdata,
+                success: function(json){
+                    alert(json.message);
+                    var rowIndex = myTable.row('.selected').index();
+                    table.row(rowIndex).data(rowdata).draw(false);
+                },
+                error: function(xhr, status, error){
+                    alert(error);
+                }
+            });                 
+        }
     });
     
 });

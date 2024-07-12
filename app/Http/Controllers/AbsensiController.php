@@ -19,6 +19,10 @@ class AbsensiController extends Controller
         return view('director.revisi');
     }
 
+    public function update_revisi(Request $request){
+        dd($request);
+    }
+
     public function data_revisi(){
         $tanggal = request()->query()["tanggal"];
         if (is_null($tanggal)){
