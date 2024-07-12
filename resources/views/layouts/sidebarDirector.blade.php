@@ -103,25 +103,7 @@
                         <span class="hide-menu">Hari Libur</span>
                     </a>
                 </li>
-                <li class="sidebar-item">
-                    <a class="sidebar-link
-                    {{Route::is('gaji.*') ? 'active' : ''}}" href="{{ url('gaji') }}" aria-expanded="false">
-                        <span>
-                            <i class="ti ti-cash"></i>
-                        </span>
-                        <span class="hide-menu">Gaji</span>
-                    </a>
-                </li>
-                {{-- <li class="sidebar-item">
-                    <a class="sidebar-link
-                    {{Route::is('log-harian.*') ? 'active' : ''}}" href="{{ url('log-harian') }}" aria-expanded="false">
-                        <span>
-                            <i class="ti ti-report"></i>
-                        </span>
-                        <span class="hide-menu">Log Harian</span>
-                    </a>
-                </li> --}}
-
+    
                 <li class="sidebar-item">
                     <a class="sidebar-link" href="{{ url('log-harian') }}" aria-expanded="false">
                         <span>
@@ -145,15 +127,6 @@
                         <span class="hide-menu">Hak Akses</span>
                     </a>
                 </li>
-
-                {{-- <li class="sidebar-item">
-                    <a class="sidebar-link" href="{{ url('#') }}" aria-expanded="false">
-                        <span>
-                            <i class="ti ti-settings"></i>
-                        </span>
-                        <span class="hide-menu">Pengaturan</span>
-                    </a>
-                </li> --}}
 
                 <li class="sidebar-item mb-5">
                     <a class="sidebar-link" href="{{ route('logout') }}" aria-expanded="false">

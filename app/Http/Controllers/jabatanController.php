@@ -32,17 +32,11 @@ class jabatanController extends Controller
         $request->validate([
             'id' => 'required|unique:jabatan,id',
             'nama' => 'required',
-            'gaji_pokok' => 'required|numeric',
-            'uang_makan' => 'required|numeric',
-            'uang_lembur' => 'required|numeric'
         ]);
 
         $jabatan = new Jabatan([
             'id' => $request->id,
             'nama' => $request->nama,
-            'gaji_pokok' => $request->gaji_pokok,
-            'uang_makan' => $request->uang_makan,
-            'uang_lembur' => $request->uang_lembur
         ]);
 
         $jabatan->save();
@@ -66,13 +60,7 @@ class jabatanController extends Controller
         $validasi = $request->validate([
             'id' => 'required',
             'nama' => 'required',
-            'gaji_pokok' => 'required|numeric',
-            'uang_makan' => 'required|numeric',
-            'uang_lembur' => 'required|numeric'
         ]);
-
-        // $jabatanSebelum = Jabatan::find($id);
-        // $namaJabatanSebelum = $jabatanSebelum->nama;
 
         Jabatan::find($id)->update($validasi);
         return redirect("jabatan")->with("success", 'Jabatan "' . $request->nama . '" berhasil diperbarui.');

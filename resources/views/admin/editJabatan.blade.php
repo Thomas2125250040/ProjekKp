@@ -27,33 +27,6 @@
                                 @enderror
                             </div>
 
-                            <div class="mb-4">
-                                <label for="gaji_pokok" class="form-label">Gaji Pokok</label>
-                                <input type="text" class="form-control" id="gaji_pokok" name="gaji_pokok" required
-                                    value="{{ $jabatan->gaji_pokok }}">
-                                @error('gaji_pokok')
-                                    <div class="text-danger">{{ $message }}</div>
-                                @enderror
-                            </div>
-
-                            <div class="mb-4">
-                                <label for="uang_makan" class="form-label">Uang Makan per Hari </label>
-                                <input type="text" class="form-control" id="uang_makan" name="uang_makan" required
-                                    value="{{ $jabatan->uang_makan }}">
-                                @error('uang_makan')
-                                    <div class="text-danger">{{ $message }}</div>
-                                @enderror
-                            </div>
-
-                            <div class="mb-4">
-                                <label for="uang_lembur" class="form-label">Uang Lembur per Jam</label>
-                                <input type="text" class="form-control" id="uang_lembur" name="uang_lembur" required
-                                    value="{{ $jabatan->uang_lembur }}">
-                                @error('uang_lembur')
-                                    <div class="text-danger">{{ $message }}</div>
-                                @enderror
-                            </div>
-
                             <div class="d-flex justify-content-end">
                                 <button type="submit" class="btn btn-primary">Submit</button>
                             </div>

@@ -18,9 +18,6 @@
                     <tr>
                         <th>Id Jabatan</th>
                         <th>Nama Jabatan</th>
-                        <th>Gaji Pokok</th>
-                        <th>Uang Makan</th>
-                        <th>Uang Lembur</th>
                         <th>Aksi</th>
                     </tr>
                 </thead>
@@ -29,11 +26,6 @@
                         <tr>
                             <td>{{ $row->id }}</td>
                             <td>{{ $row->nama }}</td>
-                            <td>Rp. {{ number_format($row->gaji_pokok, 0, ',', '.') }}</td>
-                            {{-- <td>{{ $row->uang_makan }}</td> --}}
-                            <td>Rp. {{ number_format($row->uang_makan, 0, ',', '.') }}</td>
-                            {{-- <td>{{ $row->uang_lembur }}</td> --}}
-                            <td>Rp. {{ number_format($row->uang_lembur, 0, ',', '.') }}</td>
                             <td>
                                 <form method="POST" action="{{ route('jabatan.destroy', $row->id) }}">
                                     @csrf
