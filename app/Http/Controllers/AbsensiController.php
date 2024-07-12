@@ -17,11 +17,11 @@ class AbsensiController extends Controller
 {
     public function revisi()
     {
-        return view('director.revisi');
+        return view('absensi.edit');
     }
 
     public function update_revisi(Request $request){
-        dd($request);
+        
     }
 
     public function data_revisi()
@@ -68,6 +68,7 @@ class AbsensiController extends Controller
             return response()->json(["message" => "Data tidak ada."], 204);
         }
         return response()->json([
+            "id_absensi" => $absensi->id,
             "masuk" => $masuk,
             "izin" => $izin,
             "alpha" => $alpha

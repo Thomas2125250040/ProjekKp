@@ -21,7 +21,7 @@
             <input type="date" class="form-control" id="tanggal">
             <button class="btn btn-primary" id="search-btn" onclick="search()"><i class="ti ti-search"></i></button>
         </div>
-        <table class="table" id="myTable">
+        <!-- <table class="table" id="myTable">
             <thead>
                 <tr>
                     <th scope="col">Id</th>
@@ -33,7 +33,7 @@
             </thead>
             <tbody>
             </tbody>
-        </table>
+        </table> -->
     </div>
 </div>
 @endsection
@@ -154,6 +154,7 @@ function search(){
             if (xhr.status === 204 || xhr.status === 202) {
                 return;
             }
+            $('#id_absensi').text(data.id_absensi);
             data.masuk.forEach(function(item){
                 const newRow = $("<tr>");
                 newRow.append(
