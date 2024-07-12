@@ -11,7 +11,7 @@
 <div class="card">
     <div class="card-body">
         <div class="d-flex mb-3">
-            <div class="card-title fw-semibold flex-grow-1">Edit Absensiiiiiiiiii</div>
+            <div class="card-title fw-semibold flex-grow-1">Edit Absensi</div>
         </div>
         @isset($error)
             <div class="alert alert-danger d-flex justify-content-between align-items-center mb-4">

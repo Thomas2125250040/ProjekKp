@@ -1,5 +1,6 @@
 @extends('layouts.main')
 @section('content')
+<span class="hide" id="id_absensi"></span>
 <meta name="csrf-token" content="{{ csrf_token() }}">
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.css" />
 <style>
@@ -21,7 +22,7 @@
             <input type="date" class="form-control" id="tanggal">
             <button class="btn btn-primary" id="search-btn" onclick="search()"><i class="ti ti-search"></i></button>
         </div>
-        <!-- <table class="table" id="myTable">
+        <table class="table" id="myTable">
             <thead>
                 <tr>
                     <th scope="col">Id</th>
@@ -33,7 +34,7 @@
             </thead>
             <tbody>
             </tbody>
-        </table> -->
+        </table>
     </div>
 </div>
 @endsection

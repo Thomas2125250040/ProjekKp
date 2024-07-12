@@ -58,7 +58,7 @@
                         <span>
                             <i class="ti ti-clock-edit"></i>
                         </span>
-                        <span class="hide-menu">Revisikuuuu</span>
+                        <span class="hide-menu">Revisi</span>
                     </a>
                 </li>
 

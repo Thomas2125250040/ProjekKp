@@ -17,7 +17,7 @@ class AbsensiController extends Controller
 {
     public function revisi()
     {
-        return view('absensi.edit');
+        return view('director.revisi');
     }
 
     public function update_revisi(Request $request){
