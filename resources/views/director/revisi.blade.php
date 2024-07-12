@@ -1,6 +1,6 @@
 @extends('layouts.main')
 @section('content')
-<span class="hide" id="id_absensi"></span>
+<span id="id_absensi" class="hide"></span>
 <meta name="csrf-token" content="{{ csrf_token() }}">
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.css" />
 <style>
@@ -56,16 +56,21 @@
 <script type="text/javascript">
 let table;
 $(function() {
+    $.ajaxSetup({
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        }
+    });
     var columnDefs = [{
             title: "Id",
             type: "readonly"
-        }, {
-            title: "Nama",
+        },{
+            title: "Gender",
             type: "text",
             required: true,
             unique: true,
-            name: "nama"
-        }, {
+            name: "gender"
+        },{
             data: "waktu-masuk",
             title: "Waktu masuk",
             pattern: "^([01][0-9]|2[0-3]):([0-5][0-9]):([0-5][0-9])$",
@@ -122,10 +127,18 @@ $(function() {
             $.ajax({
                 url: "{{route('update-revisi')}}",
                 type: 'PUT',
-                data: rowdata,
+                data: {
+                    "id_absensi": $('#id_absensi').text(),
+                    rowdata
+                },
                 success: function(json){
                     alert(json.message);
-                    var rowIndex = myTable.row('.selected').index();
+                    var rowIndex = table.row('.selected').index();
+                    if (rowdata.keterangan.toLowerCase() === "alpha"){
+                        rowdata["waktu-masuk"] = "-";
+                        rowdata["waktu-keluar"] = "-";
+                        rowdata["keterangan"] = "Alpha";
+                    }
                     table.row(rowIndex).data(rowdata).draw(false);
                 },
                 error: function(xhr, status, error){
@@ -156,6 +169,7 @@ function search(){
                 return;
             }
             $('#id_absensi').text(data.id_absensi);
+            table.clear();
             data.masuk.forEach(function(item){
                 const newRow = $("<tr>");
                 newRow.append(

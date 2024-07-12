@@ -21,7 +21,73 @@ class AbsensiController extends Controller
     }
 
     public function update_revisi(Request $request){
-        
+        $keterangan = $request->rowdata["keterangan"];
+        $masuk = KaryawanAbsensi::find([
+            $request->rowdata[0],
+            $request->id_absensi
+        ]);
+        $izin = KaryawanIzin::find([
+            $request->rowdata[0],
+            $request->id_absensi
+        ]);
+        if (is_null($keterangan)){
+            if ($masuk){
+                $masuk->update([
+                    "waktu_masuk" => $request->rowdata["waktu-masuk"],
+                    "waktu_keluar" => $request->rowdata["waktu-keluar"]
+                ]);
+                return response()->json(["message" => "Data berhasil diupdate"]);
+            }
+            else if($izin){
+                $izin->delete();
+                $new_data = new KaryawanAbsensi([
+                    "id_absensi" => $request->id_absensi,
+                    "id_karyawan" => $request->rowdata[0],
+                    "waktu_masuk" => $request->rowdata["waktu-masuk"],
+                    "waktu_keluar" => $request->rowdata["waktu-keluar"]
+                ]);
+                $new_data->save();
+                return response()->json(["message" => "Data berhasil diupdate"]);
+            }
+        } else {
+            if ($masuk){
+                $masuk->delete();
+                if (strtolower($keterangan) === "alpha"){
+                    $new_data = new KaryawanIzin([
+                        "id_absensi" => $request->id_absensi,
+                        "id_karyawan" => $request->rowdata[0],
+                        "izin" => 0,
+                        "keterangan" => null
+                    ]);
+                    $new_data->save();
+                    return response()->json(["message" => "Karyawan ditetapkan sebagai alpha"]);
+                }
+                $new_data = new KaryawanIzin([
+                    "id_absensi" => $request->id_absensi,
+                    "id_karyawan" => $request->rowdata[0],
+                    "keterangan" => $keterangan
+                ]);
+                $new_data->save();
+                return response()->json(["message" => "Data berhasil diupdate"]);
+            }
+            else if($izin){
+                if (strtolower($keterangan) === "alpha"){
+                    $izin->update([
+                        "id_absensi" => $request->id_absensi,
+                        "id_karyawan" => $request->rowdata[0],
+                        "izin" => 0,
+                        "keterangan" => null
+                    ]);
+                    return response()->json(["message" => "Karyawan ditetapkan sebagai alpha"]);
+                }
+                $izin->update([
+                    "izin" => 1,
+                    "keterangan" => $keterangan
+                ]);
+                return response()->json(["message" => "Data berhasil diupdate"]);
+            }
+        }
+
     }
 
     public function data_revisi()
@@ -63,7 +129,7 @@ class AbsensiController extends Controller
                     "nama" => $item->karyawan->nama,
                 ];
             }
-        })->filter();
+        })->filter()->values();
         if ($masuk->isEmpty() && $izin->isEmpty() && $alpha->isEmpty()) {
             return response()->json(["message" => "Data tidak ada."], 204);
         }
