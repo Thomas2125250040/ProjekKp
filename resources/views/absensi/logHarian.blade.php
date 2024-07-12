@@ -161,7 +161,7 @@ $(function() {
                 });
             },
             error: function(xhr, status, error) {
-                alert(error);
+                console.log(xhr.statusCode);
             },
         });
     }

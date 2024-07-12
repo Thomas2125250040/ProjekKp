@@ -19,6 +19,55 @@ class AbsensiController extends Controller
         return view('director.revisi');
     }
 
+    public function data_revisi(){
+        $tanggal = request()->query()["tanggal"];
+        if (is_null($tanggal)){
+            return response()->noContent();
+        }
+        $absensi = Absensi::where('tanggal', $tanggal)->first();
+        if (is_null($absensi)){
+            return response()->json(["message" => "Data tidak ada."], 204);
+        }
+        if (!is_null($libur = $absensi->id_libur)){
+            $keterangan_libur = HariLibur::find($libur)->keterangan;
+            return response()->json(["message" => $keterangan_libur], 202);
+        }
+        $masuk = KaryawanAbsensi::with('karyawan')->where('id_absensi', $absensi->id)->get()->map(function($item){
+            return [
+                "id" => $item->karyawan->id,
+                "nama" => $item->karyawan->nama,
+                "waktu_masuk" => $item->waktu_masuk,
+                "waktu_keluar" => $item->waktu_keluar
+            ];
+        });
+        $data_izin = KaryawanIzin::with('karyawan')->where('id_absensi', $absensi->id)->get();
+        $izin = $data_izin->map(function($item){
+            if ($item->izin === 1){
+                return [
+                    "id" => $item->karyawan->id,
+                    "nama" => $item->karyawan->nama,
+                    "keterangan" => $item->keterangan
+                ];  
+            }
+        })->filter()->values();
+        $alpha = $data_izin->map(function($item){
+            if ($item->izin === 0){
+                return [
+                    "id" => $item->karyawan->id,
+                    "nama" => $item->karyawan->nama,
+                ];
+            }
+        })->filter();
+        if ($masuk->isEmpty() && $izin->isEmpty() && $alpha->isEmpty()){
+            return response()->json(["message" => "Data tidak ada."], 204);
+        }
+        return response()->json([
+            "masuk" => $masuk,
+            "izin" => $izin,
+            "alpha" => $alpha
+        ]);
+    }
+
     public function edit_delete($id){
         $id_absensi = Cache::get('id_absensi');
         $data_absensi = KaryawanAbsensi::find([

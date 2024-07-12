@@ -1,25 +1,29 @@
 @extends('layouts.main')
 @section('content')
-<!-- Stylesheets -->
-<link href="//netdna.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css" rel="stylesheet">
-<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.6.3/css/bootstrap-select.min.css" />
-<link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" />
+<style>
+    #tanggal {
+        border-top-right-radius: 0px;
+        border-bottom-right-radius: 0px;
+    }
+    #search-btn {
+        border-top-left-radius: 0px;
+        border-bottom-left-radius: 0px;
+    }
+</style>
 <div class="card">
     <div class="card-body">
         <div class="d-flex mb-4">
             <div class="card-title fw-semibold flex-grow-1">Revisi</div>
-            <form action="{{url('cetak')}}" method="POST" id="cetakForm">
-                <button type="submit" class="btn btn-success">Save</button>
-            </form>
-           
         </div>
-        <div class="d-flex mb-4 col-2">
-            <input type="date" class="form-control">
+        <div class="d-flex mb-4 col-3">
+            <input type="date" class="form-control" id="tanggal">
+            <button class="btn btn-primary" id="search-btn" onclick="search()"><i class="ti ti-search"></i></button>
         </div>
         <table class="table" id="myTable">
             <thead>
                 <tr>
-                    <th scope="col">Tanggal</th>
+                    <th scope="col">Id</th>
+                    <th scope="col">Nama</th>
                     <th scope="col">Waktu Masuk</th>
                     <th scope="col">Waktu Keluar</th>
                     <th scope="col">Keterangan</th>
@@ -32,16 +36,72 @@
 </div>
 @endsection
 @section('extra_scripts')
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
-<script src="//cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.6.3/js/bootstrap-select.min.js"></script>
-<script type="text/javascript" src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
-<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
 <script type="text/javascript">
+let table;
 $(function() {
-    const table = $('#myTable').DataTable({
+    table = $('#myTable').DataTable({
         "order": [[0, 'desc']]
     });
-})
+    
+});
+
+function search(){
+    const tanggal = $('#tanggal').val();
+    $.ajax({
+        type: "GET",
+        url: "{{route('data-revisi')}}",
+        data: {tanggal: tanggal},
+        statusCode: {
+            202: function(data){
+                alert("Libur : " + data.message);
+            },
+            204: function(){
+                alert("Data tidak ditemukan.");
+            }
+        },
+        success: function(data, status, xhr){
+            if (xhr.status === 204 || xhr.status === 202) {
+                return;
+            }
+            data.masuk.forEach(function(item){
+                const newRow = $("<tr>");
+                newRow.append(
+                    $("<td>").text(item.id),
+                    $("<td>").text(item.nama),
+                    $("<td>").text(item.waktu_masuk),
+                    $("<td>").text(item.waktu_keluar),
+                    $("<td>")
+                );
+                table.row.add(newRow).draw();
+            });
+            data.izin.forEach(function(item){
+                const newRow = $("<tr>");
+                newRow.append(
+                    $("<td>").text(item.id),
+                    $("<td>").text(item.nama),
+                    $("<td>"),
+                    $("<td>"),
+                    $("<td>").text(item.keterangan)
+                );
+                table.row.add(newRow).draw();
+            });
+            data.alpha.forEach(function(item){
+                const newRow = $("<tr>");
+                newRow.append(
+                    $("<td>").text(item.id),
+                    $("<td>").text(item.nama),
+                    $("<td>").text("-"),
+                    $("<td>").text("-"),
+                    $("<td>").text("Alpha")
+                );
+                table.row.add(newRow).draw();
+            });
+        },
+        error: function(xhr, status, error){
+
+        }
+    });
+}
 </script>
 @endsection
 
