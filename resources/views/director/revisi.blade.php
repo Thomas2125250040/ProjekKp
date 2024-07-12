@@ -1,5 +1,7 @@
 @extends('layouts.main')
 @section('content')
+<meta name="csrf-token" content="{{ csrf_token() }}">
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.css" />
 <style>
     #tanggal {
         border-top-right-radius: 0px;
@@ -35,12 +37,86 @@
     </div>
 </div>
 @endsection
+@section('exclude_jquery')
+@endsection
 @section('extra_scripts')
+<link rel="stylesheet" href="https://cdn.datatables.net/1.10.21/css/jquery.dataTables.css" />
+<link rel="stylesheet" href="https://cdn.datatables.net/buttons/1.6.2/css/buttons.dataTables.css" />
+<link rel="stylesheet" href="https://cdn.datatables.net/select/1.3.1/css/select.dataTables.css" />
+<link rel="stylesheet" href="https://cdn.datatables.net/responsive/2.2.5/css/responsive.dataTables.css" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" />
+<script src="https://cdn.datatables.net/1.10.21/js/jquery.dataTables.js" ></script>
+<script src="https://cdn.datatables.net/buttons/1.6.2/js/dataTables.buttons.js" ></script>
+<script src="https://cdn.datatables.net/select/1.3.1/js/dataTables.select.js" ></script>
+<script src="https://cdn.datatables.net/responsive/2.2.5/js/dataTables.responsive.js" ></script>
+<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.js" ></script>
+<script src="../assets/js/dataTables.altEditor.free.js" ></script>
 <script type="text/javascript">
 let table;
 $(function() {
+    var columnDefs = [{
+            title: "Id",
+            type: "readonly"
+        }, {
+            title: "Nama",
+            type: "text",
+            required: true,
+            unique: true,
+            name: "nama"
+        }, {
+            data: "waktu-masuk",
+            title: "Waktu masuk",
+            pattern: "^([01][0-9]|2[0-3]):([0-5][0-9]):([0-5][0-9])$",
+            type: "text",
+        editorOnChange: function(event, altEditor){
+            if($(event.currentTarget).val() === '' && $(altEditor.modal_selector).find("#waktu-keluar").val() === ''){
+                $(altEditor.modal_selector).find("#keterangan").removeAttr('disabled').attr('required', 'true');
+            } else {
+                $(altEditor.modal_selector).find("#keterangan").attr('disabled', '').removeAttr('required');
+            }
+        }
+        }, {
+            data: "waktu-keluar",
+            title: "Waktu keluar",
+            pattern: "^([01][0-9]|2[0-3]):([0-5][0-9]):([0-5][0-9])$",
+            type: "text",
+        editorOnChange: function(event, altEditor){
+            if($(event.currentTarget).val() === '' && $(altEditor.modal_selector).find("#waktu-masuk").val() === ''){
+                $(altEditor.modal_selector).find("#keterangan").removeAttr('disabled').attr('required', 'true');
+            } else {
+                $(altEditor.modal_selector).find("#keterangan").attr('disabled', '').removeAttr('required');
+            }
+        }
+        }, {
+            data: "keterangan",
+            title: "Keterangan",
+            type: "text",
+        editorOnChange: function(event, altEditor){
+            if($(event.currentTarget).val() === ''){
+                $(altEditor.modal_selector).find("#waktu-masuk").removeAttr('disabled').attr('required', 'true');
+                $(altEditor.modal_selector).find("#waktu-keluar").removeAttr('disabled').attr('required', 'true');
+            } else {
+                $(altEditor.modal_selector).find("#waktu-masuk").attr('disabled', '').removeAttr('required');
+                $(altEditor.modal_selector).find("#waktu-keluar").attr('disabled', '').removeAttr('required');
+                $(event.currentTarget).removeAttr('disabled').attr('required', 'true');
+            }
+        }
+        }];
     table = $('#myTable').DataTable({
-        "order": [[0, 'desc']]
+        "sPaginationType": "full_numbers",
+        columns: columnDefs,
+        dom: 'Bfrtip',      
+        select: 'single',
+        responsive: true,
+        altEditor: true,     
+        buttons: [
+            {
+                extend: 'selected', 
+                text: 'Edit',
+                name: 'edit'       
+            }
+        ]
     });
     
 });

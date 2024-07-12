@@ -53,6 +53,14 @@
                         <span class="hide-menu">Izin</span>
                     </a>
                 </li>
+                <li class="sidebar-item">
+                    <a class="sidebar-link" href="{{ route('absensi.edit') }}" aria-expanded="false">
+                        <span>
+                            <i class="ti ti-edit"></i>
+                        </span>
+                        <span class="hide-menu">Edit</span>
+                    </a>
+                </li>
 
                 <li class="nav-small-cap">
                     <i class="ti ti-dots nav-small-cap-icon fs-4"></i>
