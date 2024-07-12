@@ -5,7 +5,7 @@
             <div class="d-flex mb-3">
                 <div class="card-title fw-semibold flex-grow-1">Laporan Absensi</div>
                 <a href="#" id="print-pdf-btn" class="btn btn-danger me-5">Unduh Laporan ke PDF</a>
-                <a href="#" id="print-pdf-btn" class="btn btn-success">Export Laporan Ke Excel</a>
+                <a href="#" id="export-excel-btn" class="btn btn-success">Export Laporan Ke Excel</a>
             </div>
             <div class="mb-3 d-flex align-items-center justify-content-between">
                 <div class="col-lg-4 col-sm-3">
@@ -113,6 +113,16 @@
             $('#myTable').DataTable();
         });
     </script>
+
+<script>
+    document.getElementById('filter-btn').addEventListener('click', function() {
+        const bulan = document.getElementById('bulan').value;
+        const tahun = document.getElementById('tahun').value;
+        const url = `/laporan/export-excel/${bulan}/${tahun}`;
+        document.getElementById('export-excel-btn').href = url;
+    });
+</script>
+
     <style>
         #myTable thead th {
             text-align: center;

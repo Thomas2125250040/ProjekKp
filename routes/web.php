@@ -7,6 +7,8 @@ use App\Http\Controllers\jabatanController;
 use App\Http\Controllers\LoginController;
 use App\Http\Middleware\checkHakAkses;
 use App\Http\Middleware\checkDirector;
+use App\Exports\LaporanAbsensiExport;
+use Maatwebsite\Excel\Facades\Excel;
 use App\Http\Middleware\checkAdmin;
 use App\Http\Middleware\checkGeneralManager;
 use App\Http\Middleware\antiLoginLagi;
@@ -30,6 +32,10 @@ Route::middleware([checkHakAkses::class])->group(function () {
     Route::get('/print-pdf', [AbsensiController::class, 'generatePDF'])->name('print.pdf');
     Route::get('log-harian', [AbsensiController::class, 'logharian'])->name("logharian");
     Route::get('cetak', [AbsensiController::class, 'cetak'])->name('cetak');
+
+    Route::get('/laporan/export-excel/{bulan}/{tahun}', function($bulan, $tahun) {
+        return Excel::download(new LaporanAbsensiExport($bulan, $tahun), 'laporan-absensi.xlsx');
+    })->name('laporan.export-excel');
 
 
     Route::middleware([CheckAdminDirector::class])->group(function () {

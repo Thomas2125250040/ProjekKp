@@ -9,6 +9,7 @@
         "dompdf/dompdf": "^3.0",
         "laravel/framework": "^11.0",
         "laravel/tinker": "^2.9",
+        "maatwebsite/excel": "^3.1",
         "thiagoprz/eloquent-composite-key": "^1.0"
     },
     "require-dev": {
