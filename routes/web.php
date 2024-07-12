@@ -33,7 +33,7 @@ Route::middleware([checkHakAkses::class])->group(function () {
     Route::get('log-harian', [AbsensiController::class, 'logharian'])->name("logharian");
     Route::get('cetak', [AbsensiController::class, 'cetak'])->name('cetak');
 
-    Route::get('/laporan/export-excel/{bulan}/{tahun}', function($bulan, $tahun) {
+    Route::get('/laporan/export-excel/{bulan}/{tahun}', function ($bulan, $tahun) {
         return Excel::download(new LaporanAbsensiExport($bulan, $tahun), 'laporan-absensi.xlsx');
     })->name('laporan.export-excel');
 
@@ -55,7 +55,7 @@ Route::middleware([checkHakAkses::class])->group(function () {
         Route::post('save/keluar', [AbsensiController::class, 'simpan_keluar'])->name('absensi.simpan-data-keluar');
         Route::get('save/tutup', [AbsensiController::class, 'tutup_absensi'])->name('absensi.tutup-absensi');
     });
-    
+
     // Route untuk Admin
     Route::middleware([CheckAdmin::class])->group(function () {
         Route::get('absensi/ubah', [AbsensiController::class, 'editAbsensi'])->name('absensi.edit');

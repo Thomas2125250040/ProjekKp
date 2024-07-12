@@ -15,7 +15,8 @@ use Carbon\Carbon;
 
 class AbsensiController extends Controller
 {
-    public function revisi(){
+    public function revisi()
+    {
         return view('director.revisi');
     }
 
@@ -23,20 +24,21 @@ class AbsensiController extends Controller
         dd($request);
     }
 
-    public function data_revisi(){
+    public function data_revisi()
+    {
         $tanggal = request()->query()["tanggal"];
-        if (is_null($tanggal)){
+        if (is_null($tanggal)) {
             return response()->noContent();
         }
         $absensi = Absensi::where('tanggal', $tanggal)->first();
-        if (is_null($absensi)){
+        if (is_null($absensi)) {
             return response()->json(["message" => "Data tidak ada."], 204);
         }
-        if (!is_null($libur = $absensi->id_libur)){
+        if (!is_null($libur = $absensi->id_libur)) {
             $keterangan_libur = HariLibur::find($libur)->keterangan;
             return response()->json(["message" => $keterangan_libur], 202);
         }
-        $masuk = KaryawanAbsensi::with('karyawan')->where('id_absensi', $absensi->id)->get()->map(function($item){
+        $masuk = KaryawanAbsensi::with('karyawan')->where('id_absensi', $absensi->id)->get()->map(function ($item) {
             return [
                 "id" => $item->karyawan->id,
                 "nama" => $item->karyawan->nama,
@@ -45,24 +47,24 @@ class AbsensiController extends Controller
             ];
         });
         $data_izin = KaryawanIzin::with('karyawan')->where('id_absensi', $absensi->id)->get();
-        $izin = $data_izin->map(function($item){
-            if ($item->izin === 1){
+        $izin = $data_izin->map(function ($item) {
+            if ($item->izin === 1) {
                 return [
                     "id" => $item->karyawan->id,
                     "nama" => $item->karyawan->nama,
                     "keterangan" => $item->keterangan
-                ];  
+                ];
             }
         })->filter()->values();
-        $alpha = $data_izin->map(function($item){
-            if ($item->izin === 0){
+        $alpha = $data_izin->map(function ($item) {
+            if ($item->izin === 0) {
                 return [
                     "id" => $item->karyawan->id,
                     "nama" => $item->karyawan->nama,
                 ];
             }
         })->filter();
-        if ($masuk->isEmpty() && $izin->isEmpty() && $alpha->isEmpty()){
+        if ($masuk->isEmpty() && $izin->isEmpty() && $alpha->isEmpty()) {
             return response()->json(["message" => "Data tidak ada."], 204);
         }
         return response()->json([
@@ -72,7 +74,8 @@ class AbsensiController extends Controller
         ]);
     }
 
-    public function edit_delete($id){
+    public function edit_delete($id)
+    {
         $id_absensi = Cache::get('id_absensi');
         $data_absensi = KaryawanAbsensi::find([
             $id,
@@ -101,7 +104,7 @@ class AbsensiController extends Controller
         $masuk = $request["waktu-masuk"];
         $keluar = $request["waktu-keluar"];
         $keterangan = $request["keterangan"];
-        if (is_null($keterangan)){
+        if (is_null($keterangan)) {
             $karyawan_izin = KaryawanIzin::find([
                 $id_karyawan,
                 $id_absensi
@@ -508,73 +511,6 @@ class AbsensiController extends Controller
         karyawan.nama;", [$bulan, $tahun, $bulan, $tahun, $bulan, $tahun, $bulan, $tahun, $bulan, $tahun]);
 
         return response()->json($laporan);
-    }
-
-    public function gaji()
-    {
-        $params = request()->query();
-        $bulan = $params['bulan'] ?? null;
-        $tahun = $params['tahun'] ?? null;
-        if (is_null($bulan) || is_null($tahun)) {
-            return view('absensi.gaji');
-        }
-        $awal_bulan = Carbon::create($tahun, $bulan)->startOfMonth();
-        $akhir_bulan = Carbon::create($tahun, $bulan)->endOfMonth();
-        $kumpulan_id_absensi = Absensi::whereBetween('tanggal', [$awal_bulan, $akhir_bulan])->whereNull('id_libur')->get();
-        if ($kumpulan_id_absensi->isEmpty()) {
-            return response()->noContent();
-        }
-        $array_hariKerja = [];
-        $kumpulan_karyawan = Karyawan::all();
-        foreach ($kumpulan_karyawan as $karyawan) {
-            $hariKerja = 0;
-            $lembur = 0;
-            $terlambat = 0;
-            foreach ($kumpulan_id_absensi as $absensi) {
-                $karyawanAbsen = KaryawanAbsensi::find([
-                    $karyawan->id,
-                    $absensi->id
-                ]);
-                if ($karyawanAbsen) {
-                    $hariKerja++;
-                    $waktu_keluar = Carbon::parse($karyawanAbsen->waktu_keluar);
-                    $time1700 = Carbon::createFromTime(17, 0, 0);
-                    if ($waktu_keluar->greaterThan($time1700)) {
-                        $lembur += 1;
-                    }
-                    $waktuMasuk = Carbon::parse($karyawanAbsen->waktu_masuk);
-                    $time0800 = Carbon::createFromTime(8, 0, 0);
-                    if ($waktuMasuk->greaterThan($time0800)) {
-                        $terlambat += 1;
-                    }
-                }
-            }
-            $dendaTelat = Cache::get('denda_telat', 50000);
-            $array_hariKerja[] = [
-                'id' => $karyawan->id,
-                'nama' => $karyawan->nama,
-                'jabatan' => $karyawan->jabatan->nama,
-                'gaji_pokok' => $karyawan->jabatan->gaji_pokok,
-                'uang_makan' => $karyawan->jabatan->uang_makan,
-                'uang_lembur' => $karyawan->jabatan->uang_lembur,
-                'denda_telat' => $dendaTelat,
-                'total_masuk' => $hariKerja,
-                'total_telat' => $terlambat,
-                'total_lembur' => $lembur
-            ];
-        }
-        return response()->json($array_hariKerja);
-
-    }
-
-    public function filter(Request $request)
-    {
-        $bulan = $request->input('bulan');
-        $tahun = $request->input('tahun');
-
-        $gaji = DB::select("SELECT karyawan.nama, jabatan.nama as jabatan, gaji.gaji_pokok, gaji.uang_makan, gaji.uang_lembur FROM karyawan, jabatan, gaji WHERE karyawan.id_jabatan = jabatan.id AND jabatan.id = gaji.id_jabatan AND gaji.bulan = ? AND gaji.tahun = ?", [$bulan, $tahun]);
-
-        return response()->json($gaji);
     }
 
     public function search()
