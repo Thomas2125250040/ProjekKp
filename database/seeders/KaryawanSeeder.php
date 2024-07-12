@@ -17,7 +17,7 @@ class KaryawanSeeder extends Seeder
         DB::table('karyawan')->insert([
             [
                 'id' => "001",
-                'id_jabatan' => "A01",
+                'id_jabatan' => "AA",
                 'nama' => "Nicholas",
                 'email' => "nicholas@gmail.com",
                 'jenis_kelamin' => "Laki-laki",
@@ -30,7 +30,7 @@ class KaryawanSeeder extends Seeder
             ],
             [
                 'id' => "002",
-                'id_jabatan' => "A02",
+                'id_jabatan' => "AB",
                 'nama' => "Thomas Setiawan",
                 'email' => "thomas@gmail.com",
                 'jenis_kelamin' => "Laki-laki",
@@ -43,7 +43,7 @@ class KaryawanSeeder extends Seeder
             ],
             [
                 'id' => "003",
-                'id_jabatan' => "A03",
+                'id_jabatan' => "AC",
                 'nama' => "Margaretha",
                 'email' => "margaretha@gmail.com",
                 'jenis_kelamin' => "Perempuan",
@@ -56,7 +56,7 @@ class KaryawanSeeder extends Seeder
             ],
             [
                 'id' => "004",
-                'id_jabatan' => "A04",
+                'id_jabatan' => "AD",
                 'nama' => "Karyawan-1",
                 'email' => "karyawan1@gmail.com",
                 'jenis_kelamin' => "Perempuan",
@@ -69,7 +69,7 @@ class KaryawanSeeder extends Seeder
             ],
             [
                 'id' => "005",
-                'id_jabatan' => "A05",
+                'id_jabatan' => "AE",
                 'nama' => "Karyawan-2",
                 'email' => "karyawan2@gmail.com",
                 'jenis_kelamin' => "Laki-laki",

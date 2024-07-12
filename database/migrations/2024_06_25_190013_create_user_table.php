@@ -4,18 +4,17 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-return new class extends Migration
-{
+return new class extends Migration {
     /**
      * Run the migrations.
      */
     public function up(): void
     {
         Schema::create('users', function (Blueprint $table) {
-            $table->string('id_karyawan')->primary();
+            $table->string('id_karyawan', 5)->primary();
             $table->foreign('id_karyawan')->references('id')->on('karyawan')->cascadeOnDelete()->cascadeOnUpdate();
-            $table->string('username');
-            $table->string('password');
+            $table->string('username', 10)->unique();
+            $table->string('password', 100);
             $table->enum('hak_akses', ['Director', 'General Manager', 'Admin']);
             $table->rememberToken();
             $table->timestamps();

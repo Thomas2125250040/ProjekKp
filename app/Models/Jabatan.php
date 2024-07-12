@@ -13,8 +13,5 @@ class Jabatan extends Model
     protected $fillable = [
         "id",
         "nama",
-        "gaji_pokok",
-        "uang_makan",
-        "uang_lembur"
     ];
 }

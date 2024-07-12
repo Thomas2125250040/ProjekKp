@@ -4,20 +4,19 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-return new class extends Migration
-{
+return new class extends Migration {
     /**
      * Run the migrations.
      */
     public function up(): void
     {
         Schema::create('karyawan_izin', function (Blueprint $table) {
-            $table->string('id_karyawan');
+            $table->string('id_karyawan', 5);
             $table->foreign('id_karyawan')->references('id')->on('karyawan')->cascadeOnUpdate();
-            $table->foreignId('id_absensi');
-            $table->foreign('id_absensi')->references('id')->on('absensi');
+            $table->unsignedInteger('id_absensi'); // Ubah tipe data ke unsignedInteger
+            $table->foreign('id_absensi')->references('id')->on('absensi')->cascadeOnUpdate(); // Tambahkan onUpdate
             $table->boolean('izin');
-            $table->string('keterangan')->nullable();
+            $table->string('keterangan', 50)->nullable();
             $table->primary(array('id_absensi', 'id_karyawan'));
             $table->timestamps();
         });

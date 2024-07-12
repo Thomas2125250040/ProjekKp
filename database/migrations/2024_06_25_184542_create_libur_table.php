@@ -4,8 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-return new class extends Migration
-{
+return new class extends Migration {
     /**
      * Run the migrations.
      */
@@ -13,9 +12,9 @@ return new class extends Migration
     {
         Schema::create('libur', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('keterangan');
-            $table->date('tanggal_mulai')->unique();
-            $table->date('tanggal_selesai')->unique();
+            $table->string('keterangan', 50);
+            $table->date('tanggal_mulai');
+            $table->date('tanggal_selesai');
             $table->timestamps();
         });
     }
