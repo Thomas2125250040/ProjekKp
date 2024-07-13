@@ -30,17 +30,21 @@ class Karyawan extends Model
     }
 
     public function karyawan_absensi(){
-        return $this->hasMany(KaryawanAbsensi::class);
+        return $this->hasMany(KaryawanAbsensi::class, 'id_karyawan', 'id');
     }
 
     public function karyawan_izin(){
-        return $this->hasMany(KaryawanIzin::class);
+        return $this->hasMany(KaryawanIzin::class, 'id_karyawan', 'id');
     }
 
     public function delete()
     {
-        $this->karyawan_absensi->delete();
-        $this->karyawan_izin->delete();
+        foreach ($this->karyawan_absensi as $masuk){
+            $masuk->delete();
+        }
+        foreach ($this->karyawan_izin as $izin){
+            $izin->delete();
+        }
         parent::delete();
     }
 }

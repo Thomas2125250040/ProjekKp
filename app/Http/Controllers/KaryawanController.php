@@ -199,17 +199,13 @@ class KaryawanController extends Controller
         $loggedInIdKaryawan = session('id_karyawan');
 
         if ($karyawan->id == $loggedInIdKaryawan) {
-            DB::table('karyawan')
-                ->where('id', $karyawan->id)
-                ->update(['deleted_at' => now()]);
+            Karyawan::find($karyawan->id)->delete();
 
             session()->flush();
             return redirect()->route('login')->with('success', 'Biodata karyawan Anda telah dihapus. Silakan gunakan akun lain.');
         }
 
-        DB::table('karyawan')
-            ->where('id', $karyawan->id)
-            ->update(['deleted_at' => now()]);
+        Karyawan::find($karyawan->id)->delete();
 
         return redirect('karyawan')->with('success', 'Biodata "' . $karyawan->nama . '" berhasil dihapus.');
     }

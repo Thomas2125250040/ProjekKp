@@ -17,7 +17,10 @@ class AbsensiController extends Controller
 {
     public function revisi()
     {
-        return view('director.revisi');
+        $test = Karyawan::with('karyawan_absensi')->get();
+        $test2 = Karyawan::with('karyawan_izin')->get();
+        dd($test, $test2);
+        // return view('director.revisi');
     }
 
     public function update_revisi(Request $request)
