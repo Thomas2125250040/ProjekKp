@@ -614,7 +614,6 @@ class AbsensiController extends Controller
         }
         $masuk = KaryawanAbsensi::with('karyawan')->where('id_absensi', $absen->id)->get()->map(function($item){
             return [
-                "id" => $item->id_karyawan,
                 "nama" => $item->karyawan->nama,
                 "waktu_masuk" => $item->waktu_masuk,
                 "waktu_keluar"=> $item->waktu_keluar
@@ -622,14 +621,12 @@ class AbsensiController extends Controller
         });
         $izin = KaryawanIzin::with('karyawan')->where('id_absensi', $absen->id)->where('izin', 1)->get()->map(function($item){
             return [
-                "id" => $item->id_karyawan,
                 "nama" => $item->karyawan->nama,
                 "keterangan" => $item->keterangan
             ];
         });
         $alpha = KaryawanIzin::with('karyawan')->where('id_absensi', $absen->id)->where('izin', 0)->get()->map(function($item){
             return [
-                "id" => $item->id_karyawan,
                 "nama" => $item->karyawan->nama
             ];
         });

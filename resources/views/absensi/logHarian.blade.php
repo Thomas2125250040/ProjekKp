@@ -8,13 +8,6 @@
     <div class="card-body">
         <div class="d-flex mb-4">
             <div class="card-title fw-semibold flex-grow-1">Log Harian</div>
-            <form action="{{url('cetak')}}" method="GET" id="cetakForm">
-                <input type="hidden" name="nama" id="cetakNama">
-                <input type="hidden" name="start" id="cetakStart">
-                <input type="hidden" name="end" id="cetakEnd">
-                <button type="submit" class="btn btn-warning">Cetak Log Harian</button>
-            </form>
-           
         </div>
         <div class="d-flex mb-4">
             <select class="me-3 selectpicker" data-show-subtext="true" data-live-search="true" id="karyawanSelect">
@@ -37,7 +30,7 @@
                 </div>
             </div>
         </div>
-        <table class="table" id="myTable">
+        <table class="table compact" id="myTable">
             <thead>
                 <tr>
                     <th scope="col">Tanggal</th>
@@ -138,24 +131,14 @@ $(function() {
             },
             success: function(json){
                 table.clear().draw(false);
-                $('#myTable thead tr th').each(function() {
-                    var text = $(this).text()
-                    if (text === 'Tanggal') {
-                        $(this).remove();
-                    } else if (text === "Id"){
-                        $(this).remove();
-                    } else if (text === "Nama"){
-                        $(this).remove();
-                    }
-                });
-                $('#myTable thead tr').prepend('<th>Id</th><th>Nama</th>');
+                var headerCells = table.columns().header();
+                $(headerCells[0]).text('Nama');
                 json.masuk.forEach(function(item){
                     const newRow = $("<tr>");
                     newRow.append(
-                        $("<td>").text(item.id),
                         $("<td>").text(item.nama),
-                        $("<td>").text(item.waktu_masuk),
-                        $("<td>").text(item.waktu_keluar),
+                        $("<td>").text(item.waktu_masuk).addClass('text-right'),
+                        $("<td>").text(item.waktu_keluar).addClass('text-right'),
                         $("<td>").text("-")
                     );
                     table.row.add(newRow).draw();
@@ -163,23 +146,23 @@ $(function() {
                 json.izin.forEach(function(item){
                     const newRow = $("<tr>");
                     newRow.append(
-                        $("<td>").text(item.id),
                         $("<td>").text(item.nama),
                         $("<td>").text(''),
                         $("<td>").text(''),
                         $("<td>").text(item.keterangan)
                     );
+                    newRow.addClass("text-primary");
                     table.row.add(newRow).draw();
                 });
                 json.alpha.forEach(function(item){
                     const newRow = $("<tr>");
                     newRow.append(
-                        $("<td>").text(item.id),
                         $("<td>").text(item.nama),
-                        $("<td>").text('-'),
-                        $("<td>").text('-'),
+                        $("<td>").text('-').addClass('text-right'),
+                        $("<td>").text('-').addClass('text-right'),
                         $("<td>").text("Alpha")
                     );
+                    newRow.addClass("text-danger");
                     table.row.add(newRow).draw();
                 });
             }
@@ -201,17 +184,8 @@ $(function() {
             },
             success: function(data){
                 table.clear().draw(false);
-                $('#myTable thead tr th').each(function() {
-                    var text = $(this).text()
-                    if (text === 'Id') {
-                        $(this).remove();
-                    } else if (text === "Nama"){
-                        $(this).remove();
-                    } else if (text === "Tanggal"){
-                        $(this).remove();
-                    }
-                });
-                $('#myTable thead tr').prepend('<th>Tanggal</th>');
+                var headerCells = table.columns().header();
+                $(headerCells[0]).text('Tanggal');
                 data.logAlpha.forEach(function(item){
                     const newRow = $("<tr>");
                     newRow.append(
@@ -220,7 +194,7 @@ $(function() {
                         $("<td>").text("-"),
                         $("<td>").text("Alpha")
                     );
-                    newRow.addClass("bg-danger text-white");
+                    newRow.addClass("text-danger");
                     table.row.add(newRow).draw();
                 });
                 data.logIzin.forEach(function(item){
@@ -231,26 +205,16 @@ $(function() {
                         $("<td>").text("-"),
                         $("<td>").text(item.keterangan_izin)
                     );
-                    newRow.addClass("bg-secondary");
+                    newRow.addClass("text-primary");
                     table.row.add(newRow).draw();
                 });
                 data.logMasuk.forEach(function(item){
                     const newRow = $("<tr>");
                     newRow.append(
                         $("<td>").text(item.tanggal),
-                        $("<td>").text(item.waktu_masuk),
-                        $("<td>").text(item.waktu_keluar),
+                        $("<td>").text(item.waktu_masuk).addClass('text-right'),
+                        $("<td>").text(item.waktu_keluar).addClass('text-right'),
                         $("<td>").text("-")
-                    );
-                    table.row.add(newRow).draw();
-                });
-                data.logLibur.forEach(function(item){
-                    const newRow = $("<tr>");
-                    newRow.append(
-                        $("<td>").text(item.tanggal),
-                        $("<td>").text("-"),
-                        $("<td>").text("-"),
-                        $("<td>").text(item.keterangan_libur)
                     );
                     table.row.add(newRow).draw();
                 });
