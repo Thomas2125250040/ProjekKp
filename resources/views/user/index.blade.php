@@ -41,10 +41,24 @@
                                 <form method="POST" action="{{ route('users.destroy', $row->id_karyawan) }}">
                                     @csrf
                                     @method('delete')
-                                    <button type="submit" class="btn btn-danger fs-1 hapus_user" data-toggle="tooltip"
-                                        title='Delete' data-nama='{{ $row->nama }}'>Hapus</button>
-                                    <a href="{{ route('users.edit', $row->id_karyawan) }}"
-                                        class="btn btn-primary fs-1">Ubah</a>
+
+                                    @if (session('hak_akses') === 'Admin')
+                                        <!-- Hide "Hapus" button for Admin -->
+                                        <button type="button" class="btn btn-danger fs-1" style="display: none;">Hapus</button>
+
+                                        <!-- Hide "Ubah" button if the hak_akses is Director -->
+                                        @if ($row->hak_akses === 'Director')
+                                            <a href="#" class="btn btn-primary fs-1" style="display: none;">Ubah</a>
+                                        @else
+                                            <a href="{{ route('users.edit', $row->id_karyawan) }}" class="btn btn-primary fs-1">Ubah</a>
+                                        @endif
+                                    @else
+                                        <!-- Non-Admin users can perform all actions -->
+                                        <button type="submit" class="btn btn-danger fs-1 hapus_user" data-toggle="tooltip"
+                                            title='Delete' data-nama='{{ $row->nama }}'>Hapus</button>
+                                        <a href="{{ route('users.edit', $row->id_karyawan) }}"
+                                            class="btn btn-primary fs-1">Ubah</a>
+                                    @endif
                                 </form>
                             </td>
                         </tr>
