@@ -604,6 +604,41 @@ class AbsensiController extends Controller
             return response()->json('--Nama karyawan tidak ditemukan--');
         }
     }
+    public function logHarian_single(){
+        $date = request()->query()["tanggal"];
+        $absen = Absensi::where('tanggal', $date)->first();
+        $isLibur = $absen->id_libur;
+        if ($isLibur !== null){
+            $libur = HariLibur::find($isLibur);
+            return response()->json(["message" => $libur->keterangan]);
+        }
+        $masuk = KaryawanAbsensi::with('karyawan')->where('id_absensi', $absen->id)->get()->map(function($item){
+            return [
+                "id" => $item->id_karyawan,
+                "nama" => $item->karyawan->nama,
+                "waktu_masuk" => $item->waktu_masuk,
+                "waktu_keluar"=> $item->waktu_keluar
+            ];
+        });
+        $izin = KaryawanIzin::with('karyawan')->where('id_absensi', $absen->id)->where('izin', 1)->get()->map(function($item){
+            return [
+                "id" => $item->id_karyawan,
+                "nama" => $item->karyawan->nama,
+                "keterangan" => $item->keterangan
+            ];
+        });
+        $alpha = KaryawanIzin::with('karyawan')->where('id_absensi', $absen->id)->where('izin', 0)->get()->map(function($item){
+            return [
+                "id" => $item->id_karyawan,
+                "nama" => $item->karyawan->nama
+            ];
+        });
+        return response()->json([
+            "masuk" => $masuk,
+            "izin" => $izin,
+            "alpha" => $alpha
+        ]);
+    }
 
     public function logHarian()
     {

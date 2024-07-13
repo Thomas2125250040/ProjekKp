@@ -65,7 +65,7 @@ $(function() {
             title: "Id",
             type: "readonly"
         },{
-            title: "Gender",
+            title: "Nama",
             type: "text",
             required: true,
             unique: true,

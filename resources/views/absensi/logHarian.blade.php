@@ -18,7 +18,7 @@
         </div>
         <div class="d-flex mb-4">
             <select class="me-3 selectpicker" data-show-subtext="true" data-live-search="true" id="karyawanSelect">
-                <option disabled="disabled" selected>-- Pilih Nama Karyawan --</option>
+                <option>-- Semua Karyawan --</option>
                 @isset($karyawan)
                     @foreach($karyawan as $row)
                     <option data-subtext="{{$row->jabatan->nama}}">{{$row->nama}}</option>
@@ -68,28 +68,53 @@ $(function() {
         $('#reportrange span').html(start.format('MMMM D, YYYY') + ' - ' + end.format('MMMM D, YYYY'));
     }
 
-    $('#reportrange').daterangepicker({
-        startDate: start,
-        endDate: end,
-        ranges: {
-           'Today': [moment(), moment()],
-           'Yesterday': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
-           'Last 7 Days': [moment().subtract(6, 'days'), moment()],
-           'Last 30 Days': [moment().subtract(29, 'days'), moment()],
-           'This Month': [moment().startOf('month'), moment().endOf('month')],
-           'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
-        }
-    }, cb);
-
-    cb(start, end);
-
+    function sb(today){
+        $('#reportrange span').html(today.format('MMMM D, YYYY'));
+    }
+    sb(end);
     $('#karyawanSelect').on('change', function() {
-        updateTable();
+        if($(this).val() === "-- Semua Karyawan --"){
+            $('#reportrange').daterangepicker({
+                singleDatePicker: true,
+                minYear: 2000,
+                maxYear: parseInt(moment().format('YYYY'),10)
+            },sb);
+            $('#reportrange span').html('');
+            bindEvent();
+        }else {
+            cb(start, end);
+            $('#reportrange').daterangepicker({
+                startDate: start,
+                endDate: end,
+                ranges: {
+                    'Today': [moment(), moment()],
+                    'Yesterday': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
+                    'Last 7 Days': [moment().subtract(6, 'days'), moment()],
+                    'Last 30 Days': [moment().subtract(29, 'days'), moment()],
+                    'This Month': [moment().startOf('month'), moment().endOf('month')],
+                    'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
+                }
+            }, cb);
+            $('#reportrange span').html('');
+            bindEvent();
+        };
     });
-
-    $('#reportrange').on('apply.daterangepicker', function(ev, picker) {
-        updateTable();
-    });
+    $('#reportrange').daterangepicker({
+                singleDatePicker: true,
+                minYear: 2000,
+                maxYear: parseInt(moment().format('YYYY'),10)
+            },sb);
+    singleTable();
+    bindEvent();
+    function bindEvent(){
+        $('#reportrange').on('apply.daterangepicker', function(ev, picker) {
+            if($('#karyawanSelect').val() === "-- Semua Karyawan --") {
+                singleTable();
+            } else {
+                updateTable();
+            }
+        });
+    }
 
     $('#cetakForm').on('submit', function() {
         var nama = $('#karyawanSelect').val();
@@ -101,6 +126,65 @@ $(function() {
         $('#cetakStart').val(startDate);
         $('#cetakEnd').val(endDate);
     });
+
+    function singleTable(){
+        var dateRange = $('#reportrange').data('daterangepicker');
+        var date = dateRange.startDate.format('YYYY-MM-DD');
+        $.ajax({
+            type: 'get',
+            url: '{{route('logharian.single')}}',
+            data : {
+                'tanggal': date
+            },
+            success: function(json){
+                table.clear().draw(false);
+                $('#myTable thead tr th').each(function() {
+                    var text = $(this).text()
+                    if (text === 'Tanggal') {
+                        $(this).remove();
+                    } else if (text === "Id"){
+                        $(this).remove();
+                    } else if (text === "Nama"){
+                        $(this).remove();
+                    }
+                });
+                $('#myTable thead tr').prepend('<th>Id</th><th>Nama</th>');
+                json.masuk.forEach(function(item){
+                    const newRow = $("<tr>");
+                    newRow.append(
+                        $("<td>").text(item.id),
+                        $("<td>").text(item.nama),
+                        $("<td>").text(item.waktu_masuk),
+                        $("<td>").text(item.waktu_keluar),
+                        $("<td>").text("-")
+                    );
+                    table.row.add(newRow).draw();
+                });
+                json.izin.forEach(function(item){
+                    const newRow = $("<tr>");
+                    newRow.append(
+                        $("<td>").text(item.id),
+                        $("<td>").text(item.nama),
+                        $("<td>").text(''),
+                        $("<td>").text(''),
+                        $("<td>").text(item.keterangan)
+                    );
+                    table.row.add(newRow).draw();
+                });
+                json.alpha.forEach(function(item){
+                    const newRow = $("<tr>");
+                    newRow.append(
+                        $("<td>").text(item.id),
+                        $("<td>").text(item.nama),
+                        $("<td>").text('-'),
+                        $("<td>").text('-'),
+                        $("<td>").text("Alpha")
+                    );
+                    table.row.add(newRow).draw();
+                });
+            }
+        });
+    }
 
     function updateTable() {
         var nama = $('#karyawanSelect').val();
@@ -116,7 +200,18 @@ $(function() {
                 'end': endDate
             },
             success: function(data){
-                table.clear();
+                table.clear().draw(false);
+                $('#myTable thead tr th').each(function() {
+                    var text = $(this).text()
+                    if (text === 'Id') {
+                        $(this).remove();
+                    } else if (text === "Nama"){
+                        $(this).remove();
+                    } else if (text === "Tanggal"){
+                        $(this).remove();
+                    }
+                });
+                $('#myTable thead tr').prepend('<th>Tanggal</th>');
                 data.logAlpha.forEach(function(item){
                     const newRow = $("<tr>");
                     newRow.append(
@@ -165,7 +260,6 @@ $(function() {
             },
         });
     }
-
     $(window).on('load', function() {
         $('span.caret').css('border-top', '0');
         $('button.dropdown-toggle.selectpicker').css('border-radius', '0');

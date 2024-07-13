@@ -31,6 +31,7 @@ Route::middleware([checkHakAkses::class])->group(function () {
     Route::post('/laporan/filter', [AbsensiController::class, 'laporanFilter'])->name('laporan.filter');
     Route::get('/print-pdf', [AbsensiController::class, 'generatePDF'])->name('print.pdf');
     Route::get('log-harian', [AbsensiController::class, 'logharian'])->name("logharian");
+    Route::get('log-harian/single', [AbsensiController::class, 'logharian_single'])->name("logharian.single");
     Route::get('cetak', [AbsensiController::class, 'cetak'])->name('cetak');
 
     Route::get('/laporan/export-excel/{bulan}/{tahun}', function ($bulan, $tahun) {
