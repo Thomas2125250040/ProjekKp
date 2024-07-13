@@ -590,13 +590,21 @@ class AbsensiController extends Controller
     public function logHarian_single(){
         $date = request()->query()["tanggal"];
         $absen = Absensi::where('tanggal', $date)->first();
+        if (is_null($absen)){
+            return "No data";
+        }
         $isLibur = $absen->id_libur;
         if ($isLibur !== null) {
             $libur = HariLibur::find($isLibur);
             return response()->json(["message" => $libur->keterangan]);
         }
-        $masuk = KaryawanAbsensi::with('karyawan')->where('id_absensi', $absen->id)->get();
-        dd($masuk);
+        $masuk = KaryawanAbsensi::with('karyawan')->where('id_absensi', $absen->id)->get()->map(function ($item) {
+            return [
+                "nama" => $item->karyawan->nama,
+                "waktu_masuk" => $item->waktu_masuk,
+                "waktu_keluar" => $item->waktu_keluar
+            ];
+        });
         $izin = KaryawanIzin::with('karyawan')->where('id_absensi', $absen->id)->where('izin', 1)->get()->map(function ($item) {
             return [
                 "nama" => $item->karyawan->nama,
