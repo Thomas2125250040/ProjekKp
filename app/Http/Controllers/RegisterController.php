@@ -46,9 +46,26 @@ class RegisterController extends Controller
      */
     public function create()
     {
-        $users = DB::select('select * from karyawan');
-        return view('user.register', ["users" => $users]);
+        // Ambil semua karyawan
+        $allUsers = DB::table('karyawan')->get();
+
+        // Ambil ID karyawan yang sudah memiliki hak akses
+        $assignedUserIds = DB::table('users')->pluck('id_karyawan')->toArray();
+
+        // Filter karyawan yang belum memiliki hak akses
+        $availableUsers = $allUsers->filter(function ($user) use ($assignedUserIds) {
+            return !in_array($user->id, $assignedUserIds);
+        });
+
+        // Cek apakah sudah ada hak akses director
+        $hasDirectorAccess = DB::table('users')->where('hak_akses', 'Director')->exists();
+
+        return view('user.register', [
+            'users' => $availableUsers,
+            'hasDirectorAccess' => $hasDirectorAccess
+        ]);
     }
+
 
     /**
      * Show the form for editing the specified resource.
@@ -64,15 +81,22 @@ class RegisterController extends Controller
      */
     public function update(Request $request, string $id)
     {
+        // Validasi data tanpa 'id_karyawan'
         $data = $request->validate([
-            'id_karyawan' => 'required',
             'username' => 'required',
             'password' => 'required|min:6',
             'hak_akses' => 'required'
         ]);
 
-        User::find($id)->update($data);
-        return redirect("users")->with("success", 'Username "' . $request->username . '" berhasil diperbarui.');
+        // Temukan user berdasarkan ID dan update data
+        $user = User::find($id);
+
+        if ($user) {
+            $user->update($data);
+            return redirect("users")->with("success", 'Username "' . $request->username . '" berhasil diperbarui.');
+        } else {
+            return redirect("users")->with("error", 'User not found.');
+        }
     }
 
     /**
@@ -83,25 +107,25 @@ class RegisterController extends Controller
     {
         // Ambil id karyawan dari session pengguna yang sedang login
         $loggedInIdKaryawan = session('id_karyawan');
-    
+
         // Ambil data user berdasarkan id_karyawan
         $user = User::where('id_karyawan', $id_karyawan)->firstOrFail();
-    
+
         // Pengecekan apakah pengguna sedang mencoba menghapus data dirinya sendiri
         if ($user->id_karyawan == $loggedInIdKaryawan) {
             // Hapus data karyawan
             $user->delete();
-    
+
             // Logout user (hapus session)
             session()->flush(); // Hapus semua data sesi
-    
+
             // Redirect ke halaman login dengan pesan sukses
             return redirect()->route('login')->with('success', 'Username Anda telah dihapus. Silahkan gunakan akun lain.');
         }
-    
+
         // Hapus data karyawan
         $user->delete();
-    
-        return redirect("users")->with("success", 'Username berhasil dihapus.'); 
+
+        return redirect("users")->with("success", 'Username berhasil dihapus.');
     }
 }

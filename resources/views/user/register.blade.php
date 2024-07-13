@@ -9,17 +9,12 @@
                         <form method="POST" action="{{ route('users.store') }}">
                             @csrf
                             <div class="mb-4" id="fieldset">
-                                <label for="id" class="form-label">Id Karyawan</label>
+                                <label for="id_karyawan" class="form-label">Id Karyawan</label>
                                 <select id="id_karyawan" name="id_karyawan" class="form-select">
                                     @forelse ($users as $row)
-                                        <option value="{{ $row->id }}">{{ $row->id }} - {{ $row->nama }}
-                                        </option>
+                                        <option value="{{ $row->id }}">{{ $row->id }} - {{ $row->nama }}</option>
                                     @empty
                                         <option disabled>--Tidak ada data karyawan--</option>
-                                        <script>
-                                            let fieldset = document.getElementById('fieldset');
-                                            fieldset.classList.add('disabled');
-                                        </script>
                                     @endforelse
                                 </select>
                                 @error('id_karyawan')
@@ -32,7 +27,7 @@
                                 <input type="text" class="form-control" id="username" name="username" required
                                     value="{{ old('username') }}">
                                 @error('username')
-                                    <label for="kode" class="text-danger">{{ $message }}</label>
+                                    <label for="username" class="text-danger">{{ $message }}</label>
                                 @enderror
                             </div>
 
@@ -48,11 +43,13 @@
                                         value="Admin" @if (old('hak_akses') == 'Admin') checked @endif>
                                     <label class="form-check-label" for="admin">Admin</label>
                                 </div>
-                                <div class="form-check">
-                                    <input type="radio" id="director" name="hak_akses" class="form-check-input"
-                                        value="Director" @if (old('hak_akses') == 'Director') checked @endif>
-                                    <label class="form-check-label" for="director">Director</label>
-                                </div>
+                                @if (!$hasDirectorAccess)
+                                    <div class="form-check">
+                                        <input type="radio" id="director" name="hak_akses" class="form-check-input"
+                                            value="Director" @if (old('hak_akses') == 'Director') checked @endif>
+                                        <label class="form-check-label" for="director">Director</label>
+                                    </div>
+                                @endif
                                 @error('hak_akses')
                                     <div class="text-danger">{{ $message }}</div>
                                 @enderror

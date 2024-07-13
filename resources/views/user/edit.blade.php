@@ -9,50 +9,73 @@
                         <form method="POST" action="{{ route('users.update', $users->id_karyawan) }}">
                             @csrf
                             @method('PATCH')
+
+                            <!-- id_karyawan Field (disabled) -->
                             <div class="mb-4">
                                 <label for="id_karyawan" class="form-label">Id Karyawan</label>
                                 <input type="text" class="form-control" id="id_karyawan" name="id_karyawan" required
-                                    value="{{ $users->id_karyawan }}">
+                                    value="{{ $users->id_karyawan }}" disabled>
                                 @error('id_karyawan')
-                                    <label for="kode" class="text-danger">{{ $message }}</label>
+                                    <label for="id_karyawan" class="text-danger">{{ $message }}</label>
                                 @enderror
                             </div>
 
+                            <!-- username Field -->
                             <div class="mb-4">
                                 <label for="username" class="form-label">Username</label>
                                 <input type="text" class="form-control" id="username" name="username" required
-                                    value="{{ $users->username }}">
+                                    value="{{ old('username', $users->username) }}">
                                 @error('username')
-                                    <label for="kode" class="text-danger">{{ $message }}</label>
+                                    <label for="username" class="text-danger">{{ $message }}</label>
                                 @enderror
                             </div>
 
+                            <!-- hak_akses Field -->
                             <div class="mb-4">
                                 <label class="form-label">Hak Akses</label>
+
+                                @php
+                                    $hasDirectorAccess = DB::table('users')->where('hak_akses', 'Director')->exists();
+                                    $isCurrentUserDirector = $users->hak_akses === 'Director';
+                                @endphp
+
                                 <div class="form-check">
                                     <input type="radio" id="general-manager" name="hak_akses" class="form-check-input"
-                                        value="General Manager" @if (old('hak_akses', $users->hak_akses) == 'General Manager') checked @endif>
-                                    <label class="form-check-label" for="General Manager">General Manager</label>
+                                        value="General Manager" @if (old('hak_akses', $users->hak_akses) == 'General Manager') checked @endif
+                                        @if ($isCurrentUserDirector) disabled @endif>
+                                    <label class="form-check-label" for="general-manager">General Manager</label>
                                 </div>
+
                                 <div class="form-check">
                                     <input type="radio" id="admin" name="hak_akses" class="form-check-input"
-                                        value="Admin" @if (old('hak_akses', $users->hak_akses) == 'Admin') checked @endif>
-                                    <label class="form-check-label" for="Admin">Admin</label>
+                                        value="Admin" @if (old('hak_akses', $users->hak_akses) == 'Admin') checked @endif
+                                        @if ($isCurrentUserDirector) disabled @endif>
+                                    <label class="form-check-label" for="admin">Admin</label>
                                 </div>
-                                <div class="form-check">
-                                    <input type="radio" id="director" name="hak_akses" class="form-check-input"
-                                        value="Director" @if (old('hak_akses', $users->hak_akses) == 'Director') checked @endif>
-                                    <label class="form-check-label" for="Director">Director</label>
-                                </div>
+
+                                @if (!$hasDirectorAccess || $isCurrentUserDirector)
+                                    <div class="form-check">
+                                        <input type="radio" id="director" name="hak_akses" class="form-check-input"
+                                            value="Director" @if (old('hak_akses', $users->hak_akses) == 'Director') checked @endif
+                                            @if ($isCurrentUserDirector) disabled @endif>
+                                        <label class="form-check-label" for="director">Director</label>
+                                    </div>
+                                @endif
+
                                 @error('hak_akses')
                                     <div class="text-danger">{{ $message }}</div>
                                 @enderror
+
+                                @if ($isCurrentUserDirector)
+                                    <input type="hidden" name="hak_akses" value="{{ $users->hak_akses }}">
+                                @endif
                             </div>
 
+                            <!-- password Field -->
                             <div class="mb-4">
                                 <label for="password" class="form-label">Password</label>
                                 <input type="password" class="form-control" id="password" name="password" required
-                                    value="{{ $users->password }}">
+                                    value="{{ old('password', $users->password) }}">
                                 @error('password')
                                     <label for="password" class="text-danger">{{ $message }}</label>
                                 @enderror
