@@ -39,8 +39,8 @@
                 @isset($masuk)
                     @foreach($masuk as $item)
                     <tr>
-                        <td>{{$item->id}}</td>
-                        <td>{{$item->nama}}</td>
+                        <td>{{$item->id_karyawan}}</td>
+                        <td>{{$item->karyawan->nama}}</td>
                         <td>{{$item->waktu_masuk}}</td>
                     </tr>
                     @endforeach
@@ -87,16 +87,26 @@ let addedEmployees = [];
         });
 });
 function add(element){
+    var parent = element.closest("tr");
+    var id = $(parent).find("td:first").text();
+    var button = $(parent).find("td:last");
+    var waktu_masuk = $('#timestamp').text();
+    button.html("<div class='spinner-border spinner-border-sm'></div>");
     $.ajax({
-        url: '{{route("absensi.simpan-data-masuk")}}'.
+        url: '{{route("absensi.simpan-data-masuk")}}',
         type: 'POST',
         data: {
-
+            'id': id,
+            'waktu': waktu_masuk
         },
         success: function(){
-            
+            button.html(waktu_masuk);
+            parent.classList.remove("text-danger");
+        },
+        error: function(xhr, status, error){
+            alert(error);
         }
-    })
+    });
 }
 </script>
 @endsection

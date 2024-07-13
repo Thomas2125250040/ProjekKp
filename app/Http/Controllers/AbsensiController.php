@@ -17,10 +17,7 @@ class AbsensiController extends Controller
 {
     public function revisi()
     {
-        $test = Karyawan::with('karyawan_absensi')->get();
-        $test2 = Karyawan::with('karyawan_izin')->get();
-        dd($test, $test2);
-        // return view('director.revisi');
+        return view('director.revisi');
     }
 
     public function update_revisi(Request $request)
@@ -211,7 +208,7 @@ class AbsensiController extends Controller
             ;
             return view('absensi.absenMasuk')->with('tutup', "Absensi sudah ditutup.");
         }
-        $masuk = KaryawanAbsensi::where('id_absensi', $id_absensi);
+        $masuk = KaryawanAbsensi::where('id_absensi', $id_absensi)->get();
         $nama_masuk = collect(KaryawanAbsensi::with('karyawan')->where('id_absensi', $id_absensi)->get('id_karyawan')
         ->map(function ($item) {
             return $item ? $item->karyawan->nama : null;
@@ -296,19 +293,13 @@ class AbsensiController extends Controller
     public function simpan_masuk(Request $request)
     {
         $id_absensi = Cache::get('id_absensi');
-        $new_data = $request->data;
-        if (empty($new_data)) {
-            return response()->json("", 400);
-        }
-        foreach ($new_data as $item) {
-            $karyawan_absensi = new KaryawanAbsensi([
-                'id_absensi' => $id_absensi,
-                'id_karyawan' => $item['id'],
-                'waktu_masuk' => $item['masuk']
-            ]);
-            $karyawan_absensi->save();
-        }
-        return "Data berhasil disimpan.";
+        $karyawanAbsensi = new KaryawanAbsensi([
+            'id_absensi' => $id_absensi,
+            'id_karyawan' => $request->id,
+            'waktu_masuk' => $request->waktu
+        ]);
+        $karyawanAbsensi->save();
+        return response()->json();
     }
 
     public function simpan_izin(Request $request)

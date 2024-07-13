@@ -165,6 +165,9 @@ $(function() {
                     newRow.addClass("text-danger");
                     table.row.add(newRow).draw();
                 });
+            },
+            error: function(xhr, status, error) {
+                alert(error);
             }
         });
     }
@@ -220,8 +223,8 @@ $(function() {
                 });
             },
             error: function(xhr, status, error) {
-                console.log(xhr.statusCode);
-            },
+                alert(error);
+            }
         });
     }
     $(window).on('load', function() {
