@@ -20,7 +20,8 @@ class AbsensiController extends Controller
         return view('director.revisi');
     }
 
-    public function update_revisi(Request $request){
+    public function update_revisi(Request $request)
+    {
         $keterangan = $request->rowdata["keterangan"];
         $masuk = KaryawanAbsensi::find([
             $request->rowdata[0],
@@ -30,15 +31,14 @@ class AbsensiController extends Controller
             $request->rowdata[0],
             $request->id_absensi
         ]);
-        if (is_null($keterangan)){
-            if ($masuk){
+        if (is_null($keterangan)) {
+            if ($masuk) {
                 $masuk->update([
                     "waktu_masuk" => $request->rowdata["waktu-masuk"],
                     "waktu_keluar" => $request->rowdata["waktu-keluar"]
                 ]);
                 return response()->json(["message" => "Data berhasil diupdate"]);
-            }
-            else if($izin){
+            } else if ($izin) {
                 $izin->delete();
                 $new_data = new KaryawanAbsensi([
                     "id_absensi" => $request->id_absensi,
@@ -50,9 +50,9 @@ class AbsensiController extends Controller
                 return response()->json(["message" => "Data berhasil diupdate"]);
             }
         } else {
-            if ($masuk){
+            if ($masuk) {
                 $masuk->delete();
-                if (strtolower($keterangan) === "alpha"){
+                if (strtolower($keterangan) === "alpha") {
                     $new_data = new KaryawanIzin([
                         "id_absensi" => $request->id_absensi,
                         "id_karyawan" => $request->rowdata[0],
@@ -69,9 +69,8 @@ class AbsensiController extends Controller
                 ]);
                 $new_data->save();
                 return response()->json(["message" => "Data berhasil diupdate"]);
-            }
-            else if($izin){
-                if (strtolower($keterangan) === "alpha"){
+            } else if ($izin) {
+                if (strtolower($keterangan) === "alpha") {
                     $izin->update([
                         "id_absensi" => $request->id_absensi,
                         "id_karyawan" => $request->rowdata[0],
@@ -400,92 +399,94 @@ class AbsensiController extends Controller
     public function laporan()
     {
         $laporan = DB::select("SELECT 
-        karyawan.id, karyawan.nama AS nama_karyawan,
-        COALESCE(hadir.jumlah_hadir, 0) AS jumlah_hadir,
-        COALESCE(izin.jumlah_izin, 0) AS jumlah_izin,
-        COALESCE(alpha.jumlah_alpha, 0) AS jumlah_alpha,
-        COALESCE(terlambat.total_telat, 0) AS total_telat,
-        COALESCE(lembur.total_lembur, 0) AS total_lembur
-    FROM 
-        karyawan
-    LEFT JOIN (
-        SELECT 
-            karyawan_absensi.id_karyawan, 
-            COUNT(DISTINCT karyawan_absensi.id_absensi) AS jumlah_hadir
+            karyawan.id, karyawan.nama AS nama_karyawan,
+            COALESCE(hadir.jumlah_hadir, 0) AS jumlah_hadir,
+            COALESCE(izin.jumlah_izin, 0) AS jumlah_izin,
+            COALESCE(alpha.jumlah_alpha, 0) AS jumlah_alpha,
+            COALESCE(terlambat.total_telat, 0) AS total_telat,
+            COALESCE(lembur.total_lembur, 0) AS total_lembur
         FROM 
-            karyawan_absensi
-        LEFT JOIN 
-            absensi ON karyawan_absensi.id_absensi = absensi.id 
-        WHERE 
-            MONTH(absensi.tanggal) = ? AND YEAR(absensi.tanggal) = ?
-        GROUP BY 
-            karyawan_absensi.id_karyawan
-    ) AS hadir ON karyawan.id = hadir.id_karyawan
-    LEFT JOIN (
-        SELECT 
-            karyawan_izin.id_karyawan, 
-            COUNT(*) AS jumlah_izin
-        FROM 
-            karyawan_izin
-        LEFT JOIN 
-            absensi ON karyawan_izin.id_absensi = absensi.id
-        WHERE 
-            karyawan_izin.izin = 1 
-            AND MONTH(absensi.tanggal) = ? 
-            AND YEAR(absensi.tanggal) = ?
-        GROUP BY 
-            karyawan_izin.id_karyawan
-    ) AS izin ON karyawan.id = izin.id_karyawan
-    LEFT JOIN (
-        SELECT 
-            karyawan_izin.id_karyawan, 
-            COUNT(*) AS jumlah_alpha
-        FROM 
-            karyawan_izin
-        LEFT JOIN 
-            absensi ON karyawan_izin.id_absensi = absensi.id
-        WHERE 
-            karyawan_izin.izin = 0 
-            AND MONTH(absensi.tanggal) = ? 
-            AND YEAR(absensi.tanggal) = ?
-        GROUP BY 
-            karyawan_izin.id_karyawan
-    ) AS alpha ON karyawan.id = alpha.id_karyawan
-    LEFT JOIN (
-        SELECT 
-            karyawan_absensi.id_karyawan, 
-            SUM(GREATEST(HOUR(waktu_keluar) - 17, 0)) AS total_lembur
-        FROM 
-            karyawan_absensi
-        LEFT JOIN 
-            absensi ON karyawan_absensi.id_absensi = absensi.id 
-        WHERE 
-            HOUR(waktu_keluar) > 17
-            AND MONTH(absensi.tanggal) = ? 
-            AND YEAR(absensi.tanggal) = ?
-        GROUP BY 
-            karyawan_absensi.id_karyawan
-    ) AS lembur ON karyawan.id = lembur.id_karyawan
-    LEFT JOIN (
-        SELECT 
-            karyawan_absensi.id_karyawan, 
-            COUNT(*) AS total_telat
-        FROM 
-            karyawan_absensi
-        LEFT JOIN 
-            absensi ON karyawan_absensi.id_absensi = absensi.id 
-        WHERE 
-            TIME(waktu_masuk) > '08:00:00'
-            AND MONTH(absensi.tanggal) = ? 
-            AND YEAR(absensi.tanggal) = ?
-        GROUP BY 
-            karyawan_absensi.id_karyawan
-    ) AS terlambat ON karyawan.id = terlambat.id_karyawan
-    ORDER BY 
-        karyawan.nama;", ['01', date('Y'), '01', date('Y'), '01', date('Y'), '01', date('Y'), '01', date('Y')]);
+            karyawan
+        LEFT JOIN (
+            SELECT 
+                karyawan_absensi.id_karyawan, 
+                COUNT(DISTINCT karyawan_absensi.id_absensi) AS jumlah_hadir
+            FROM 
+                karyawan_absensi
+            LEFT JOIN 
+                absensi ON karyawan_absensi.id_absensi = absensi.id 
+            WHERE 
+                MONTH(absensi.tanggal) = ? AND YEAR(absensi.tanggal) = ?
+            GROUP BY 
+                karyawan_absensi.id_karyawan
+        ) AS hadir ON karyawan.id = hadir.id_karyawan
+        LEFT JOIN (
+            SELECT 
+                karyawan_izin.id_karyawan, 
+                COUNT(*) AS jumlah_izin
+            FROM 
+                karyawan_izin
+            LEFT JOIN 
+                absensi ON karyawan_izin.id_absensi = absensi.id
+            WHERE 
+                karyawan_izin.izin = 1 
+                AND MONTH(absensi.tanggal) = ? 
+                AND YEAR(absensi.tanggal) = ?
+            GROUP BY 
+                karyawan_izin.id_karyawan
+        ) AS izin ON karyawan.id = izin.id_karyawan
+        LEFT JOIN (
+            SELECT 
+                karyawan_izin.id_karyawan, 
+                COUNT(*) AS jumlah_alpha
+            FROM 
+                karyawan_izin
+            LEFT JOIN 
+                absensi ON karyawan_izin.id_absensi = absensi.id
+            WHERE 
+                karyawan_izin.izin = 0 
+                AND MONTH(absensi.tanggal) = ? 
+                AND YEAR(absensi.tanggal) = ?
+            GROUP BY 
+                karyawan_izin.id_karyawan
+        ) AS alpha ON karyawan.id = alpha.id_karyawan
+        LEFT JOIN (
+            SELECT 
+                karyawan_absensi.id_karyawan, 
+                SUM(GREATEST(HOUR(waktu_keluar) - 17, 0)) AS total_lembur
+            FROM 
+                karyawan_absensi
+            LEFT JOIN 
+                absensi ON karyawan_absensi.id_absensi = absensi.id 
+            WHERE 
+                HOUR(waktu_keluar) > 17
+                AND MONTH(absensi.tanggal) = ? 
+                AND YEAR(absensi.tanggal) = ?
+            GROUP BY 
+                karyawan_absensi.id_karyawan
+        ) AS lembur ON karyawan.id = lembur.id_karyawan
+        LEFT JOIN (
+            SELECT 
+                karyawan_absensi.id_karyawan, 
+                COUNT(*) AS total_telat
+            FROM 
+                karyawan_absensi
+            LEFT JOIN 
+                absensi ON karyawan_absensi.id_absensi = absensi.id 
+            WHERE 
+                TIME(waktu_masuk) > '08:00:00'
+                AND MONTH(absensi.tanggal) = ? 
+                AND YEAR(absensi.tanggal) = ?
+            GROUP BY 
+                karyawan_absensi.id_karyawan
+        ) AS terlambat ON karyawan.id = terlambat.id_karyawan
+        WHERE karyawan.deleted_at IS NULL
+        ORDER BY 
+            karyawan.nama;", ['01', date('Y'), '01', date('Y'), '01', date('Y'), '01', date('Y'), '01', date('Y')]);
 
         return view('absensi.laporan', compact('laporan'));
     }
+
 
     public function laporanFilter(Request $request)
     {
@@ -574,11 +575,13 @@ class AbsensiController extends Controller
         GROUP BY 
             karyawan_absensi.id_karyawan
     ) AS terlambat ON karyawan.id = terlambat.id_karyawan
+    WHERE karyawan.deleted_at IS NULL
     ORDER BY 
         karyawan.nama;", [$bulan, $tahun, $bulan, $tahun, $bulan, $tahun, $bulan, $tahun, $bulan, $tahun]);
 
         return response()->json($laporan);
     }
+
 
     public function search()
     {
@@ -604,28 +607,29 @@ class AbsensiController extends Controller
             return response()->json('--Nama karyawan tidak ditemukan--');
         }
     }
-    public function logHarian_single(){
+    public function logHarian_single()
+    {
         $date = request()->query()["tanggal"];
         $absen = Absensi::where('tanggal', $date)->first();
         $isLibur = $absen->id_libur;
-        if ($isLibur !== null){
+        if ($isLibur !== null) {
             $libur = HariLibur::find($isLibur);
             return response()->json(["message" => $libur->keterangan]);
         }
-        $masuk = KaryawanAbsensi::with('karyawan')->where('id_absensi', $absen->id)->get()->map(function($item){
+        $masuk = KaryawanAbsensi::with('karyawan')->where('id_absensi', $absen->id)->get()->map(function ($item) {
             return [
                 "nama" => $item->karyawan->nama,
                 "waktu_masuk" => $item->waktu_masuk,
-                "waktu_keluar"=> $item->waktu_keluar
+                "waktu_keluar" => $item->waktu_keluar
             ];
         });
-        $izin = KaryawanIzin::with('karyawan')->where('id_absensi', $absen->id)->where('izin', 1)->get()->map(function($item){
+        $izin = KaryawanIzin::with('karyawan')->where('id_absensi', $absen->id)->where('izin', 1)->get()->map(function ($item) {
             return [
                 "nama" => $item->karyawan->nama,
                 "keterangan" => $item->keterangan
             ];
         });
-        $alpha = KaryawanIzin::with('karyawan')->where('id_absensi', $absen->id)->where('izin', 0)->get()->map(function($item){
+        $alpha = KaryawanIzin::with('karyawan')->where('id_absensi', $absen->id)->where('izin', 0)->get()->map(function ($item) {
             return [
                 "nama" => $item->karyawan->nama
             ];
@@ -818,6 +822,7 @@ class AbsensiController extends Controller
         GROUP BY 
             karyawan_absensi.id_karyawan
     ) AS terlambat ON karyawan.id = terlambat.id_karyawan
+    WHERE karyawan.deleted_at IS NULL
     ORDER BY 
         karyawan.id;", [$bulan, $tahun, $bulan, $tahun, $bulan, $tahun, $bulan, $tahun, $bulan, $tahun]);
 

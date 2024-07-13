@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
-use App\Models\Karyawan;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
@@ -16,9 +15,18 @@ class RegisterController extends Controller
      */
     public function index()
     {
-        $users = DB::select('select users.*, karyawan.nama from users,karyawan where karyawan.id = users.id_karyawan');
-        $karyawan = DB::select('select * from karyawan');
-        return view("user.index", ["users" => $users], ["karyawan" => $karyawan]);
+        $users = DB::select('SELECT users.*, karyawan.nama 
+        FROM users
+        JOIN karyawan ON karyawan.id = users.id_karyawan
+        WHERE karyawan.deleted_at IS NULL
+    ');
+
+        $karyawan = DB::select('SELECT * 
+        FROM karyawan 
+        WHERE deleted_at IS NULL
+    ');
+
+        return view("user.index", ["users" => $users, "karyawan" => $karyawan]);
     }
 
     public function store(Request $request)

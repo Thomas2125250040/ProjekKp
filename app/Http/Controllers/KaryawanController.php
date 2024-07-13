@@ -10,7 +10,7 @@ use Illuminate\Support\Facades\DB;
 
 class KaryawanController extends Controller
 {
- 
+
     public function index()
     {
         $karyawan = DB::table('karyawan')

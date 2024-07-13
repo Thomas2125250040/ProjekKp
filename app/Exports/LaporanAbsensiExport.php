@@ -22,8 +22,7 @@ class LaporanAbsensiExport implements FromView, WithStyles
 
     public function view(): View
     {
-        $laporan = DB::select("
-            SELECT 
+        $laporan = DB::select("SELECT 
                 karyawan.id, karyawan.nama AS nama_karyawan,
                 COALESCE(hadir.jumlah_hadir, 0) AS jumlah_hadir,
                 COALESCE(izin.jumlah_izin, 0) AS jumlah_izin,
@@ -105,6 +104,7 @@ class LaporanAbsensiExport implements FromView, WithStyles
                 GROUP BY 
                     karyawan_absensi.id_karyawan
             ) AS terlambat ON karyawan.id = terlambat.id_karyawan
+            WHERE karyawan.deleted_at IS NULL
             ORDER BY 
                 karyawan.id;", [
             $this->bulan,
