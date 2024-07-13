@@ -19,8 +19,26 @@ class KaryawanController extends Controller
 
     public function create()
     {
+        // Ambil semua jabatan
         $jabatan = DB::select('select * from jabatan');
-        return view('admin.createKaryawan', ["jabatan" => $jabatan]);
+
+        // Periksa apakah ada Director
+        $hasDirector = DB::table('karyawan')
+            ->join('jabatan', 'karyawan.id_jabatan', '=', 'jabatan.id')
+            ->where('jabatan.nama', 'Director')
+            ->exists();
+
+        // Jika sudah ada Director, filter jabatan untuk tidak menampilkan Director
+        if ($hasDirector) {
+            $jabatan = DB::table('jabatan')
+                ->where('nama', '!=', 'Director')
+                ->get();
+        }
+
+        return view('admin.createKaryawan', [
+            'jabatan' => $jabatan,
+            'hasDirector' => $hasDirector
+        ]);
     }
 
     public function store(Request $request)
@@ -68,17 +86,34 @@ class KaryawanController extends Controller
     {
         $karyawan = Karyawan::find($id);
         $jabatanOptions = Jabatan::pluck('nama', 'id');
-        return view("admin.editKaryawan", compact('karyawan', 'jabatanOptions'));
+
+        // Cek apakah jabatan saat ini adalah Director
+        $isCurrentDirector = $karyawan->jabatan->nama === 'Director';
+
+        // Cek apakah ada karyawan lain yang sudah menjadi Director
+        $isDirectorExists = Karyawan::whereHas('jabatan', function ($query) {
+            $query->where('nama', 'Director');
+        })->where('id', '!=', $karyawan->id)->exists();
+
+        // Hapus opsi Director dari dropdown jika ada karyawan lain yang sudah menjadi Director
+        if ($isDirectorExists) {
+            $jabatanOptions = $jabatanOptions->filter(function ($namaJabatan, $kodeJabatan) {
+                return $namaJabatan !== 'Director';
+            });
+        }
+
+        return view('admin.editKaryawan', compact('karyawan', 'jabatanOptions', 'isCurrentDirector'));
     }
+
 
     /**
      * Update the specified resource in storage.
      */
     public function update(Request $request, Karyawan $karyawan)
     {
-        $request->validate([
+        // Validasi input
+        $rules = [
             'id' => 'required',
-            'id_jabatan' => 'required',
             'nama' => 'required',
             'email' => 'required',
             'jenis_kelamin' => 'required',
@@ -88,10 +123,17 @@ class KaryawanController extends Controller
             'foto' => 'nullable|file|image',
             'agama' => 'required',
             'no_telp' => 'required',
-        ]);
+        ];
 
+        // Tambahkan aturan validasi id_jabatan hanya jika bukan director
+        if ($karyawan->id_jabatan != 'DIRECTOR') {
+            $rules['id_jabatan'] = 'required';
+        }
+
+        $request->validate($rules);
+
+        // Menangani upload foto
         $nama_file = $karyawan->foto;
-
         if ($request->hasFile('foto')) {
             $ext = $request->foto->getClientOriginalExtension();
             $nama_file = "foto-" . time() . "." . $ext;
@@ -104,11 +146,12 @@ class KaryawanController extends Controller
             $nama_file = $karyawan->foto;
         }
 
+        // Update session foto hanya jika pengguna sedang mengubah foto mereka sendiri
         if ($karyawan->id == session('id_karyawan')) {
-            // Update session foto hanya jika pengguna sedang mengubah foto mereka sendiri
             session(['foto' => $nama_file]);
         }
 
+        // Update data karyawan
         $karyawan->update([
             'id' => $request->id,
             'id_jabatan' => $request->id_jabatan,
@@ -122,8 +165,6 @@ class KaryawanController extends Controller
             'agama' => $request->agama,
             'no_telp' => $request->no_telp,
         ]);
-
-        // session(['foto' => $karyawan->foto]);
 
         return redirect()->route('karyawan.index')->with('success', 'Biodata "' . $request->nama . '" berhasil diperbarui.');
     }
@@ -147,41 +188,41 @@ class KaryawanController extends Controller
      */
 
     public function destroy(Karyawan $karyawan)
-{
-    // Ambil id karyawan dari session pengguna yang sedang login
-    $loggedInIdKaryawan = session('id_karyawan');
+    {
+        // Ambil id karyawan dari session pengguna yang sedang login
+        $loggedInIdKaryawan = session('id_karyawan');
 
-    // Pengecekan apakah pengguna sedang mencoba menghapus data dirinya sendiri
-    if ($karyawan->id == $loggedInIdKaryawan) {
-        // Pengguna sedang mencoba menghapus data dirinya sendiri
+        // Pengecekan apakah pengguna sedang mencoba menghapus data dirinya sendiri
+        if ($karyawan->id == $loggedInIdKaryawan) {
+            // Pengguna sedang mencoba menghapus data dirinya sendiri
+
+            // Hapus data absensi
+            DB::table('karyawan_absensi')->where('id_karyawan', $karyawan->id)->delete();
+
+            // Hapus data izin
+            DB::table('karyawan_izin')->where('id_karyawan', $karyawan->id)->delete();
+
+            // Hapus data karyawan
+            $karyawan->delete();
+
+            // Logout user (hapus session)
+            session()->flush(); // Hapus semua data sesi
+
+            // Redirect ke halaman login dengan pesan sukses
+            return redirect()->route('login')->with('success', 'Biodata karyawan Anda telah dihapus. Silakan gunakan akun lain.');
+        }
 
         // Hapus data absensi
         DB::table('karyawan_absensi')->where('id_karyawan', $karyawan->id)->delete();
-        
+
         // Hapus data izin
         DB::table('karyawan_izin')->where('id_karyawan', $karyawan->id)->delete();
 
         // Hapus data karyawan
         $karyawan->delete();
 
-        // Logout user (hapus session)
-        session()->flush(); // Hapus semua data sesi
-
-        // Redirect ke halaman login dengan pesan sukses
-        return redirect()->route('login')->with('success', 'Biodata karyawan Anda telah dihapus. Silakan gunakan akun lain.');
+        return redirect('karyawan')->with('success', 'Biodata "' . $karyawan->nama . '" berhasil dihapus.');
     }
-
-    // Hapus data absensi
-    DB::table('karyawan_absensi')->where('id_karyawan', $karyawan->id)->delete();
-    
-    // Hapus data izin
-    DB::table('karyawan_izin')->where('id_karyawan', $karyawan->id)->delete();
-
-    // Hapus data karyawan
-    $karyawan->delete();
-
-    return redirect('karyawan')->with('success', 'Biodata "' . $karyawan->nama . '" berhasil dihapus.');
-}
 
 
 }

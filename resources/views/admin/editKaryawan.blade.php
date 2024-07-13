@@ -1,4 +1,5 @@
 @extends('layouts.main')
+
 @section('content')
     <div class="container-fluid">
         <div class="card">
@@ -10,10 +11,11 @@
                             enctype="multipart/form-data">
                             @csrf
                             @method('PATCH')
+
                             <div class="mb-4">
                                 <label for="id" class="form-label">Id Karyawan</label>
                                 <input type="text" class="form-control" id="id" name="id" required
-                                    value="{{ $karyawan->id }}">
+                                    value="{{ $karyawan->id }}" readonly>
                                 @error('id')
                                     <div class="text-danger">{{ $message }}</div>
                                 @enderror
@@ -22,7 +24,7 @@
                             <div class="mb-4">
                                 <label for="nama" class="form-label">Nama Karyawan</label>
                                 <input type="text" class="form-control" id="nama" name="nama" required
-                                    value="{{ $karyawan->nama }}">
+                                    value="{{ old('nama', $karyawan->nama) }}">
                                 @error('nama')
                                     <div class="text-danger">{{ $message }}</div>
                                 @enderror
@@ -45,19 +47,15 @@
                                 @enderror
                             </div>
 
-
                             <div class="mb-4">
-                                <label class= "form-label" for="agama">Agama</label>
+                                <label class="form-label" for="agama">Agama</label>
                                 <select class="form-select" name="agama">
-                                    <option value="Islam" @if (old('agama') == 'Islam') selected @endif>Islam</option>
-                                    <option value="Katolik" @if (old('agama') == 'Katolik') selected @endif>Katolik
-                                    </option>
-                                    <option value="Hindu" @if (old('agama') == 'Hindu') selected @endif>Hindu
-                                    </option>
-                                    <option value="Kristen" @if (old('agama') == 'Kristen') selected @endif>Kristen</option>
-                                    <option value="Buddha" @if (old('agama') == 'Buddha') selected @endif>Buddha</option>
-                                    <option value="Konghucu" @if (old('agama') == 'Konghucu') selected @endif>Konghucu
-                                    </option>
+                                    <option value="Islam" @if (old('agama', $karyawan->agama) == 'Islam') selected @endif>Islam</option>
+                                    <option value="Katolik" @if (old('agama', $karyawan->agama) == 'Katolik') selected @endif>Katolik</option>
+                                    <option value="Hindu" @if (old('agama', $karyawan->agama) == 'Hindu') selected @endif>Hindu</option>
+                                    <option value="Kristen" @if (old('agama', $karyawan->agama) == 'Kristen') selected @endif>Kristen</option>
+                                    <option value="Buddha" @if (old('agama', $karyawan->agama) == 'Buddha') selected @endif>Buddha</option>
+                                    <option value="Konghucu" @if (old('agama', $karyawan->agama) == 'Konghucu') selected @endif>Konghucu</option>
                                 </select>
                                 @error('agama')
                                     <div class="text-danger">{{ $message }}</div>
@@ -67,37 +65,35 @@
                             <div class="mb-4">
                                 <label for="email" class="form-label">Email</label>
                                 <input type="email" class="form-control" id="email" name="email" required
-                                    value="{{ $karyawan->email }}">
+                                    value="{{ old('email', $karyawan->email) }}">
                                 @error('email')
                                     <div class="text-danger">{{ $message }}</div>
                                 @enderror
                             </div>
 
-                            <div class="mb-4" id="fieldset">
+                            <div class="mb-4">
                                 <label for="id_jabatan" class="form-label">Jabatan</label>
-                                <select id="id_jabatan" name="id_jabatan" class="form-select">
-                                    @forelse ($jabatanOptions as $kodeJabatan => $namaJabatan)
+                                <select id="id_jabatan" name="id_jabatan" class="form-select"
+                                    @if ($isCurrentDirector) disabled @endif>
+                                    @foreach ($jabatanOptions as $kodeJabatan => $namaJabatan)
                                         <option value="{{ $kodeJabatan }}"
                                             @if (old('id_jabatan', $karyawan->id_jabatan) == $kodeJabatan) selected @endif>
                                             {{ $namaJabatan }}
                                         </option>
-                                    @empty
-                                        <option>-- Belum ada data jabatan --</option>
-                                        <script>
-                                            let fieldset = document.getElementById('fieldset');
-                                            fieldset.classList.add('disabled');
-                                        </script>
-                                    @endforelse
+                                    @endforeach
                                 </select>
                                 @error('id_jabatan')
                                     <div class="text-danger">{{ $message }}</div>
                                 @enderror
+                                <!-- Hidden input untuk id_jabatan jika diperlukan -->
+                                @if ($isCurrentDirector)
+                                    <input type="hidden" name="id_jabatan" value="{{ $karyawan->id_jabatan }}">
+                                @endif
                             </div>
-
                             <div class="mb-4">
                                 <label for="tempat_lahir" class="form-label">Tempat Lahir</label>
                                 <input type="text" class="form-control" id="tempat_lahir" name="tempat_lahir" required
-                                    value="{{ $karyawan->tempat_lahir }}">
+                                    value="{{ old('tempat_lahir', $karyawan->tempat_lahir) }}">
                                 @error('tempat_lahir')
                                     <div class="text-danger">{{ $message }}</div>
                                 @enderror
@@ -106,7 +102,7 @@
                             <div class="mb-4">
                                 <label for="tanggal_lahir" class="form-label">Tanggal Lahir</label>
                                 <input type="date" class="form-control" id="tanggal_lahir" name="tanggal_lahir" required
-                                    value="{{ $karyawan->tanggal_lahir }}">
+                                    value="{{ old('tanggal_lahir', $karyawan->tanggal_lahir) }}">
                                 @error('tanggal_lahir')
                                     <div class="text-danger">{{ $message }}</div>
                                 @enderror
@@ -115,7 +111,7 @@
                             <div class="mb-4">
                                 <label for="alamat" class="form-label">Alamat</label>
                                 <input type="text" class="form-control" id="alamat" name="alamat" required
-                                    value="{{ $karyawan->alamat }}">
+                                    value="{{ old('alamat', $karyawan->alamat) }}">
                                 @error('alamat')
                                     <div class="text-danger">{{ $message }}</div>
                                 @enderror
@@ -124,7 +120,7 @@
                             <div class="mb-4">
                                 <label for="no_telp" class="form-label">Nomor Telepon</label>
                                 <input type="text" class="form-control" id="no_telp" name="no_telp" required
-                                    value="{{ $karyawan->no_telp }}">
+                                    value="{{ old('no_telp', $karyawan->no_telp) }}">
                                 @error('no_telp')
                                     <div class="text-danger">{{ $message }}</div>
                                 @enderror
@@ -132,8 +128,7 @@
 
                             <div class="mb-4">
                                 <label for="foto" class="form-label">Foto</label>
-                                <input type="file" class="form-control" id="foto" name="foto"
-                                    value="{{ $karyawan->foto }}">
+                                <input type="file" class="form-control" id="foto" name="foto">
                                 @error('foto')
                                     <div class="text-danger">{{ $message }}</div>
                                 @enderror
