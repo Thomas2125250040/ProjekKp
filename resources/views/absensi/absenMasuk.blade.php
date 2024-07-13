@@ -27,223 +27,67 @@
                 echo strftime('%A,');
                 echo date(' d-M-Y');?>
         </div>
-        <div class="row text-center">
-            <div class="d-flex justify-content-center">
-                <input type="search" class="form-control rounded" placeholder="Search" aria-label="Search"
-                    aria-describedby="search-addon" id="input" style="width: 60%;"
-                    @if (isset($libur) or isset($error)) disabled @endif />
-            </div>
-            <div class="d-flex justify-content-center">
-                <div id="read"></div>
-            </div>
-        </div>
-        <div class="d-flex justify-content-center mt-4">
-            <table class="table table-bordered">
-                <thead>
+        <table id="myTable" class="display">
+            <thead>
+                <tr>
+                    <th scope="col">Id</th>
+                    <th scope="col">Nama</th>
+                    <th scope="col">Waktu Masuk</th>
+                </tr>
+            </thead>
+            <tbody>
+                @isset($masuk)
+                    @foreach($masuk as $item)
                     <tr>
-                        <th scope="col">No.</th>
-                        <th scope="col">Id</th>
-                        <th scope="col">Nama</th>
-                        <th scope="col">Waktu Masuk</th>
-                        <th scope="col">Aksi</th>
+                        <td>{{$item->id}}</td>
+                        <td>{{$item->nama}}</td>
+                        <td>{{$item->waktu_masuk}}</td>
                     </tr>
-                </thead>
-                <tbody>
-                </tbody>
-            </table>
-        </div>
+                    @endforeach
+                @endisset
+                @isset($alpha)
+                    @foreach($alpha as $item)
+                    <tr class="text-danger">
+                        <td>{{$item->id}}</td>
+                        <td>{{$item->nama}}</td>
+                        <td><button class="btn btn-primary" onclick="add(this)">Tambah</button></td>
+                    </tr>
+                    @endforeach
+                @endisset
+            </tbody>
+        </table>
         <div class="d-flex align-items-end mt-4 flex-column">
             <button class="btn btn-primary py-2" style="width: 100px;" onclick="saveTable(this)" @if (isset($libur) or isset($error)) disabled @endif>Kirim</button>
             <div id="keterangan_kirim"></div>
         </div>
     </div>
 </div>
-<style>
-    #read {
-        width: 60%;
-        position: absolute;
-        z-index: 999;
-        background: white;
-        border-radius: 3px;
-        box-shadow: 5px 5px 3px;
-    }
-
-    #read ul {
-        border-top: 1px solid #999;
-        padding: 15px 10px;
-    }
-
-    #read li {
-        list-style: none;
-        border-radius: 3px;
-        padding: 15px 10px;
-        cursor: pointer;
-    }
-
-    #read li:hover {
-        background: rgba(13, 110, 253, 0.6);
-        color: white;
-    }
-
-    .ti.ti-circle-x:hover {
-        color: rgb(250, 137, 107);
-    }
-    .ti.ti-circle-x {
-        cursor: pointer;
-    }
-    ul {
-        margin-bottom: 0;
-    }
-</style>
 @endsection
 @section('extra_scripts')
 <script>
 let currentRequest = null;
 let addedEmployees = [];
-    $(document).ready(function () {
+    $(function () {
+        const table = $('#myTable').DataTable({
+            "order": [[0, 'desc']]
+        });
         setInterval(timestamp, 1000);
-        $("#input").on("input",function () {
-            var strcari = $("#input").val();
-            if (strcari != "") {
-                $("#read").html(
-                    '<div class="d-inline-flex align-items-center"><div class="text-muted me-2">Mencari Data...</div> <div class="spinner-grow spinner-grow-sm bg-danger" role="status"></div></div>'
-                );
-
-                 // Abort the previous request if it exists
-                if (currentRequest) {
-                    currentRequest.abort();
+        function timestamp() {
+            $.ajax({
+                url: '/timestamp.php',
+                success: function (data) {
+                    $('#timestamp').html(data);
                 }
-                currentRequest = $.ajax({
-                    type: "get",
-                    url: "{{ route('absensi.search-karyawan') }}",
-                    data: {
-                        q: strcari,
-                        data: addedEmployees
-                    },
-                    success: function (data) {
-                        addSearchResult(data);
-                    },
-                    error: function (xhr, status, error) {
-                        if (status !== 'abort') {
-                            console.error("Search request failed: ", error);
-                        }
-                        currentRequest = null; // Clear the current request in case of error
-                }
-                });
-            } else {
-                $("#read").html('');
+            });
+        }
+        $.ajaxSetup({
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
             }
-        })
-    });
-
-
-    function timestamp() {
-        $.ajax({
-            url: '/timestamp.php',
-            success: function (data) {
-                $('#timestamp').html(data);
-            },
         });
-    }
-
-    function addToTable(element) {
-        const id = element.querySelector('span').textContent;
-        const nama = Array.from(element.childNodes)
-                .filter(node => node.nodeType === Node.TEXT_NODE)
-                .map(node => node.textContent)
-                .join('')
-                .trim();
-        if (!addedEmployees.includes(name)) {
-            const tbody = document.querySelector("table tbody");
-            var newRow = document.createElement("tr");
-            var rowNumber = tbody.rows.length + 1;
-            const masuk = $('#timestamp').text();
-            newRow.innerHTML = "<td scope='row'>" + rowNumber + "</td>"
-            + "<td>" + id + "</td>"
-            + "<td>" + nama + "</td>"
-            + "<td>" + masuk +"</td>"
-            + "<td><i class=\"ti ti-circle-x fs-6\" onclick=\"delRow(this)\"></i></td>";
-            tbody.appendChild(newRow);
-            const employee = {
-                id: id,
-                nama: nama,
-                masuk: masuk
-            };
-            // Add to the list of added employees
-            addedEmployees.push(employee);
-            element.remove();
-            // Remove the <ul> if it becomes empty
-            const ul = document.querySelector("#read ul");
-            if (ul && ul.children.length === 0) {
-                ul.remove();
-            }
-        }
-    }
-
-    function delRow(element) {
-        const row = element.closest('tr');
-        const id = row.cells[1].innerHTML;
-        row.remove();
-        addedEmployees = addedEmployees.filter(employee => employee.id !== id);
-        updateRowNumbers();
-    }
-
-    function updateRowNumbers() {
-        const tbody = document.querySelector("table tbody");
-        for (let i = 0; i < tbody.rows.length; i++) {
-            tbody.rows[i].cells[0].textContent = i + 1;
-        }
-    }
-
-    function saveTable(element) {
-        element.innerHTML = "<div class=\"spinner-border spinner-border-sm\" role=\"status\"></div>";
-        const keterangan = document.getElementById("keterangan_kirim");
-        keterangan.innerHTML ="";
-        element.setAttribute("disabled",'');
-        $.ajax({
-            type: "post",
-            url: "{{ route('absensi.simpan-data-masuk') }}",
-            data: {"data": addedEmployees},
-            success: function(data){
-                element.innerHTML = "Kirim";
-                element.removeAttribute("disabled");
-                const tbody = document.querySelector("table tbody");
-                tbody.innerHTML = "";
-                nameEmployee = [];
-                keterangan.innerHTML = "<div class=\"text-success\">"+ data + "</div>";
-            },
-            error: function(xhr, status, error) {
-                element.innerHTML = "Kirim";
-                element.removeAttribute("disabled");
-                keterangan.innerHTML = "<div class=\"text-danger\">"+ error + "</div>";
-            },
-        })
-    }
-    $.ajaxSetup({
-    headers: {
-        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-    }
 });
-function addSearchResult(data) {
-    const read = document.getElementById("read");
-    read.innerHTML = ''; // Clear previous results
-    if (Array.isArray(data.data)) {
-        const ul = document.createElement("ul");
-        data.data.forEach(function(item) {
-            const nameExists = addedEmployees.some(employee => employee.name === item.nama);
-            if (!nameExists){
-                const li = document.createElement("li");
-                li.className = "search-result";
-                li.setAttribute("onclick", "addToTable(this)");
-                li.innerHTML = "<span class='d-none'>"+item.id+"</span>"+item.nama;
-                ul.appendChild(li);
-            }
-        
-        });
-        read.appendChild(ul);
-    } else {
-        read.innerHTML = data; // Display message if no results found
-    }
+function add(){
+    console.log('click');
 }
 </script>
 @endsection

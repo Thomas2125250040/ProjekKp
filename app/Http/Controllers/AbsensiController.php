@@ -208,7 +208,18 @@ class AbsensiController extends Controller
             ;
             return view('absensi.absenMasuk')->with('tutup', "Absensi sudah ditutup.");
         }
-        return view('absensi.absenMasuk');
+        $masuk = KaryawanAbsensi::where('id_absensi', $id_absensi);
+        $nama_masuk = collect(KaryawanAbsensi::with('karyawan')->where('id_absensi', $id_absensi)->get('id_karyawan')
+        ->map(function ($item) {
+            return $item ? $item->karyawan->nama : null;
+        }));
+        $data_izin = KaryawanIzin::with('karyawan')->where('id_absensi', $id_absensi)->get();
+        $nama_izin = collect($data_izin->map(function ($item) {
+            return $item ? $item->karyawan->nama : null;
+        }));
+        $existedName = $nama_masuk->merge($nama_izin)->filter()->unique();
+        $alpha = Karyawan::whereNotIn('nama', $existedName)->get(['id', 'nama']);
+        return view('absensi.absenMasuk', compact(['masuk', 'alpha']));
     }
 
     private function cek_buka_absensi()
@@ -582,33 +593,7 @@ class AbsensiController extends Controller
         return response()->json($laporan);
     }
 
-
-    public function search()
-    {
-        $params = request()->query();
-        $q = $params['q'];
-        $exist_on_page = collect($params['data'] ?? [])->pluck('nama');
-        $id_absensi = Cache::get('id_absensi');
-        $nama_masuk = collect(KaryawanAbsensi::with('karyawan')->where('id_absensi', $id_absensi)->get('id_karyawan', 'nama')
-            ->map(function ($item) {
-                return $item ? $item->karyawan->nama : null;
-            }));
-        $nama_izin = collect(KaryawanIzin::with('karyawan')->where('id_absensi', $id_absensi)->get('id_karyawan', 'nama')
-            ->map(function ($item) {
-                return $item ? $item->karyawan->nama : null;
-            }));
-        $existedName = $nama_masuk->merge($nama_izin)->merge($exist_on_page)->filter()->unique();
-        $data = Karyawan::where('nama', 'like', "%{$q}%")
-            ->whereNotIn('nama', $existedName)
-            ->get(['id', 'nama']);
-        if (count($data) >= 1) {
-            return response()->json(['data' => $data]);
-        } else {
-            return response()->json('--Nama karyawan tidak ditemukan--');
-        }
-    }
-    public function logHarian_single()
-    {
+    public function logHarian_single(){
         $date = request()->query()["tanggal"];
         $absen = Absensi::where('tanggal', $date)->first();
         $isLibur = $absen->id_libur;

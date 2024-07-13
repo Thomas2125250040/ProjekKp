@@ -46,7 +46,6 @@ Route::middleware([checkHakAkses::class])->group(function () {
         Route::resource('karyawan', KaryawanController::class);
         Route::resource('jabatan', jabatanController::class);
         Route::resource('hari-libur', HariLiburController::class);
-        Route::get('search', [AbsensiController::class, 'search'])->name('absensi.search-karyawan');
         Route::get('absensi/masuk', [AbsensiController::class, 'masuk'])->name('absensi.masuk');
         Route::get('absensi/izin', [AbsensiController::class, 'izin'])->name('absensi.izin');
         Route::get('absensi/keluar', [AbsensiController::class, 'keluar'])->name('absensi.keluar');
