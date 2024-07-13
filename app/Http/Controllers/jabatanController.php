@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Jabatan;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 
 class jabatanController extends Controller
@@ -71,8 +72,18 @@ class jabatanController extends Controller
      */
     public function destroy(Jabatan $jabatan)
     {
+        // Mengecek apakah ada karyawan yang memiliki jabatan ini
+        $karyawanCount = DB::table('karyawan')
+            ->where('id_jabatan', $jabatan->id)
+            ->whereNull('deleted_at') // Mengecek hanya karyawan yang aktif
+            ->count();
+
+        if ($karyawanCount > 0) {
+            return redirect()->route('jabatan.index')->with('error', 'Jabatan "' . $jabatan->nama . '" tidak dapat dihapus karena jabatan masih digunakan oleh karyawan lain. Silahkan ganti jabatan karyawan yang bersangkutan.');
+        }
+
         $jabatan->delete();
-        return redirect()->route('jabatan.index')->with("success", 'Jabatan "' . $jabatan->nama . '" berhasil dihapus.');
+        return redirect()->route('jabatan.index')->with('success', 'Jabatan "' . $jabatan->nama . '" berhasil dihapus.');
     }
 
 }

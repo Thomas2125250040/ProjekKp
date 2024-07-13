@@ -10,11 +10,18 @@ use Illuminate\Support\Facades\DB;
 
 class KaryawanController extends Controller
 {
+ 
     public function index()
     {
-        $karyawan = DB::select('select karyawan.* , jabatan.nama as nama_jabatan FROM karyawan join jabatan on jabatan.id = karyawan.id_jabatan;');
-        $jabatan = DB::select('select * from jabatan');
-        return view("admin.karyawan", ["karyawan" => $karyawan], ["jabatan" => $jabatan]);
+        $karyawan = DB::table('karyawan')
+            ->join('jabatan', 'jabatan.id', '=', 'karyawan.id_jabatan')
+            ->whereNull('karyawan.deleted_at') // Hanya mengambil karyawan yang belum dihapus
+            ->select('karyawan.*', 'jabatan.nama as nama_jabatan')
+            ->get();
+
+        $jabatan = DB::table('jabatan')->get();
+
+        return view("admin.karyawan", ["karyawan" => $karyawan, "jabatan" => $jabatan]);
     }
 
     public function create()
@@ -189,40 +196,22 @@ class KaryawanController extends Controller
 
     public function destroy(Karyawan $karyawan)
     {
-        // Ambil id karyawan dari session pengguna yang sedang login
         $loggedInIdKaryawan = session('id_karyawan');
 
-        // Pengecekan apakah pengguna sedang mencoba menghapus data dirinya sendiri
         if ($karyawan->id == $loggedInIdKaryawan) {
-            // Pengguna sedang mencoba menghapus data dirinya sendiri
+            DB::table('karyawan')
+                ->where('id', $karyawan->id)
+                ->update(['deleted_at' => now()]);
 
-            // Hapus data absensi
-            DB::table('karyawan_absensi')->where('id_karyawan', $karyawan->id)->delete();
-
-            // Hapus data izin
-            DB::table('karyawan_izin')->where('id_karyawan', $karyawan->id)->delete();
-
-            // Hapus data karyawan
-            $karyawan->delete();
-
-            // Logout user (hapus session)
-            session()->flush(); // Hapus semua data sesi
-
-            // Redirect ke halaman login dengan pesan sukses
+            session()->flush();
             return redirect()->route('login')->with('success', 'Biodata karyawan Anda telah dihapus. Silakan gunakan akun lain.');
         }
 
-        // Hapus data absensi
-        DB::table('karyawan_absensi')->where('id_karyawan', $karyawan->id)->delete();
-
-        // Hapus data izin
-        DB::table('karyawan_izin')->where('id_karyawan', $karyawan->id)->delete();
-
-        // Hapus data karyawan
-        $karyawan->delete();
+        DB::table('karyawan')
+            ->where('id', $karyawan->id)
+            ->update(['deleted_at' => now()]);
 
         return redirect('karyawan')->with('success', 'Biodata "' . $karyawan->nama . '" berhasil dihapus.');
     }
-
 
 }
