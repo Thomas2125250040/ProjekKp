@@ -12,12 +12,13 @@ return new class extends Migration {
     {
         Schema::create('karyawan_izin', function (Blueprint $table) {
             $table->string('id_karyawan', 5);
-            $table->foreign('id_karyawan')->references('id')->on('karyawan')->cascadeOnUpdate();
+            $table->foreign('id_karyawan')->references('id')->on('karyawan')->cascadeOnUpdate()->cascadeOnDelete();
             $table->unsignedInteger('id_absensi'); // Ubah tipe data ke unsignedInteger
-            $table->foreign('id_absensi')->references('id')->on('absensi')->cascadeOnUpdate(); // Tambahkan onUpdate
+            $table->foreign('id_absensi')->references('id')->on('absensi')->cascadeOnUpdate()->cascadeOnDelete(); // Tambahkan onUpdate
             $table->boolean('izin');
             $table->string('keterangan', 50)->nullable();
             $table->primary(array('id_absensi', 'id_karyawan'));
+            $table->softDeletes();
             $table->timestamps();
         });
     }

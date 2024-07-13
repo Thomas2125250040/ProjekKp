@@ -14,12 +14,13 @@ return new class extends Migration {
     {
         Schema::create('karyawan_absensi', function (Blueprint $table) {
             $table->string('id_karyawan', 5);
-            $table->foreign('id_karyawan')->references('id')->on('karyawan')->cascadeOnUpdate();
+            $table->foreign('id_karyawan')->references('id')->on('karyawan')->cascadeOnUpdate()->cascadeOnDelete();
             $table->unsignedInteger('id_absensi'); // Ubah tipe data ke unsignedInteger
-            $table->foreign('id_absensi')->references('id')->on('absensi')->cascadeOnUpdate(); // Tambahkan onUpdate
+            $table->foreign('id_absensi')->references('id')->on('absensi')->cascadeOnUpdate()->cascadeOnDelete(); // Tambahkan onUpdate
             $table->time('waktu_masuk');
             $table->time('waktu_keluar')->nullable();
             $table->primary(array('id_absensi', 'id_karyawan'));
+            $table->softDeletes();
             $table->timestamps();
         });
         

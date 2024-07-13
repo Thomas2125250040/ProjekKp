@@ -86,8 +86,17 @@ let addedEmployees = [];
             }
         });
 });
-function add(){
-    console.log('click');
+function add(element){
+    $.ajax({
+        url: '{{route("absensi.simpan-data-masuk")}}'.
+        type: 'POST',
+        data: {
+
+        },
+        success: function(){
+            
+        }
+    })
 }
 </script>
 @endsection

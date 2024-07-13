@@ -23,6 +23,7 @@ return new class extends Migration {
             $table->string('foto', 50)->nullable();
             $table->enum('agama', ['Islam', 'Katolik', 'Hindu', 'Kristen', 'Buddha', 'Konghucu']);
             $table->string('no_telp', 13)->unique();
+            $table->softDeletes();
             $table->timestamps();
         });
     }
