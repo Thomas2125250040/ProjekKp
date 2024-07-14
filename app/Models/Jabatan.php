@@ -12,6 +12,7 @@ class Jabatan extends Model
     use HasFactory, LogsActivity;
     protected $table = "jabatan";
     protected $keyType = 'string';
+    public $incrementing = false;
     protected $fillable = [
         "id",
         "nama", // Pastikan kolom nama ada di tabel jabatan

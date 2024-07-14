@@ -13,6 +13,7 @@ class Karyawan extends Model
     use HasFactory, SoftDeletes, LogsActivity;
     protected $table = "karyawan";
     protected $keyType = 'string';
+    public $incrementing = false;
     protected $fillable = [
         "id",
         "id_jabatan",
