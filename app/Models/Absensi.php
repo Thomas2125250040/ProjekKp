@@ -13,7 +13,8 @@ class Absensi extends Model
         "id_libur",
         "tanggal"
     ];
-    public function libur(){
+    public function libur()
+    {
         return $this->belongsTo(HariLibur::class, 'id_libur');
     }
 }

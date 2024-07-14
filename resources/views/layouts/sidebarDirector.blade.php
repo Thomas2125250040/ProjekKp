@@ -68,7 +68,8 @@
                 </li>
                 <li class="sidebar-item">
                     <a class="sidebar-link
-                    {{Route::is('laporans.*') ? 'active' : ''}}" href="{{ url('laporan') }}" aria-expanded="false">
+                    {{ Route::is('laporans.*') ? 'active' : '' }}"
+                        href="{{ url('laporan') }}" aria-expanded="false">
                         <span>
                             <i class="ti ti-brand-google-analytics"></i>
                         </span>
@@ -77,7 +78,8 @@
                 </li>
                 <li class="sidebar-item">
                     <a class="sidebar-link
-                    {{Route::is('karyawan.*') ? 'active' : ''}}" href="{{ route('karyawan.index') }}" aria-expanded="false">
+                    {{ Route::is('karyawan.*') ? 'active' : '' }}"
+                        href="{{ route('karyawan.index') }}" aria-expanded="false">
                         <span>
                             <i class="ti ti-users"></i>
                         </span>
@@ -87,7 +89,8 @@
 
                 <li class="sidebar-item">
                     <a class="sidebar-link
-                    {{Route::is('jabatan.*') ? 'active' : ''}}" href="{{ url('jabatan') }}" aria-expanded="false">
+                    {{ Route::is('jabatan.*') ? 'active' : '' }}"
+                        href="{{ url('jabatan') }}" aria-expanded="false">
                         <span>
                             <i class="ti ti-affiliate"></i>
                         </span>
@@ -96,23 +99,24 @@
                 </li>
                 <li class="sidebar-item">
                     <a class="sidebar-link
-                    {{Route::is('hari-libur.*') ? 'active' : ''}}" href="{{ url('hari-libur') }}" aria-expanded="false">
+                    {{ Route::is('hari-libur.*') ? 'active' : '' }}"
+                        href="{{ url('hari-libur') }}" aria-expanded="false">
                         <span>
                             <i class="ti ti-calendar-event"></i>
                         </span>
                         <span class="hide-menu">Hari Libur</span>
                     </a>
                 </li>
-    
+
                 <li class="sidebar-item">
                     <a class="sidebar-link" href="{{ url('log-harian') }}" aria-expanded="false">
                         <span>
-                        <i class="ti ti-report-analytics"></i>
+                            <i class="ti ti-report-analytics"></i>
                         </span>
                         <span class="hide-menu">Log Harian</span>
                     </a>
                 </li>
-                
+
                 <li class="nav-small-cap">
                     <i class="ti ti-dots nav-small-cap-icon fs-4"></i>
                     <span class="hide-menu">Akun</span>
@@ -120,7 +124,8 @@
 
                 <li class="sidebar-item">
                     <a class="sidebar-link
-                    {{Route::is('users.*') ? 'active' : ''}}" href="{{ route('users.index') }}" aria-expanded="false">
+                    {{ Route::is('users.*') ? 'active' : '' }}"
+                        href="{{ route('users.index') }}" aria-expanded="false">
                         <span>
                             <i class="ti ti-key"></i>
                         </span>

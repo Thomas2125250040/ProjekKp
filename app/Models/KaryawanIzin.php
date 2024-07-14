@@ -21,6 +21,6 @@ class KaryawanIzin extends Model
     ];
     public function karyawan()
     {
-        return $this->belongsTo(Karyawan::class, 'id_karyawan')->select('id','nama');
+        return $this->belongsTo(Karyawan::class, 'id_karyawan')->select('id', 'nama');
     }
 }

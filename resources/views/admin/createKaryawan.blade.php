@@ -51,7 +51,8 @@
                                     </option>
                                     <option value="Hindu" @if (old('agama') == 'Hindu') selected @endif>Hindu
                                     </option>
-                                    <option value="Kristen" @if (old('agama') == 'Kristen') selected @endif>Kristen</option>
+                                    <option value="Kristen" @if (old('agama') == 'Kristen') selected @endif>Kristen
+                                    </option>
                                     <option value="Buddha" @if (old('agama') == 'Buddha') selected @endif>Buddha</option>
                                     <option value="Konghucu" @if (old('agama') == 'Konghucu') selected @endif>Konghucu
                                     </option>

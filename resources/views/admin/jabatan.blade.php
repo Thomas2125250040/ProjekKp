@@ -34,17 +34,18 @@
                             <td>{{ $row->id }}</td>
                             <td>{{ $row->nama }}</td>
                             @if (session('hak_akses') !== 'Admin')
-                            <td>
-                                <form method="POST" action="{{ route('jabatan.destroy', $row->id) }}">
-                                    @csrf
-                                    @method('delete')
-                                    <button type="submit" class="btn btn-danger fs-1 hapus_jabatan"
-                                        data-toggle="tooltip" title='Delete'
-                                        data-nama='{{ $row->nama }}'>Hapus</button>
-                                    <a href="{{ route('jabatan.edit', $row->id) }}" class="btn btn-primary fs-1">Ubah</a>
-                                </form>
-                            </td>
-                        @endif
+                                <td>
+                                    <form method="POST" action="{{ route('jabatan.destroy', $row->id) }}">
+                                        @csrf
+                                        @method('delete')
+                                        <button type="submit" class="btn btn-danger fs-1 hapus_jabatan"
+                                            data-toggle="tooltip" title='Delete'
+                                            data-nama='{{ $row->nama }}'>Hapus</button>
+                                        <a href="{{ route('jabatan.edit', $row->id) }}"
+                                            class="btn btn-primary fs-1">Ubah</a>
+                                    </form>
+                                </td>
+                            @endif
                         </tr>
                     @endforeach
                 </tbody>

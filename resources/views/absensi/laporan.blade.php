@@ -114,14 +114,14 @@
         });
     </script>
 
-<script>
-    document.getElementById('filter-btn').addEventListener('click', function() {
-        const bulan = document.getElementById('bulan').value;
-        const tahun = document.getElementById('tahun').value;
-        const url = `/laporan/export-excel/${bulan}/${tahun}`;
-        document.getElementById('export-excel-btn').href = url;
-    });
-</script>
+    <script>
+        document.getElementById('filter-btn').addEventListener('click', function() {
+            const bulan = document.getElementById('bulan').value;
+            const tahun = document.getElementById('tahun').value;
+            const url = `/laporan/export-excel/${bulan}/${tahun}`;
+            document.getElementById('export-excel-btn').href = url;
+        });
+    </script>
 
     <style>
         #myTable thead th {

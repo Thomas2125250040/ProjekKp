@@ -19,23 +19,27 @@
 
         .header h1 {
             margin: 5px 0;
-            font-size: 18pt; /* Perbesar font */
+            font-size: 18pt;
+            /* Perbesar font */
         }
 
         .header h2 {
             margin: 5px 0;
-            font-size: 16pt; /* Perbesar font */
+            font-size: 16pt;
+            /* Perbesar font */
         }
 
         .header h3 {
             margin: 5px 0;
-            font-size: 16pt; /* Perbesar font */
+            font-size: 16pt;
+            /* Perbesar font */
         }
 
         .timestamp {
             text-align: right;
             margin-bottom: 20px;
-            font-size: 12pt; /* Perbesar font */
+            font-size: 12pt;
+            /* Perbesar font */
         }
 
         table {
@@ -51,7 +55,8 @@
         }
 
         th {
-            background-color: #efefef; /* Warna abu-abu lebih terang */
+            background-color: #efefef;
+            /* Warna abu-abu lebih terang */
             padding: 10px;
             text-align: center;
             color: #000;

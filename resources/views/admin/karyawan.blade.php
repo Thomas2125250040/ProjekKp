@@ -52,15 +52,18 @@
                                             <!-- No button to show for Director jabatan -->
                                         @else
                                             <!-- Hide "Hapus" button for Admin, but show "Ubah" for other jabatan -->
-                                            <button type="button" class="btn btn-danger fs-1" style="display: none;">Hapus</button>
-                                            <a href="{{ route('karyawan.edit', $row->id) }}" class="btn btn-primary fs-1">Ubah</a>
+                                            <button type="button" class="btn btn-danger fs-1"
+                                                style="display: none;">Hapus</button>
+                                            <a href="{{ route('karyawan.edit', $row->id) }}"
+                                                class="btn btn-primary fs-1">Ubah</a>
                                         @endif
                                     @elseif (session('hak_akses') === 'Director')
                                         <!-- Director can perform all actions -->
                                         <button type="submit" class="btn btn-danger fs-1 hapus_karyawan"
                                             data-toggle="tooltip" title='Delete'
                                             data-nama='{{ $row->nama }}'>Hapus</button>
-                                        <a href="{{ route('karyawan.edit', $row->id) }}" class="btn btn-primary fs-1">Ubah</a>
+                                        <a href="{{ route('karyawan.edit', $row->id) }}"
+                                            class="btn btn-primary fs-1">Ubah</a>
                                     @endif
 
                                     <a href="{{ route('karyawan.show', $row->id) }}"

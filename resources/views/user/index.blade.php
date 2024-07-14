@@ -44,13 +44,15 @@
 
                                     @if (session('hak_akses') === 'Admin')
                                         <!-- Hide "Hapus" button for Admin -->
-                                        <button type="button" class="btn btn-danger fs-1" style="display: none;">Hapus</button>
+                                        <button type="button" class="btn btn-danger fs-1"
+                                            style="display: none;">Hapus</button>
 
                                         <!-- Hide "Ubah" button if the hak_akses is Director -->
                                         @if ($row->hak_akses === 'Director')
                                             <a href="#" class="btn btn-primary fs-1" style="display: none;">Ubah</a>
                                         @else
-                                            <a href="{{ route('users.edit', $row->id_karyawan) }}" class="btn btn-primary fs-1">Ubah</a>
+                                            <a href="{{ route('users.edit', $row->id_karyawan) }}"
+                                                class="btn btn-primary fs-1">Ubah</a>
                                         @endif
                                     @else
                                         <!-- Non-Admin users can perform all actions -->

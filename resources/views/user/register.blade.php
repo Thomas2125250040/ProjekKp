@@ -12,7 +12,8 @@
                                 <label for="id_karyawan" class="form-label">Id Karyawan</label>
                                 <select id="id_karyawan" name="id_karyawan" class="form-select">
                                     @forelse ($users as $row)
-                                        <option value="{{ $row->id }}">{{ $row->id }} - {{ $row->nama }}</option>
+                                        <option value="{{ $row->id }}">{{ $row->id }} - {{ $row->nama }}
+                                        </option>
                                     @empty
                                         <option disabled>--Tidak ada data karyawan--</option>
                                     @endforelse

@@ -118,14 +118,6 @@
                         form.submit();
                     }
                 });
-        // Add click event listener to close buttons
-        // $('button.btn.btn-default[data-close]').on('click', function() {
-        //     // Hide the modal
-        //     console.log('x');
-        //     $('div.modal.fade.altEditor-modal.review').removeClass('show');
-        //     $('div.modal-backdrop.fade').removeClass('show');
-        // });
-        
         });
     </script>
     @yield('extra_scripts')

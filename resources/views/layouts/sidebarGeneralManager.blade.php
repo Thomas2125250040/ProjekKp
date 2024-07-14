@@ -43,7 +43,7 @@
                 <li class="sidebar-item">
                     <a class="sidebar-link" href="{{ url('log-harian') }}" aria-expanded="false">
                         <span>
-                        <i class="ti ti-report-analytics"></i>
+                            <i class="ti ti-report-analytics"></i>
                         </span>
                         <span class="hide-menu">Log Harian</span>
                     </a>

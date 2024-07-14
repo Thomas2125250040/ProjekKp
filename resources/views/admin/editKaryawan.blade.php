@@ -51,11 +51,14 @@
                                 <label class="form-label" for="agama">Agama</label>
                                 <select class="form-select" name="agama">
                                     <option value="Islam" @if (old('agama', $karyawan->agama) == 'Islam') selected @endif>Islam</option>
-                                    <option value="Katolik" @if (old('agama', $karyawan->agama) == 'Katolik') selected @endif>Katolik</option>
+                                    <option value="Katolik" @if (old('agama', $karyawan->agama) == 'Katolik') selected @endif>Katolik
+                                    </option>
                                     <option value="Hindu" @if (old('agama', $karyawan->agama) == 'Hindu') selected @endif>Hindu</option>
-                                    <option value="Kristen" @if (old('agama', $karyawan->agama) == 'Kristen') selected @endif>Kristen</option>
+                                    <option value="Kristen" @if (old('agama', $karyawan->agama) == 'Kristen') selected @endif>Kristen
+                                    </option>
                                     <option value="Buddha" @if (old('agama', $karyawan->agama) == 'Buddha') selected @endif>Buddha</option>
-                                    <option value="Konghucu" @if (old('agama', $karyawan->agama) == 'Konghucu') selected @endif>Konghucu</option>
+                                    <option value="Konghucu" @if (old('agama', $karyawan->agama) == 'Konghucu') selected @endif>Konghucu
+                                    </option>
                                 </select>
                                 @error('agama')
                                     <div class="text-danger">{{ $message }}</div>
