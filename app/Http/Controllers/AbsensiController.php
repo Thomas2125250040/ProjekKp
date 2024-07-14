@@ -17,7 +17,13 @@ use Spatie\Activitylog\Models\Activity;
 class AbsensiController extends Controller
 {
     public function riwayat(){
-        $activities = Activity::all()->reverse();
+        $activities = Activity::all()->map(function($item){
+            $nama = Karyawan::find($item->causer_id)->nama;
+            return [
+                "created_at" => $item->created_at,
+                "nama" => $nama
+            ];
+        });
         return view('absensi.riwayat', compact('activities'));
     }
 
