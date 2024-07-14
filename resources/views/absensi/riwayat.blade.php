@@ -17,10 +17,10 @@
             <tbody>
                 @foreach ($activities as $activity)
                     <tr>
-                        <td>{{ $activity->created_at->format('d M Y, H:i:s') }} WIB</td>
-                        <td>{{ $activity->nama }}</td>
-                        <td class="@if($activity->status === 'Menghapus') text-danger @elseif($activity->description === 'Memperbarui') text-primary @elseif($activity->description === 'Membuat') text-success @endif">
-                            {{ $activity->deskripsi }}
+                        <td>{{ $activity["created_at"]->format('d M Y, H:i:s') }} WIB</td>
+                        <td>{{ $activity["nama"] }}</td>
+                        <td class="@if($activity['status'] === 'Menghapus') text-danger @elseif($activity['status'] === 'Memperbarui') text-primary @elseif($activity['status'] === 'Membuat') text-success @endif">
+                            {{ $activity["deskripsi"] }}
                         </td>
                     </tr>
                 @endforeach
@@ -33,7 +33,11 @@
 <script src="https://cdn.datatables.net/1.11.3/js/jquery.dataTables.min.js"></script>
 <script>
     $(document).ready(function() {
-        $('#activityTable').DataTable();
+        $('#activityTable').DataTable({
+            "order": [
+                    [0, 'desc']
+            ]
+        });
     });
 </script>
 @endsection
