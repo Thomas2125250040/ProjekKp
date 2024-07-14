@@ -12,12 +12,14 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Cache;
 use Carbon\Carbon;
+use Spatie\Activitylog\Models\Activity;
 
 class AbsensiController extends Controller
 {
     public function revisi()
     {
-        return view('director.revisi');
+        return Activity::all();
+        // return view('director.revisi');
     }
 
     public function update_revisi(Request $request)

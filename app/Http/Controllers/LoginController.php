@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Session;
+use App\Models\User;
 
 class LoginController extends Controller
 {
@@ -27,8 +28,7 @@ class LoginController extends Controller
       $username = $request->username;
       $password = $request->password;
 
-      $user = DB::table('users')
-         ->join('karyawan', 'users.id_karyawan', '=', 'karyawan.id')
+      $user = User::join('karyawan', 'users.id_karyawan', '=', 'karyawan.id')
          ->select('users.*', 'karyawan.id', 'karyawan.nama', 'karyawan.foto')
          ->where('users.username', $username)
          ->first();
