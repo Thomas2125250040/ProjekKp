@@ -2,7 +2,6 @@
 
 namespace Database\Seeders;
 
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 
@@ -22,7 +21,7 @@ class GakHadir extends Seeder
                 'keterangan' => "",
             ],
             [
-               'id_karyawan' => "002",
+                'id_karyawan' => "002",
                 'id_absensi' => "2",
                 'izin' => 1,
                 'keterangan' => "Sakit",
@@ -40,7 +39,7 @@ class GakHadir extends Seeder
                 'keterangan' => "",
             ],
             [
-               'id_karyawan' => "003",
+                'id_karyawan' => "003",
                 'id_absensi' => "3",
                 'izin' => 0,
                 'keterangan' => "",
@@ -54,13 +53,13 @@ class GakHadir extends Seeder
             [
                 'id_karyawan' => "001",
                 'id_absensi' => "4",
-               'izin' => 1,
+                'izin' => 1,
                 'keterangan' => "Sakit",
             ],
             [
                 'id_karyawan' => "002",
                 'id_absensi' => "4",
-               'izin' => 0,
+                'izin' => 0,
                 'keterangan' => "",
             ],
         ]);

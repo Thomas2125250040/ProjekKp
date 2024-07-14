@@ -5,7 +5,6 @@ namespace Database\Seeders;
 use Database\Seeders\HariLiburSeeder;
 use Database\Seeders\JabatanSeeder;
 use Database\Seeders\KaryawanSeeder;
-use Database\Seeders\GajiSeeder;
 use Database\Seeders\Absensi;
 use Database\Seeders\Hadir;
 use Database\Seeders\GakHadir;

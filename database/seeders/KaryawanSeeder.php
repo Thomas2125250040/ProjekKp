@@ -4,8 +4,6 @@ namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Str;
 
 class KaryawanSeeder extends Seeder
 {
@@ -145,7 +143,7 @@ class KaryawanSeeder extends Seeder
             //     'agama' => "Konghucu",
             //     'no_telp' => "084366728891",
             // ],
-            
+
         ]);
     }
 }
