@@ -18,10 +18,19 @@ class AbsensiController extends Controller
 {
     public function riwayat(){
         $activities = Activity::all()->map(function($item){
-            $nama = Karyawan::find($item->causer_id)->nama;
+            $nama = Karyawan::find($item->causer_id);
+            $eventMapping = [
+                'deleted' => 'Menghapus',
+                'updated' => 'Memperbarui',
+                'created' => 'Membuat'
+            ];
+            $status = $eventMapping[$item->event] ?? $item->event;
+            $subjectType = class_basename($item->subject_type);
             return [
                 "created_at" => $item->created_at,
-                "nama" => $nama
+                "nama" => $nama,
+                "status" => $status,
+                "deskripsi" => $status + $subjectType + "dengan id " + $item->subject_id
             ];
         });
         return view('absensi.riwayat', compact('activities'));

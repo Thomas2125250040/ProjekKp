@@ -18,9 +18,9 @@
                 @foreach ($activities as $activity)
                     <tr>
                         <td>{{ $activity->created_at->format('d M Y, H:i:s') }} WIB</td>
-                        <td>{{ $activity->causer_type }}</td>
-                        <td class="@if($activity->description === 'deleted') text-danger @elseif($activity->description === 'updated') text-primary @elseif($activity->description === 'created') text-success @endif">
-                            {{ ucfirst($activity->description === 'User created data' ? 'created' : $activity->description) }}
+                        <td>{{ $activity->nama }}</td>
+                        <td class="@if($activity->status === 'Menghapus') text-danger @elseif($activity->description === 'Memperbarui') text-primary @elseif($activity->description === 'Membuat') text-success @endif">
+                            {{ $activity->deskripsi }}
                         </td>
                     </tr>
                 @endforeach
