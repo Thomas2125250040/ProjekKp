@@ -16,10 +16,14 @@ use Spatie\Activitylog\Models\Activity;
 
 class AbsensiController extends Controller
 {
+    public function riwayat(){
+        $activities = Activity::all()->reverse();
+        return view('absensi.riwayat', compact('activities'));
+    }
+
     public function revisi()
     {
-        return Activity::all();
-        // return view('director.revisi');
+        return view('director.revisi');
     }
 
     public function update_revisi(Request $request)

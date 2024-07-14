@@ -10,40 +10,20 @@
             <thead>
                 <tr>
                     <th scope="col">Tanggal & Waktu</th>
+                    <th scope="col">Id_karyawan</th>
                     <th scope="col">Deskripsi</th>
                 </tr>
             </thead>
             <tbody>
-
-                <tr>
-                    <td>14 Juli 2024, 13:33:30 WIB</td>
-                    <td>Nicholas <font color ="#00FF00">Menambahkan</font> data karyawan "Karyawan-1" </td>
-                </tr>
-                <tr>
-                    <td>15 Juli 2024, 13:33:30 WIB</td>
-                    <td>Margaretha <font color ="#FF0000">Menghapus</font> data karyawan "Karyawan-1"</td>
-                   
-                </tr>
-                <tr>
-                    <td>16 Juli 2024, 13:33:30 WIB</td>
-                    <td>Nicholas  <font color ="#0000FF">Memperbarui </font>data jabatan "Accounting & Finance"</td>
-                    
-                </tr>
-                <tr>
-                    <td>16 Juli 2024, 13:33:30 WIB</td>
-                    <td>Thomas Setiawan <font color = "#00FF00">Menambahkan</font> Hak Akses Karyawan "Karyawan-2" </td></td>
-            
-                </tr>
-                {{-- @foreach ($activities as $activity)
+                @foreach ($activities as $activity)
                     <tr>
                         <td>{{ $activity->created_at->format('d M Y, H:i:s') }} WIB</td>
-                        <td>{{ $activity->causer_info }}</td>
+                        <td>{{ $activity->causer_type }}</td>
                         <td class="@if($activity->description === 'deleted') text-danger @elseif($activity->description === 'updated') text-primary @elseif($activity->description === 'created') text-success @endif">
                             {{ ucfirst($activity->description === 'User created data' ? 'created' : $activity->description) }}
                         </td>
-                        <td>{{ $activity->description }}</td>
                     </tr>
-                @endforeach --}}
+                @endforeach
             </tbody>
         </table>
     </div>

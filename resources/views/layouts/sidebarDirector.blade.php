@@ -133,6 +133,16 @@
                     </a>
                 </li>
 
+                <li class="sidebar-item">
+                    <a class="sidebar-link"
+                        href="{{ route('riwayat') }}" aria-expanded="false">
+                        <span>
+                            <i class="ti ti-fingerprint"></i>
+                        </span>
+                        <span class="hide-menu">Riwayat</span>
+                    </a>
+                </li>
+
                 <li class="sidebar-item mb-5">
                     <a class="sidebar-link" href="{{ route('logout') }}" aria-expanded="false">
                         <span>

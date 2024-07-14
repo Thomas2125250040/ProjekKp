@@ -27,6 +27,10 @@ class Karyawan extends Model
         "no_telp"
     ];
 
+    public function jabatan(){
+        return $this->belongsTo(Jabatan::class, 'id_jabatan');
+    }
+
     public function getActivitylogOptions(): LogOptions
     {
         return LogOptions::defaults()

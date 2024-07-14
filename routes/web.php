@@ -70,6 +70,7 @@ Route::middleware([checkHakAkses::class])->group(function () {
         Route::get('revisi', [AbsensiController::class, 'revisi'])->name('revisi');
         Route::get('data-revisi', [AbsensiController::class, 'data_revisi'])->name('data-revisi');
         Route::put('data-revisi', [AbsensiController::class, 'update_revisi'])->name('update-revisi');
+        Route::get('riwayat', [AbsensiController::class, 'riwayat'])->name('riwayat');
     });
 
     // Route untuk General Manager
