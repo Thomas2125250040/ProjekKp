@@ -207,7 +207,7 @@ class KaryawanController extends Controller
 
         Karyawan::find($karyawan->id)->delete();
 
-        return redirect('karyawan')->with('success', 'Biodata "' . $karyawan->nama . '" berhasil dihapus.');
+        return redirect('karyawan')->with('success', 'Biodata "' . $karyawan->nama . '" berhasil dinon-aktifkan.');
     }
 
 }

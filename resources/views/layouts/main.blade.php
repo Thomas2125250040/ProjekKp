@@ -72,7 +72,7 @@
             event.preventDefault();
             swal({
                     title: `Apakah Anda yakin ingin menghapus biodata ${nama} ?`,
-                    text: `Dengan menekan tombol OK, maka biodata ${nama} akan hilang selamanya!`,
+                    text: `Dengan menekan tombol OK, maka biodata ${nama} akan dinon-aktifkan!`,
                     icon: "warning",
                     buttons: true,
                     dangerMode: true,
