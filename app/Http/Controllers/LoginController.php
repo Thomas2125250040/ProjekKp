@@ -17,42 +17,77 @@ class LoginController extends Controller
       return view('user.login');
    }
 
+   // public function login(Request $request)
+   // {
+   //    $request->validate([
+   //       'username' => 'required',
+   //       'password' => 'required',
+   //    ]);
+
+   //    // Retrieve username and password from the request
+   //    $username = $request->username;
+   //    $password = $request->password;
+
+   //    $user = User::join('karyawan', 'users.id_karyawan', '=', 'karyawan.id')
+   //       ->select('users.*', 'karyawan.id', 'karyawan.nama', 'karyawan.foto')
+   //       ->where('users.username', $username)
+   //       ->first();
+
+   //    if ($user && Hash::check($password, $user->password)) {
+   //       session(['id_karyawan' => $user->id_karyawan]);
+   //       session(['hak_akses' => $user->hak_akses]);
+   //       session(['username' => $user->username]);
+   //       session(['nama' => $user->nama]);
+   //       session(['foto' => $user->foto]);
+
+   //       switch ($user->hak_akses) {
+   //          case 'Admin':
+   //             return redirect('laporan');
+   //          case 'General Manager':
+   //             return redirect('laporan');
+   //          case 'Director':
+   //             return redirect('laporan');
+   //       }
+   //    } else {
+   //       return redirect()->back()->with('error', 'Username atau password salah!');
+   //    }
+
+   // }
+
    public function login(Request $request)
-   {
-      $request->validate([
-         'username' => 'required',
-         'password' => 'required',
-      ]);
+{
+    $request->validate([
+        'username' => 'required',
+        'password' => 'required',
+    ]);
 
-      // Retrieve username and password from the request
-      $username = $request->username;
-      $password = $request->password;
+    $username = $request->username;
+    $password = $request->password;
 
-      $user = User::join('karyawan', 'users.id_karyawan', '=', 'karyawan.id')
-         ->select('users.*', 'karyawan.id', 'karyawan.nama', 'karyawan.foto')
-         ->where('users.username', $username)
-         ->first();
+    $user = User::join('karyawan', 'users.id_karyawan', '=', 'karyawan.id')
+        ->select('users.*', 'karyawan.id', 'karyawan.nama', 'karyawan.foto')
+        ->where('users.username', $username)
+        ->first();
 
-      if ($user && Hash::check($password, $user->password)) {
-         session(['id_karyawan' => $user->id_karyawan]);
-         session(['hak_akses' => $user->hak_akses]);
-         session(['username' => $user->username]);
-         session(['nama' => $user->nama]);
-         session(['foto' => $user->foto]);
+    if ($user && Hash::check($password, $user->password)) {
+        session(['id_karyawan' => $user->id_karyawan]);
+        session(['hak_akses' => $user->hak_akses]);
+        session(['username' => $user->username]);
+        session(['nama' => $user->nama]);
+        session(['foto' => $user->foto]);
 
-         switch ($user->hak_akses) {
+        switch ($user->hak_akses) {
             case 'Admin':
-               return redirect('laporan');
             case 'General Manager':
-               return redirect('laporan');
             case 'Director':
-               return redirect('laporan');
-         }
-      } else {
-         return redirect()->back()->with('error', 'Username atau password salah!');
-      }
+                return redirect('laporan');
+        }
+    } else {
+        return redirect()->back()->with('error', 'Username atau password salah!');
+    }
+}
 
-   }
+
 
    public function logout()
    {

@@ -5,6 +5,7 @@ use App\Http\Controllers\HariLiburController;
 use App\Http\Controllers\KaryawanController;
 use App\Http\Controllers\jabatanController;
 use App\Http\Controllers\LoginController;
+use App\Http\Controllers\ActivityLogController;
 use App\Http\Middleware\checkHakAkses;
 use App\Http\Middleware\checkDirector;
 use App\Exports\LaporanAbsensiExport;
@@ -54,6 +55,7 @@ Route::middleware([checkHakAkses::class])->group(function () {
         Route::post('save/izin', [AbsensiController::class, 'simpan_izin'])->name('absensi.simpan-data-izin');
         Route::post('save/keluar', [AbsensiController::class, 'simpan_keluar'])->name('absensi.simpan-data-keluar');
         Route::get('save/tutup', [AbsensiController::class, 'tutup_absensi'])->name('absensi.tutup-absensi');
+        Route::get('/riwayat', [ActivityLogController::class, 'index'])->name('activity.log');
     });
 
     // Route untuk Admin

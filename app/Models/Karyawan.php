@@ -16,7 +16,7 @@ class Karyawan extends Model
     protected $fillable = [
         "id",
         "id_jabatan",
-        "nama",
+        "nama", // Pastikan kolom nama ada di tabel karyawan
         "email",
         "jenis_kelamin",
         "tempat_lahir",
@@ -26,35 +26,13 @@ class Karyawan extends Model
         "agama",
         "no_telp"
     ];
-    public function jabatan()
-    {
-        return $this->belongsTo(Jabatan::class, 'id_jabatan');
-    }
-
-    public function karyawan_absensi()
-    {
-        return $this->hasMany(KaryawanAbsensi::class, 'id_karyawan', 'id');
-    }
-
-    public function karyawan_izin()
-    {
-        return $this->hasMany(KaryawanIzin::class, 'id_karyawan', 'id');
-    }
-
-    public function delete()
-    {
-        foreach ($this->karyawan_absensi as $masuk) {
-            $masuk->delete();
-        }
-        foreach ($this->karyawan_izin as $izin) {
-            $izin->delete();
-        }
-        parent::delete();
-    }
 
     public function getActivitylogOptions(): LogOptions
     {
         return LogOptions::defaults()
-            ->logOnly(['*']);
+            ->logOnly(['*'])
+            ->setDescriptionForEvent(function(string $eventName) {
+                return "{$this->nama} melakukan {$eventName} data {$this->getKey()}";
+            });
     }
 }

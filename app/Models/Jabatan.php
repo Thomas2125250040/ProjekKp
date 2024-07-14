@@ -14,12 +14,15 @@ class Jabatan extends Model
     protected $keyType = 'string';
     protected $fillable = [
         "id",
-        "nama",
+        "nama", // Pastikan kolom nama ada di tabel jabatan
     ];
 
     public function getActivitylogOptions(): LogOptions
     {
         return LogOptions::defaults()
-            ->logOnly(['*']);
+            ->logOnly(['*'])
+            ->setDescriptionForEvent(function(string $eventName) {
+                return "{$this->nama} melakukan {$eventName} data {$this->getKey()}";
+            });
     }
 }
