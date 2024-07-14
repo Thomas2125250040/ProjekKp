@@ -47,7 +47,7 @@ class Karyawan extends Model
         foreach($this->karyawan_izin as $izin){
             $izin->delete();
         }
-        parent->delete();
+        parent::delete();
     }
 
     public function getActivitylogOptions(): LogOptions
