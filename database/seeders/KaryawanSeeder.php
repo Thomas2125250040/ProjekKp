@@ -143,7 +143,6 @@ class KaryawanSeeder extends Seeder
             //     'agama' => "Konghucu",
             //     'no_telp' => "084366728891",
             // ],
-
         ]);
     }
 }
