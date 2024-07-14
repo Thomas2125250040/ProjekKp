@@ -10,12 +10,13 @@
                             @csrf
                             <div class="mb-4" id="fieldset">
                                 <label for="id_karyawan" class="form-label">Id Karyawan</label>
-                                <select id="id_karyawan" name="id_karyawan" class="form-select">
+                                <select id="id_karyawan" name="id_karyawan" class="form-select"
+                                    {{ $users->isEmpty() ? 'disabled' : '' }}>
                                     @forelse ($users as $row)
                                         <option value="{{ $row->id }}">{{ $row->id }} - {{ $row->nama }}
                                         </option>
                                     @empty
-                                        <option disabled>--Tidak ada data karyawan--</option>
+                                        <option value="" disabled>-- Tidak ada data karyawan --</option>
                                     @endforelse
                                 </select>
                                 @error('id_karyawan')
@@ -66,7 +67,8 @@
                             </div>
 
                             <div class="d-flex justify-content-end">
-                                <button type="submit" class="btn btn-primary">Submit</button>
+                                <button type="submit" class="btn btn-primary"
+                                    {{ $users->isEmpty() ? 'disabled' : '' }}>Submit</button>
                             </div>
                         </form>
                     </div>

@@ -56,11 +56,11 @@
                     @endisset
                 </tbody>
             </table>
-            <div class="d-flex align-items-end mt-4 flex-column">
+            {{-- <div class="d-flex align-items-end mt-4 flex-column">
                 <button class="btn btn-primary py-2" style="width: 100px;" onclick="saveTable(this)"
                     @if (isset($libur) or isset($error)) disabled @endif>Kirim</button>
                 <div id="keterangan_kirim"></div>
-            </div>
+            </div> --}}
         </div>
     </div>
 @endsection

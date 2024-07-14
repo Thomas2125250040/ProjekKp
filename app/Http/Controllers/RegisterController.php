@@ -15,19 +15,29 @@ class RegisterController extends Controller
      */
     public function index()
     {
-        $users = DB::select('SELECT users.*, karyawan.nama 
-        FROM users
-        JOIN karyawan ON karyawan.id = users.id_karyawan
-        WHERE karyawan.deleted_at IS NULL
-    ');
+        $users = DB::table('users')
+            ->join('karyawan', 'karyawan.id', '=', 'users.id_karyawan')
+            ->whereNull('karyawan.deleted_at')
+            ->select('users.*', 'karyawan.nama')
+            ->get();
 
-        $karyawan = DB::select('SELECT * 
-        FROM karyawan 
-        WHERE deleted_at IS NULL
-    ');
+        $karyawan = DB::table('karyawan')
+            ->whereNull('deleted_at')
+            ->get();
 
-        return view("user.index", ["users" => $users, "karyawan" => $karyawan]);
+        // Periksa apakah semua karyawan sudah memiliki hak akses
+        $assignedUserIds = $users->pluck('id_karyawan')->toArray();
+        $availableKaryawan = $karyawan->filter(function ($k) use ($assignedUserIds) {
+            return !in_array($k->id, $assignedUserIds);
+        });
+
+        return view("user.index", [
+            "users" => $users,
+            "karyawan" => $karyawan,
+            "allKaryawanHaveAccess" => $availableKaryawan->isEmpty(),
+        ]);
     }
+
 
     public function store(Request $request)
     {
@@ -54,8 +64,8 @@ class RegisterController extends Controller
      */
     public function create()
     {
-        // Ambil semua karyawan
-        $allUsers = DB::table('karyawan')->get();
+        // Ambil semua karyawan yang tidak di-soft delete
+        $allUsers = DB::table('karyawan')->whereNull('deleted_at')->get();
 
         // Ambil ID karyawan yang sudah memiliki hak akses
         $assignedUserIds = DB::table('users')->pluck('id_karyawan')->toArray();

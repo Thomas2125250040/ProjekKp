@@ -7,21 +7,26 @@
                     <h5 class="card-title fw-semibold" style="margin-bottom: 0">Data User</h5>
                 </div>
 
-                @if (count($karyawan) == 0)
+                @if ($allKaryawanHaveAccess || count($karyawan) == 0)
                     <button class="btn btn-primary" disabled>Tambah</button>
                     <div class="alert alert-warning">
-                        Tidak ada data karyawan, harap tambahkan data karyawan dahulu!
+                        @if (count($karyawan) == 0)
+                            Tidak ada data karyawan, harap tambahkan data karyawan dahulu!
+                        @else
+                            Semua karyawan sudah memiliki hak akses!
+                        @endif
                     </div>
                 @else
                     <a href="{{ url('users/create') }}" class="btn btn-primary">Tambah</a>
                 @endif
-
             </div>
+
             @if (Session::get('success'))
                 <div class="alert alert-success">
                     {{ Session::get('success') }}
                 </div>
             @endif
+
             <table id="myTable" class="display">
                 <thead>
                     <tr>
@@ -70,6 +75,7 @@
         </div>
     </div>
 @endsection
+
 @section('extra_scripts')
     <script>
         $(document).ready(function() {
