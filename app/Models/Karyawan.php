@@ -37,7 +37,7 @@ class Karyawan extends Model
     }
 
     public function karyawan_izin(){
-        return $this->hasMany(KaryawanIzin::class, 'id', 'id_karyawan', 'id');
+        return $this->hasMany(KaryawanIzin::class, 'id_karyawan', 'id');
     }
 
     public function delete() {
