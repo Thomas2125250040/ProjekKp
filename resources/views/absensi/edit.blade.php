@@ -119,9 +119,7 @@
                 type: "readonly"
             }, {
                 title: "Nama",
-                type: "text",
-                required: true,
-                unique: true,
+                type: "readonly",
                 name: "nama"
             }, {
                 data: "waktu-masuk",

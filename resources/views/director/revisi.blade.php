@@ -67,7 +67,7 @@
                 type: "readonly"
             }, {
                 title: "Nama",
-                type: "text",
+                type: "readonly",
                 required: true,
                 unique: true,
                 name: "gender"
