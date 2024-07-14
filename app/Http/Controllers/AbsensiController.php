@@ -124,14 +124,16 @@ class AbsensiController extends Controller
             $keterangan_libur = HariLibur::find($libur)->keterangan;
             return response()->json(["message" => $keterangan_libur], 202);
         }
-        $masuk = KaryawanAbsensi::with('karyawan')->where('id_absensi', $absensi->id)->get()->map(function ($item) {
-            return [
-                "id" => $item->karyawan->id,
-                "nama" => $item->karyawan->nama,
-                "waktu_masuk" => $item->waktu_masuk,
-                "waktu_keluar" => $item->waktu_keluar
-            ];
-        });
+        $masuk = KaryawanAbsensi::with('karyawan')->where('id_absensi', $absensi->id)->get();
+        dd($masuk);
+        // ->map(function ($item) {
+        //     return [
+        //         "id" => $item->karyawan->id,
+        //         "nama" => $item->karyawan->nama,
+        //         "waktu_masuk" => $item->waktu_masuk,
+        //         "waktu_keluar" => $item->waktu_keluar
+        //     ];
+        // });
         $data_izin = KaryawanIzin::with('karyawan')->where('id_absensi', $absensi->id)->get();
         $izin = $data_izin->map(function ($item) {
             if ($item->izin === 1) {

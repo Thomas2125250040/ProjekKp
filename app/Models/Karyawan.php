@@ -32,6 +32,24 @@ class Karyawan extends Model
         return $this->belongsTo(Jabatan::class, 'id_jabatan');
     }
 
+    public function karyawan_absensi(){
+        return $this->hasMany(KaryawanAbsensi::class, 'id_karyawan', 'id');
+    }
+
+    public function karyawan_izin(){
+        return $this->hasMany(KaryawanIzin::class, 'id', 'id_karyawan', 'id');
+    }
+
+    public function delete() {
+        foreach($this->karyawan_absensi as $absensi){
+            $absensi->delete();
+        }
+        foreach($this->karyawan_izin as $izin){
+            $izin->delete();
+        }
+        parent->delete();
+    }
+
     public function getActivitylogOptions(): LogOptions
     {
         return LogOptions::defaults()
