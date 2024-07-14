@@ -10,7 +10,7 @@
             <thead>
                 <tr>
                     <th scope="col">Tanggal & Waktu</th>
-                    <th scope="col">Id_karyawan</th>
+                    <th scope="col">Nama karyawan</th>
                     <th scope="col">Deskripsi</th>
                 </tr>
             </thead>
