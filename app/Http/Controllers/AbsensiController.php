@@ -541,28 +541,40 @@ class AbsensiController extends Controller
         if (is_null($absen)){
             return "No data";
         }
-        $masuk = KaryawanAbsensi::with('karyawan')->where('id_absensi', $absen->id)->get()->map(function ($item) {
+        $dataMasuk = KaryawanAbsensi::with('karyawan')->where('id_absensi', $absen->id)->get();
+        $masuk = $dataMasuk->filter(function($item){
+            return !is_null($item->waktu_keluar);
+        })->map(function($item){
             return [
                 "nama" => $item->karyawan->nama,
                 "waktu_masuk" => $item->waktu_masuk,
                 "waktu_keluar" => $item->waktu_keluar
             ];
-        });
+        })->values();
+        $minggat = $dataMasuk->filter(function($item){
+            return is_null($item->waktu_keluar);
+        })->map(function($item){
+            return [
+                "nama" => $item->karyawan->nama,
+                "waktu_masuk" => $item->waktu_masuk
+            ];
+        })->values();
         $izin = KaryawanIzin::with('karyawan')->where('id_absensi', $absen->id)->where('izin', 1)->get()->map(function ($item) {
             return [
                 "nama" => $item->karyawan->nama,
                 "keterangan" => $item->keterangan
             ];
-        });
+        })->values();
         $alpha = KaryawanIzin::with('karyawan')->where('id_absensi', $absen->id)->where('izin', 0)->get()->map(function ($item) {
             return [
                 "nama" => $item->karyawan->nama
             ];
-        });
+        })->values();
         return response()->json([
             "masuk" => $masuk,
             "izin" => $izin,
-            "alpha" => $alpha
+            "alpha" => $alpha,
+            "minggat" => $minggat
         ]);
     }
 
@@ -587,7 +599,7 @@ class AbsensiController extends Controller
         $logMasuk = [];
         $logAlpha = [];
         $logIzin = [];
-        $logLibur = [];
+        $logMinggat = [];
 
         foreach ($kumpulan_id_absensi as $item) {
             $absensiIzin = KaryawanIzin::where('id_karyawan', $id_karyawan)->where('id_absensi', $item->id)->first();
@@ -600,11 +612,18 @@ class AbsensiController extends Controller
             }
             $absensiMasuk = KaryawanAbsensi::where('id_karyawan', $id_karyawan)->where('id_absensi', $item->id)->first();
             if ($absensiMasuk) {
-                $logMasuk[] = [
-                    'tanggal' => $item->tanggal,
-                    'waktu_masuk' => $absensiMasuk->waktu_masuk,
-                    'waktu_keluar' => $absensiMasuk->waktu_keluar,
-                ];
+                if(is_null($absensiMasuk->waktu_keluar)){
+                    $logMinggat[] = [
+                        'tanggal' => $item->tanggal,
+                        'waktu_masuk' => $absensiMasuk->waktu_masuk
+                    ];
+                } else {
+                    $logMasuk[] = [
+                        'tanggal' => $item->tanggal,
+                        'waktu_masuk' => $absensiMasuk->waktu_masuk,
+                        'waktu_keluar' => $absensiMasuk->waktu_keluar,
+                    ];
+                }
                 continue;
             }
             $logAlpha[] = [
@@ -615,7 +634,7 @@ class AbsensiController extends Controller
             'logMasuk' => $logMasuk,
             'logIzin' => $logIzin,
             'logAlpha' => $logAlpha,
-            'logLibur' => $logLibur
+            'logMinggat' => $logMinggat
         ]);
     }
 

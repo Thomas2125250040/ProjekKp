@@ -59,7 +59,7 @@
                                     @isset($row->waktu_keluar)
                                         {{ $row->waktu_keluar }}
                                     @else
-                                        <div class="btn btn-danger fs-1 p-2 py-1" onclick="setJamKeluar(this)">Tambah</div>
+                                        <div class="btn btn-danger fs-1 p-2 py-1" onclick="setJamKeluar(this)">Keluar</div>
                                     @endisset
                                 </td>
                                 <td>-</td>

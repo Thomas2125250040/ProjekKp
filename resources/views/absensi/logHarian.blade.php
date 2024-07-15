@@ -177,6 +177,17 @@
                             newRow.addClass("text-danger");
                             table.row.add(newRow).draw();
                         });
+                        json.minggat.forEach(function(item) {
+                            const newRow = $("<tr>");
+                            newRow.append(
+                                $("<td>").text(item.nama),
+                                $("<td>").text(item.waktu_masuk).addClass('text-right'),
+                                $("<td>").text('-').addClass('text-right'),
+                                $("<td>").text("Minggat")
+                            );
+                            newRow.addClass("text-danger");
+                            table.row.add(newRow).draw();
+                        });
                     },
                     error: function(xhr, status, error) {
                         alert(error);
@@ -230,6 +241,16 @@
                                 $("<td>").text(item.waktu_masuk).addClass('text-right'),
                                 $("<td>").text(item.waktu_keluar).addClass('text-right'),
                                 $("<td>").text("-")
+                            );
+                            table.row.add(newRow).draw();
+                        });
+                        data.logMinggat.forEach(function(item) {
+                            const newRow = $("<tr>");
+                            newRow.append(
+                                $("<td>").text(item.tanggal),
+                                $("<td>").text(item.waktu_masuk).addClass('text-right'),
+                                $("<td>").text("-").addClass('text-right'),
+                                $("<td>").text("Minggat")
                             );
                             table.row.add(newRow).draw();
                         });
