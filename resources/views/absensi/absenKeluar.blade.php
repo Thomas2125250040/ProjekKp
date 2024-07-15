@@ -68,10 +68,10 @@
                     @endisset
                 </tbody>
             </table>
-            <div class="d-flex justify-content-end mt-4">
+            {{-- <div class="d-flex justify-content-end mt-4">
                 <a href="{{ route('absensi.tutup-absensi') }}" class="btn btn-danger" onclick="tutupAbsensi(this)">Tutup
                     absensi</a>
-            </div>
+            </div> --}}
         </div>
     </div>
 @endsection

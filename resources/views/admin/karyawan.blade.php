@@ -61,7 +61,7 @@
                                         <!-- Director can perform all actions -->
                                         <button type="submit" class="btn btn-danger fs-1 hapus_karyawan"
                                             data-toggle="tooltip" title='Delete'
-                                            data-nama='{{ $row->nama }}'>Hapus</button>
+                                            data-nama='{{ $row->nama }}'>Non-Aktif</button>
                                         <a href="{{ route('karyawan.edit', $row->id) }}"
                                             class="btn btn-primary fs-1">Ubah</a>
                                     @endif

@@ -18,11 +18,11 @@
             @isset($libur)
                 <h3 class="text-danger text-center">{{ $libur }}</h3>
             @endisset
-            @isset($tutup)
+            {{-- @isset($tutup)
                 <div class="alert alert-danger mb-4">
                     {{ $tutup }}
                 </div>
-            @endisset
+            @endisset --}}
             <div class="text-center mb-3"><?php
             echo strftime('%A,');
             echo date(' d-M-Y'); ?>

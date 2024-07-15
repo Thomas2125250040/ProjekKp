@@ -71,7 +71,7 @@
             var nama = $(this).data("nama");
             event.preventDefault();
             swal({
-                    title: `Apakah Anda yakin ingin menghapus biodata ${nama} ?`,
+                    title: `Apakah Anda yakin ingin menon-aktifkan biodata ${nama} ?`,
                     text: `Dengan menekan tombol OK, maka biodata ${nama} akan dinon-aktifkan!`,
                     icon: "warning",
                     buttons: true,

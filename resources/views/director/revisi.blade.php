@@ -18,6 +18,9 @@
         <div class="card-body">
             <div class="d-flex mb-4">
                 <div class="card-title fw-semibold flex-grow-1">Revisi</div>
+                @isset($buka)
+                <button class="btn btn-danger">Buka Absensi</button>
+                @endisset
             </div>
             <div class="d-flex mb-4 col-3">
                 <input type="date" class="form-control" id="tanggal">
