@@ -48,8 +48,8 @@
                     @isset($alpha)
                         @foreach ($alpha as $item)
                             <tr class="text-danger">
-                                <td>{{ $item->id }}</td>
-                                <td>{{ $item->nama }}</td>
+                                <td>{{ $item["id"] }}</td>
+                                <td>{{ $item["nama"] }}</td>
                                 <td><button class="btn btn-primary" onclick="add(this)">Masuk</button></td>
                             </tr>
                         @endforeach
