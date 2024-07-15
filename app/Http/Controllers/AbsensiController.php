@@ -269,10 +269,7 @@ class AbsensiController extends Controller
         if ($keterangan = $this->cek_libur()) {
             return view('absensi.edit')->with('libur', $keterangan);
         } else if (is_null($id_absensi)) {
-            if ($this->cek_buka_absensi()) {
-                return view('absensi.edit')->with('error', "Tidak ada data absensi untuk hari ini, apakah Anda ingin membuat satu?");
-            }
-            return view('absensi.edit')->with('tutup', "Absensi sudah ditutup.");
+            return view('absensi.edit')->with('error', "Tidak ada data absensi untuk hari ini, apakah Anda ingin membuat satu?");
         }
         $masuk = KaryawanAbsensi::with('karyawan')->where('id_absensi', $id_absensi)->get();
         $izin = KaryawanIzin::with('karyawan')->where('id_absensi', $id_absensi)->get();
@@ -325,11 +322,7 @@ class AbsensiController extends Controller
         if ($keterangan = $this->cek_libur()) {
             return view('absensi.absenKeluar')->with('libur', $keterangan);
         } else if (is_null($id_absensi)) {
-            if ($this->cek_buka_absensi()) {
-                return view('absensi.absenKeluar')->with('error', "Tidak ada data absensi untuk hari ini, apakah Anda ingin membuat satu?");
-            }
-            ;
-            return view('absensi.absenKeluar')->with('tutup', "Absensi sudah ditutup.");
+            return view('absensi.absenKeluar')->with('error', "Tidak ada data absensi untuk hari ini, apakah Anda ingin membuat satu?");
         }
         $data_masuk = KaryawanAbsensi::with('karyawan')->where('id_absensi', $id_absensi)->get();
         return view('absensi.absenKeluar', ['data_masuk' => $data_masuk]);
@@ -341,11 +334,7 @@ class AbsensiController extends Controller
         if ($keterangan = $this->cek_libur()) {
             return view('absensi.absenIzin')->with('libur', $keterangan);
         } else if (is_null($id_absensi)) {
-            if ($this->cek_buka_absensi()) {
-                return view('absensi.absenIzin')->with('error', "Tidak ada data absensi untuk hari ini, apakah Anda ingin membuat satu?");
-            }
-            ;
-            return view('absensi.absenIzin')->with('tutup', "Absensi sudah ditutup.");
+            return view('absensi.absenIzin')->with('error', "Tidak ada data absensi untuk hari ini, apakah Anda ingin membuat satu?");
         }
         $nama_masuk = collect(KaryawanAbsensi::with('karyawan')->where('id_absensi', $id_absensi)->get('id_karyawan')
             ->map(function ($item) {
