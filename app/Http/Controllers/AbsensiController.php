@@ -217,7 +217,7 @@ class AbsensiController extends Controller
                 $id_absensi
             ]);
             if ($karyawan_izin) {
-                $karyawan_izin->delete();
+                $karyawan_izin->forceDelete();
             }
             $karyawan = KaryawanAbsensi::find([
                 $id_karyawan,
@@ -235,6 +235,7 @@ class AbsensiController extends Controller
                 "waktu_masuk" => $masuk,
                 "waktu_keluar" => $keluar
             ]);
+            $new_masuk->save();
             return response()->json(['message' => 'Berhasil membuat data masuk karyawan']);
         }
         $izin = KaryawanIzin::find([
