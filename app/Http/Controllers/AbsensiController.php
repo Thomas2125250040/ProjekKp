@@ -223,18 +223,44 @@ class AbsensiController extends Controller
                 $id_karyawan,
                 $id_absensi
             ]);
-            $karyawan->waktu_masuk = $masuk;
-            $karyawan->waktu_keluar = $keluar;
-            $karyawan->save();
-            return response()->json(['message' => 'Berhasil update data masuk karyawan']);
+            if ($karyawan){
+                $karyawan->waktu_masuk = $masuk;
+                $karyawan->waktu_keluar = $keluar;
+                $karyawan->save();
+                return response()->json(['message' => 'Berhasil update data masuk karyawan']);
+            }
+            $new_masuk = new KaryawanAbsensi([
+                "id_karyawan" => $id_karyawan,
+                "id_absensi" => $id_absensi,
+                "waktu_masuk" => $masuk,
+                "waktu_keluar" => $keluar
+            ]);
+            return response()->json(['message' => 'Berhasil membuat data masuk karyawan']);
         }
         $izin = KaryawanIzin::find([
             $id_karyawan,
             $id_absensi
         ]);
-        $izin->keterangan = $keterangan;
-        $izin->save();
-        return response()->json(['message' => 'Berhasil update izin karyawan']);
+        if ($izin){
+            $izin->keterangan = $keterangan;
+            $izin->save();
+            return response()->json(['message' => 'Berhasil update data izin karyawan']);
+        }
+        $absen = KaryawanAbsensi::find([
+            $id_karyawan,
+            $id_absensi
+        ]);
+        if ($absen){
+            $absen->forceDelete();
+        }
+        $new_izin = new KaryawanIzin([
+            "id_karyawan" => $id_karyawan,
+            "id_absensi" => $id_absensi,
+            "izin" => 1,
+            "keterangan" => $keterangan
+        ]);
+        $new_izin->save();
+        return response()->json(['message' => 'Berhasil membuat izin karyawan']);
     }
 
     public function masuk()
