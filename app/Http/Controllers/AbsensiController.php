@@ -16,6 +16,20 @@ use Spatie\Activitylog\Models\Activity;
 
 class AbsensiController extends Controller
 {
+    public function otomatis_tutup_absensi(){
+        date_default_timezone_set('Asia/Jakarta');
+        $currentDate = now()->toDateString();
+        $absen = Cache::get('id_absensi');
+        if ($absen){
+            $current_absen = Absensi::find($absen);
+            if ($currentDate !== $current_absen->tanggal){
+                return true;
+            }
+            return false;
+        }
+        return false;
+    }
+
     public function riwayat(){
         $activities = Activity::all()->map(function($item){
             $nama = Karyawan::withTrashed()->find($item->causer_id)->nama;
@@ -217,6 +231,9 @@ class AbsensiController extends Controller
 
     public function masuk()
     {
+        if ($this->otomatis_tutup_absensi()){
+            Cache::forget('id_absensi');
+        }
         $id_absensi = Cache::get('id_absensi');
         if (!is_null($keterangan = $this->cek_libur())) {
             return view('absensi.absenMasuk')->with('libur', $keterangan);
@@ -270,6 +287,9 @@ class AbsensiController extends Controller
 
     public function editAbsensi()
     {
+        if ($this->otomatis_tutup_absensi()){
+            Cache::forget('id_absensi');
+        }
         $id_absensi = Cache::get('id_absensi');
         if ($keterangan = $this->cek_libur()) {
             return view('absensi.edit')->with('libur', $keterangan);
@@ -328,6 +348,9 @@ class AbsensiController extends Controller
 
     public function keluar()
     {
+        if ($this->otomatis_tutup_absensi()){
+            Cache::forget('id_absensi');
+        }
         $id_absensi = Cache::get('id_absensi');
         if ($keterangan = $this->cek_libur()) {
             return view('absensi.absenKeluar')->with('libur', $keterangan);
@@ -340,6 +363,9 @@ class AbsensiController extends Controller
 
     public function izin()
     {
+        if ($this->otomatis_tutup_absensi()){
+            Cache::forget('id_absensi');
+        }
         $id_absensi = Cache::get('id_absensi');
         if ($keterangan = $this->cek_libur()) {
             return view('absensi.absenIzin')->with('libur', $keterangan);

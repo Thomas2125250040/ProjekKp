@@ -92,6 +92,11 @@
         });
 
         function add(element) {
+            const timestamp = document.getElementById("timestamp").innerHTML;
+            if (timestamp.trim() === "") {
+                alert("Timestamp kosong. Tidak bisa mengatur Waktu Masuk!");
+                return;
+            }
             var parent = element.closest("tr");
             var id = $(parent).find("td:first").text();
             var button = $(parent).find("td:last");

@@ -77,4 +77,5 @@ Route::middleware([checkHakAkses::class])->group(function () {
 
     });
 
+    Route::get('test', [AbsensiController::class, 'otomatis_tutup_absensi'])->name('test');
 });

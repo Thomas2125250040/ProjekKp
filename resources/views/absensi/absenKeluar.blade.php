@@ -113,7 +113,7 @@
         function setJamKeluar(element) {
             const timestamp = document.getElementById("timestamp").innerHTML;
             if (timestamp.trim() === "") {
-                alert("Timestamp is empty. Cannot set Waktu Keluar.");
+                alert("Timestamp kosong. Tidak bisa mengatur Waktu Keluar!");
                 return;
             }
             element.innerHTML = timestamp;
