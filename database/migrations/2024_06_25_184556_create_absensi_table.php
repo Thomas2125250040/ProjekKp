@@ -12,7 +12,7 @@ return new class extends Migration {
     {
         Schema::create('absensi', function (Blueprint $table) {
             $table->increments('id');
-            $table->date('tanggal');
+            $table->date('tanggal')->unique();
             $table->timestamps();
         });
     }
