@@ -181,7 +181,13 @@ class AbsensiController extends Controller
             $id_absensi
         ]);
         if ($data_absensi) {
-            $data_absensi->delete();
+            $data_absensi->forceDelete();
+            $alpha = new KaryawanIzin([
+                "id_absensi" => $id_absensi,
+                "id_karyawan" => $id,
+                "izin" => 0
+            ]);
+            $alpha->save();
             return response()->json(["message" => "Data masuk berhasil dihapus"]);
         }
         $data_izin = KaryawanIzin::find([
