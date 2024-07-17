@@ -13,12 +13,6 @@
             <div class="d-flex mb-3">
                 <div class="card-title fw-semibold flex-grow-1">Edit Absensi</div>
             </div>
-            @isset($error)
-                <div class="alert alert-danger d-flex justify-content-between align-items-center mb-4">
-                    {{ $error }}
-                    <a class="btn btn-danger ms-3" href="{{ route('absensi.buatSatu') }}">Buat Absensi</a>
-                </div>
-            @endisset
             @isset($libur)
                 <h3 class="text-danger text-center">{{ $libur }}</h3>
             @endisset

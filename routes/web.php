@@ -50,7 +50,6 @@ Route::middleware([checkHakAkses::class])->group(function () {
         Route::get('absensi/masuk', [AbsensiController::class, 'masuk'])->name('absensi.masuk');
         Route::get('absensi/izin', [AbsensiController::class, 'izin'])->name('absensi.izin');
         Route::get('absensi/keluar', [AbsensiController::class, 'keluar'])->name('absensi.keluar');
-        Route::get('absensi/buat', [AbsensiController::class, 'buat'])->name('absensi.buatSatu');
         Route::post('save/masuk', [AbsensiController::class, 'simpan_masuk'])->name('absensi.simpan-data-masuk');
         Route::post('save/izin', [AbsensiController::class, 'simpan_izin'])->name('absensi.simpan-data-izin');
         Route::post('save/keluar', [AbsensiController::class, 'simpan_keluar'])->name('absensi.simpan-data-keluar');
@@ -76,6 +75,4 @@ Route::middleware([checkHakAkses::class])->group(function () {
     Route::middleware([CheckGeneralManager::class])->group(function () {
 
     });
-
-    Route::get('test', [AbsensiController::class, 'otomatis_tutup_absensi'])->name('test');
 });
