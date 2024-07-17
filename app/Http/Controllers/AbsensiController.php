@@ -176,10 +176,6 @@ class AbsensiController extends Controller
     public function edit_delete($id)
     {
         $id_absensi = Cache::get('id_absensi');
-        if (is_null($id_absensi)){
-            $this->buat();
-            $id_absensi = Cache::get('id_absensi');
-        }
         $data_absensi = KaryawanAbsensi::find([
             $id,
             $id_absensi
@@ -193,7 +189,9 @@ class AbsensiController extends Controller
             $id_absensi
         ]);
         if ($data_izin) {
-            $data_izin->delete();
+            $data_izin->izin = 0;
+            $data_izin->keterangan = null;
+            $data_izin->save();
             return response()->json(["message" => "Data izin berhasil dihapus"]);
         }
         return response()->json(["message" => "Data tidak ditemukan"]);
@@ -304,11 +302,10 @@ class AbsensiController extends Controller
         if ($keterangan = $this->cek_libur()) {
             return view('absensi.edit')->with('libur', $keterangan);
         } else if (is_null($id_absensi)) {
-            $alpha = Karyawan::get('id', 'nama');
-            return view('absensi.edit', compact('alpha'));
+            return view('absensi.edit');
         }
         $masuk = KaryawanAbsensi::with('karyawan')->where('id_absensi', $id_absensi)->get();
-        $izin = KaryawanIzin::with('karyawan')->where('id_absensi', $id_absensi)->get();
+        $izin = KaryawanIzin::with('karyawan')->where('id_absensi', $id_absensi)->where('izin', 1)->get();
         return view('absensi.edit', compact(['masuk', 'izin']));
     }
 
