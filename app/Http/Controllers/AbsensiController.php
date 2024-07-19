@@ -16,6 +16,17 @@ use Spatie\Activitylog\Models\Activity;
 
 class AbsensiController extends Controller
 {
+    private function cek_otentik_absen(){
+        date_default_timezone_set('Asia/Jakarta');
+        $currentDate = now()->toDateString();
+        $absen = Absensi::where('tanggal', $currentDate)->first();
+        if (is_null($absen)){
+            return true;
+        } else {
+            return false;
+        }
+    }
+
     private function otomatis_tutup_absensi(){
         date_default_timezone_set('Asia/Jakarta');
         $currentDate = now()->toDateString();
@@ -308,21 +319,25 @@ class AbsensiController extends Controller
     {
         date_default_timezone_set('Asia/Jakarta');
         $currentDate = now()->toDateString(); // Get the current date in 'Y-m-d' format
-        $absen = new Absensi([
-            'tanggal' => $currentDate
-        ]);
-        $absen->save();
-        Cache::put('id_absensi', $absen->id);
-        $karyawan = Karyawan::all();
-        foreach($karyawan as $item){
-            $karyawan_alpha = new KaryawanIzin([
-                'id_absensi' => $absen->id,
-                'id_karyawan' => $item->id,
-                'izin' => 0
+        if ($this->cek_otentik_absen()){
+            $absen = new Absensi([
+                'tanggal' => $currentDate
             ]);
-            $karyawan_alpha->save();
+            $absen->save();
+            Cache::put('id_absensi', $absen->id);
+            $karyawan = Karyawan::all();
+            foreach($karyawan as $item){
+                $karyawan_alpha = new KaryawanIzin([
+                    'id_absensi' => $absen->id,
+                    'id_karyawan' => $item->id,
+                    'izin' => 0
+                ]);
+                $karyawan_alpha->save();
+            }
+            return true;
+        } else{
+            return false;
         }
-        return redirect()->route('absensi.masuk');
     }
 
 
@@ -346,8 +361,11 @@ class AbsensiController extends Controller
     {
         $id_absensi = Cache::get('id_absensi');
         if (is_null($id_absensi)){
-            $this->buat();
-            $id_absensi = Cache::get('id_absensi');
+            if($this->buat()){
+                $id_absensi = Cache::get('id_absensi');
+            } else {
+                return response()->json([],423);
+            };
         }
         $karyawan_alpha = KaryawanIzin::find([
             $request->id,
@@ -368,8 +386,11 @@ class AbsensiController extends Controller
         $id_karyawan = $request->id_karyawan;
         $id_absensi = Cache::get('id_absensi');
         if (is_null($id_absensi)){
-            $this->buat();
-            $id_absensi = Cache::get('id_absensi');
+            if($this->buat()){
+                $id_absensi = Cache::get('id_absensi');
+            } else {
+                return response()->json([],423);
+            };
         }
         $keterangan = $request->keterangan;
         $karyawan_izin = KaryawanIzin::find([

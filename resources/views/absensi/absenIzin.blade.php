@@ -97,6 +97,11 @@
                             statusKirim.html("<i class='ti ti-check text-success'></i>");
                         },
                         error: function(xhr, status, error) {
+                            if (xhr.status == 423) {
+                                alert("Absensi sudah dikunci, silahkan pakai menu revisi pada akun director!");
+                            } else {
+                                alert(error);
+                            }
                             statusKirim.html("<i class='ti ti-x text-danger'></i>");
                         }
                     });

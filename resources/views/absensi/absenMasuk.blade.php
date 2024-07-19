@@ -94,6 +94,7 @@
             var parent = element.closest("tr");
             var id = $(parent).find("td:first").text();
             var button = $(parent).find("td:last");
+            var btnContent = button.html();
             var waktu_masuk = $('#timestamp').text();
             button.html("<div class='spinner-border spinner-border-sm'></div>");
             $.ajax({
@@ -108,7 +109,12 @@
                     parent.classList.remove("text-danger");
                 },
                 error: function(xhr, status, error) {
-                    alert(error);
+                    if (xhr.status == 423) {
+                        alert("Absensi sudah dikunci, silahkan pakai menu revisi pada akun director!");
+                    } else {
+                        alert(error);
+                    }
+                    button.html(btnContent);
                 }
             });
         }
